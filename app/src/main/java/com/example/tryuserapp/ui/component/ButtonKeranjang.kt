@@ -27,6 +27,8 @@ import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.tryuserapp.R
 import com.example.tryuserapp.ui.theme.Brown
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
@@ -56,7 +58,7 @@ fun ButtonKeranjang(){
 }
 
 @Composable
-fun ButtonKeranjangSmall(){
+fun ButtonKeranjangSmall(navController : NavController){
     Box (
         modifier = Modifier
             .fillMaxSize()
@@ -71,7 +73,7 @@ fun ButtonKeranjangSmall(){
                 containerColor = Brown,
                 contentColor = Color.White,
                 shape = RoundedCornerShape(8.dp),
-                onClick = { /*TODO*/ }
+                onClick = { navController.navigate("screenCheckOut")  }
             ) {
                 Icon(
                     imageVector = Icons.Default.ShoppingCart,
@@ -102,7 +104,7 @@ fun ButtonKeranjangPreview(){
 fun ButtonKeranjangSmallPreview(){
     TryUserAppTheme {
         Surface {
-            ButtonKeranjangSmall()
+            ButtonKeranjangSmall(navController = rememberNavController())
         }
     }
 }

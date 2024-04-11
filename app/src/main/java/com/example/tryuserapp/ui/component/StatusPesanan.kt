@@ -3,6 +3,7 @@ package com.example.tryuserapp.ui.component
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,19 +35,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tryuserapp.R
 import com.example.tryuserapp.logic.StatusPesanan
+import com.example.tryuserapp.ui.theme.Brown
+import com.example.tryuserapp.ui.theme.Orange
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 @Composable
 fun StatusPesanan(StatusPhoto : Int, statusPesanan: StatusPesanan){
+
     Row(
         modifier = Modifier
-            .height(80.dp)
-            .width(380.dp)
             .border(
                 BorderStroke(1.dp, Color.Black),
                 shape = RoundedCornerShape(16.dp)
             )
-            .padding(start = 16.dp, top = 4.dp)
+            .height(80.dp)
+            .width(380.dp)
+            .background(Orange)
+            .padding(start = 16.dp, top = 4.dp),
     ) {
         Column (
                 verticalArrangement = Arrangement.Center,
@@ -59,20 +64,22 @@ fun StatusPesanan(StatusPhoto : Int, statusPesanan: StatusPesanan){
         }
         Column(
             modifier = Modifier
-                .padding(end = 40.dp)
+                .padding(end = 0.dp)
         ) {
             Text(
                 text = "Nama",
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
+                    fontSize = 20.sp,
+                    color = Color.Black
                 ),
                 modifier = Modifier.padding( start = 16.dp)
             )
             Text(
                 text = "Hotel Megah",
                 style = TextStyle(
-                    fontSize = 16.sp
+                    fontSize = 16.sp,
+                    color = Color.Black
                 ),
                 modifier = Modifier.padding( start = 16.dp)
             )
@@ -84,13 +91,19 @@ fun StatusPesanan(StatusPhoto : Int, statusPesanan: StatusPesanan){
                     else -> "Sudah Sampai!"
                 },
                 style = TextStyle(
-                    fontSize = 16.sp
+                    fontSize = 16.sp,
+                    color = Color.Black
                 ),
                 modifier = Modifier.padding( start = 16.dp)
             )
         }
         Spacer(modifier = Modifier.width(0.dp))
-        Column {
+        Column (
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(end = 16.dp),
+            horizontalAlignment = Alignment.End
+        ){
             Spacer(modifier = Modifier.height(10.dp))
             Button(
                 modifier = Modifier
@@ -98,7 +111,8 @@ fun StatusPesanan(StatusPhoto : Int, statusPesanan: StatusPesanan){
                     .padding(top = 10.dp, bottom = 5.dp),
                 shape = RoundedCornerShape(4.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Gray
+                    containerColor = Brown,
+                    contentColor = Color.White
                 ),
                 onClick = { /*TODO*/ }
             ) {

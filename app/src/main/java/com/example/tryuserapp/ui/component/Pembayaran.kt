@@ -38,6 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.tryuserapp.ui.theme.Brown
 import com.example.tryuserapp.ui.theme.Orange
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
@@ -74,6 +75,10 @@ fun Pembayaran(){
             modifier = Modifier
                 .width(120.dp),
             shape = RoundedCornerShape(8.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Brown,
+                contentColor = Color.White
+            ),
             onClick = {
                 singelPhotoPickerLauncher.launch(
                     PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)

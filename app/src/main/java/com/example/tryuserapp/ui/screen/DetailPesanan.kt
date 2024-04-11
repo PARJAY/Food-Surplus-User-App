@@ -48,7 +48,6 @@ fun DetailPesanan(navController: NavController){
         Column(
             modifier = Modifier
                 .padding(16.dp)
-
         ){
             Image(
                 modifier = Modifier

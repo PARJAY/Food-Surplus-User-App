@@ -19,11 +19,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.BlendMode.Companion.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.tryuserapp.ui.theme.Brown
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 import com.example.tryuserapp.ui.theme.backGroundScreen
 
 @Composable
-fun ButtomButton(){
+fun ButtomButton(navController: NavController){
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Bottom
@@ -33,7 +36,11 @@ fun ButtomButton(){
                 .fillMaxWidth()
                 .padding(16.dp),
             shape = RoundedCornerShape(0.dp),
-            onClick = { /*TODO*/ }
+            colors = ButtonDefaults.buttonColors(
+                contentColor = androidx.compose.ui.graphics.Color.White,
+                containerColor = Brown
+            ),
+            onClick = { navController.navigate("screenPesananAnda") }
         ) {
             Text(text = "Buat Pesanan")
         }
@@ -46,7 +53,7 @@ fun ButtomButton(){
 fun ButtomButtonPreview(){
     TryUserAppTheme {
         Surface {
-            ButtomButton()
+            ButtomButton(navController = rememberNavController())
         }
     }
 }

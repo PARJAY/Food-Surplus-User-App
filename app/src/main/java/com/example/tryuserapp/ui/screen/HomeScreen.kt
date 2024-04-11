@@ -11,6 +11,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -35,6 +38,9 @@ import com.example.tryuserapp.ui.theme.backGroundScreen
 
 @Composable
 fun HomeScreen(navController: NavController){
+
+    val scrollState = rememberScrollState()
+
     Box (
         Modifier
             .fillMaxSize()
@@ -42,6 +48,8 @@ fun HomeScreen(navController: NavController){
         contentAlignment = Alignment.TopCenter
     ){
         Column(
+            modifier = Modifier
+                .verticalScroll(state = scrollState)
         ) {
             TopBar(navController)
             Spacer(modifier = Modifier.height(16.dp))
@@ -66,11 +74,10 @@ fun HomeScreen(navController: NavController){
             }
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier
-                .fillMaxWidth()
-                .padding(end = 8.dp),
+                .fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ) {
-                ButtonPesananAnda()
+                ButtonPesananAnda(navController)
             }
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier
@@ -78,7 +85,12 @@ fun HomeScreen(navController: NavController){
                 .padding(end = 8.dp),
                 horizontalArrangement = Arrangement.End
             ) {
-               Column {
+               Column (
+                   modifier = Modifier
+                       .fillMaxWidth()
+                       .padding(horizontal = 8.dp),
+                   horizontalAlignment = Alignment.CenterHorizontally
+               ){
                    Katalis(nameMakanan = "Ayam Goreng", navController)
                    Spacer(modifier = Modifier.height(5.dp))
                    Katalis(nameMakanan = "Mie Goreng", navController)
@@ -92,8 +104,8 @@ fun HomeScreen(navController: NavController){
 
                }
             }
-        }   
-       ButtonKeranjangSmall()
+        }
+       ButtonKeranjangSmall(navController)
 
     }
 }

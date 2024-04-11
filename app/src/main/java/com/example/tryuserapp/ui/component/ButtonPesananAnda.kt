@@ -22,15 +22,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.tryuserapp.ui.theme.Brown
 import com.example.tryuserapp.ui.theme.Gray
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 @Composable
-fun ButtonPesananAnda() {
+fun ButtonPesananAnda(navController: NavController) {
     Column {
         Button(
-            onClick = { /* Add button click action here */ },
+            onClick = {  navController.navigate("screenPesananAnda")},
             modifier = Modifier
                 .padding(horizontal = 16.dp, vertical = 8.dp)
                 .border(
@@ -61,7 +63,7 @@ fun ButtonPesananAnda() {
 fun ButtonPesananAndaPreview(){
     TryUserAppTheme {
         Surface {
-            ButtonPesananAnda()
+            ButtonPesananAnda(navController = rememberNavController())
         }
     }
 }

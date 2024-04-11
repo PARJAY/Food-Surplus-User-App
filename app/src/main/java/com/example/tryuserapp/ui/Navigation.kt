@@ -15,12 +15,12 @@ import com.example.tryuserapp.ui.screen.ScreenCheckOut
 fun Navigation() {
     val navController = rememberNavController()
 
-    NavHost(navController, startDestination = "screenDetailPesanan") {
-        composable("screenDetailPesanan"){
-            DetailPesanan(navController = navController)
+    NavHost(navController, startDestination = "HomeScreen") {
+        composable("HomeScreen"){
+            HomeScreen(navController = navController)
         }
-        composable("HomeScreen") {
-            HomeScreen(navController)
+        composable("screenDetailPesanan") {
+            DetailPesanan(navController)
         }
         composable("screenCheckOut") {
             ScreenCheckOut(navController)

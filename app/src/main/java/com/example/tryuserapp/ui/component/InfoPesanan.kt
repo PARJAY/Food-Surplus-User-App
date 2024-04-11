@@ -62,7 +62,7 @@ fun InfoPesanan(){
 
             }
             Column(
-                modifier = Modifier.padding(end = 65.dp)
+                modifier = Modifier.padding(end = 30.dp)
             ) {
                 Text(
                     text = "Capcay",
@@ -112,7 +112,7 @@ fun InfoPesanan(){
 
             }
             Column(
-                modifier = Modifier.padding(end = 65.dp)
+                modifier = Modifier.padding(end = 30.dp)
             ) {
                 Text(
                     text = "Capcay",

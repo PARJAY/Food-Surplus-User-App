@@ -4,9 +4,11 @@ import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -25,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.tryuserapp.ui.theme.Brown
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 @Composable
@@ -60,7 +64,7 @@ fun Katalis(nameMakanan : String, navController: NavController){
 
         }
         Column(
-            modifier = Modifier.padding(end = 55.dp)
+            modifier = Modifier.padding(end = 0.dp)
         ) {
             Text(
                 text = nameMakanan,
@@ -85,24 +89,31 @@ fun Katalis(nameMakanan : String, navController: NavController){
             modifier = Modifier.padding( start = 16.dp)
             )
         }
-        Button(
-            modifier = Modifier
-                .height(73.dp)
-                .width(63.dp)
-                .padding(top = 10.dp, bottom = 5.dp, end = 8.dp),
-            shape = RoundedCornerShape(4.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Gray
-            ),
-            onClick = { /*TODO*/ }
-        ) {
-            Icon(
-                imageVector = Icons.Default.ShoppingCart,
-                contentDescription = "shopping cart",
+        Row (
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Absolute.Right
+        ){
+            Button(
                 modifier = Modifier
-                    .fillMaxSize(),
-            )
+                    .height(70.dp)
+                    .width(80.dp)
+                    .padding(top = 10.dp, bottom = 0.dp, end = 15.dp),
+                shape = RoundedCornerShape(4.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Brown,
+                    contentColor = Color.White
+                ),
+                onClick = { /*TODO*/ }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ShoppingCart,
+                    contentDescription = "shopping cart",
+                    modifier = Modifier
+                        .fillMaxSize(),
+                )
+            }
         }
+
     }
 }
 
