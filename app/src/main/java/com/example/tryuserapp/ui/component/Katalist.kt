@@ -3,6 +3,7 @@ package com.example.tryuserapp.ui.component
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,10 +30,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 @Composable
-fun Katalis(nameMakanan : String){
+fun Katalis(nameMakanan : String, navController: NavController){
     Row(
         modifier = Modifier
             .height(80.dp)
@@ -41,6 +44,7 @@ fun Katalis(nameMakanan : String){
                 BorderStroke(1.dp, Color.Black),
                 shape = RoundedCornerShape(16.dp)
             )
+            .clickable { navController.navigate("screenDetailPesanan") }
     ) {
         Button(
             modifier = Modifier
@@ -56,7 +60,7 @@ fun Katalis(nameMakanan : String){
 
         }
         Column(
-            modifier = Modifier.padding(end = 65.dp)
+            modifier = Modifier.padding(end = 55.dp)
         ) {
             Text(
                 text = nameMakanan,
@@ -85,7 +89,7 @@ fun Katalis(nameMakanan : String){
             modifier = Modifier
                 .height(73.dp)
                 .width(63.dp)
-                .padding(top = 10.dp, bottom = 5.dp),
+                .padding(top = 10.dp, bottom = 5.dp, end = 8.dp),
             shape = RoundedCornerShape(4.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Gray
@@ -108,7 +112,7 @@ fun Katalis(nameMakanan : String){
 fun KatalisPreview(){
     TryUserAppTheme {
         Surface {
-            Katalis("Capcay")
+            Katalis("Capcay", navController = rememberNavController())
         }
     }
 }

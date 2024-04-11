@@ -43,7 +43,7 @@ fun HomeScreen(navController: NavController){
     ){
         Column(
         ) {
-            TopBar()
+            TopBar(navController)
             Spacer(modifier = Modifier.height(16.dp))
             Row(modifier = Modifier
                 .fillMaxWidth(),
@@ -79,15 +79,15 @@ fun HomeScreen(navController: NavController){
                 horizontalArrangement = Arrangement.End
             ) {
                Column {
-                   Katalis(nameMakanan = "Ayam Goreng")
+                   Katalis(nameMakanan = "Ayam Goreng", navController)
                    Spacer(modifier = Modifier.height(5.dp))
-                   Katalis(nameMakanan = "Mie Goreng")
+                   Katalis(nameMakanan = "Mie Goreng", navController)
                    Spacer(modifier = Modifier.height(5.dp))
-                   Katalis(nameMakanan = "Bakso Goreng")
+                   Katalis(nameMakanan = "Bakso Goreng", navController)
                    Spacer(modifier = Modifier.height(5.dp))
-                   Katalis(nameMakanan = "Bakso Goreng")
+                   Katalis(nameMakanan = "Bakso Goreng", navController)
                    Spacer(modifier = Modifier.height(5.dp))
-                   Katalis(nameMakanan = "Bakso Goreng")
+                   Katalis(nameMakanan = "Bakso Goreng", navController)
                    Spacer(modifier = Modifier.height(5.dp))
 
                }

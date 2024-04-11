@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Column {
-                        HomeScreen(navController = rememberNavController())
+                        Navigation()
                     }
                 }
             }

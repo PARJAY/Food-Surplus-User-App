@@ -21,11 +21,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.tryuserapp.ui.theme.Brown
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 @Composable
-fun TopBar(){
+fun TopBar(navController : NavController){
     Box (modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.TopCenter){
         Row(modifier = Modifier
@@ -46,7 +48,7 @@ fun TopBar(){
                     .height(30.dp)
                     .width(30.dp),
                 shape = RoundedCornerShape(16.dp) ,
-                onClick = { /*TODO*/ }
+                onClick = {  navController.navigate("screenProfile") }
             ) {
 
             }
@@ -61,7 +63,7 @@ fun TopBar(){
 fun TopBarPreview(){
     TryUserAppTheme {
         Surface {
-            TopBar()
+            TopBar(navController = rememberNavController())
         }
     }
 }
