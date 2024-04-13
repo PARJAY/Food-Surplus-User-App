@@ -36,12 +36,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.tryuserapp.R
 import com.example.tryuserapp.ui.component.TambahKurang
+import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.Orange
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 import com.example.tryuserapp.ui.theme.backGroundScreen
 
 @Composable
-fun DetailPesanan(navController: NavController){
+fun DetailPesanan(DetailMakanan : String, navController: NavController){
     Box(modifier = Modifier
         .fillMaxSize()
         .background(backGroundScreen),){
@@ -52,7 +53,7 @@ fun DetailPesanan(navController: NavController){
             Image(
                 modifier = Modifier
                     .size(20.dp)
-                    .clickable { navController.navigate("HomeScreen") },
+                    .clickable { navController.navigate(Screen.HomeScreen.route) },
                 painter = painterResource(id = R.drawable.back)
                 , contentDescription = "Back")
             Row (modifier = Modifier
@@ -69,15 +70,12 @@ fun DetailPesanan(navController: NavController){
             Row(modifier = Modifier
                 .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center) {
-                Button(
-                    modifier = Modifier
-                        .height(100.dp)
-                        .width(100.dp),
-                    shape = RoundedCornerShape(8.dp),
-                    onClick = { /*TODO*/ }
-                ) {
-
-                }
+               Image(painter = painterResource(id = R.drawable.ic_launcher_background)
+                   , contentDescription = "Gambar Makanan",
+                   modifier = Modifier
+                       .height(100.dp)
+                       .width(100.dp)
+               )
             }
             Spacer(modifier = Modifier.height(32.dp))
             Column(
@@ -93,14 +91,7 @@ fun DetailPesanan(navController: NavController){
                 Text(text = "Bahan Bahan : ",
                     style = TextStyle(fontSize = 20.sp,  fontWeight = FontWeight.Bold)
                 )
-                Text(text =
-                        "1. Sayuran segar seperti wortel, kembang kol, brokoli, kacang polong, jamur, sawi hijau, dan buncis.\n" +
-                        "2. Daging ayam, sapi, atau udang, yang biasanya dipotong kecil-kecil.\n" +
-                        "3. Bawang putih dan bawang merah, yang diiris tipis atau dicincang.\n" +
-                        "4. Saos tiram, kecap manis, kecap asin, dan saos cabai, untuk memberikan rasa dan aroma khas.\n" +
-                        "5. Minyak sayur untuk menumis bahan-bahan tersebut.\n" +
-                        "6. Garam, lada, dan gula, untuk menyesuaikan rasa sesuai selera.\n" +
-                        "7. Tepung maizena atau tepung terigu, untuk mengentalkan saus jika diperlukan.")
+                Text(text = DetailMakanan)
             }
             Spacer(modifier = Modifier.height(16.dp))
             Row (modifier = Modifier
@@ -122,7 +113,13 @@ fun DetailPesanan(navController: NavController){
 fun DetailPesananPreview() {
     TryUserAppTheme {
         Surface {
-            DetailPesanan(navController = rememberNavController())
+            DetailPesanan("1. Sayuran segar seperti wortel, kembang kol, brokoli, kacang polong, jamur, sawi hijau, dan buncis.\n" +
+                    "2. Daging ayam, sapi, atau udang, yang biasanya dipotong kecil-kecil.\n" +
+                    "3. Bawang putih dan bawang merah, yang diiris tipis atau dicincang.\n" +
+                    "4. Saos tiram, kecap manis, kecap asin, dan saos cabai, untuk memberikan rasa dan aroma khas.\n" +
+                    "5. Minyak sayur untuk menumis bahan-bahan tersebut.\n" +
+                    "6. Garam, lada, dan gula, untuk menyesuaikan rasa sesuai selera.\n" +
+                    "7. Tepung maizena atau tepung terigu, untuk mengentalkan saus jika diperlukan." ,navController = rememberNavController())
         }
     }
 }

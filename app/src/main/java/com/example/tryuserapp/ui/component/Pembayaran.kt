@@ -58,7 +58,7 @@ fun Pembayaran(){
                 BorderStroke(1.dp, Color.Black),
                 shape = RoundedCornerShape(16.dp)
             )
-            .padding(16.dp)
+            .padding(16.dp),
     ) {
         Text(
             text = "Pembayaran",

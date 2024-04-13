@@ -33,7 +33,12 @@ import com.example.tryuserapp.ui.theme.Orange
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 @Composable
-fun InfoPesanan(){
+fun InfoPesanan(
+                makanan : String,
+                hotel : String,
+                harga : Float,
+                jumlah : String
+) {
     Column(
         modifier = Modifier
             .border(
@@ -65,7 +70,7 @@ fun InfoPesanan(){
                 modifier = Modifier.padding(end = 30.dp)
             ) {
                 Text(
-                    text = "Capcay",
+                    text = makanan,
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp
@@ -73,14 +78,14 @@ fun InfoPesanan(){
                     modifier = Modifier.padding( start = 16.dp)
                 )
                 Text(
-                    text = "Hotel Megah",
+                    text = hotel,
                     style = TextStyle(
                         fontSize = 16.sp
                     ),
                     modifier = Modifier.padding( start = 16.dp)
                 )
                 Text(
-                    text = "Rp.10.000 / 100 gram",
+                    text = "Rp.$harga/ $jumlah",
                     style = TextStyle(
                         fontSize = 16.sp
                     ),
@@ -93,8 +98,7 @@ fun InfoPesanan(){
         Row(
             modifier = Modifier
                 .height(80.dp)
-                .width(380.dp)
-                ,
+                .width(380.dp),
             verticalAlignment = Alignment.CenterVertically,
 
             ) {
@@ -115,7 +119,7 @@ fun InfoPesanan(){
                 modifier = Modifier.padding(end = 30.dp)
             ) {
                 Text(
-                    text = "Capcay",
+                    text = makanan,
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp
@@ -123,14 +127,14 @@ fun InfoPesanan(){
                     modifier = Modifier.padding( start = 16.dp)
                 )
                 Text(
-                    text = "Hotel Megah",
+                    text = hotel,
                     style = TextStyle(
                         fontSize = 16.sp
                     ),
                     modifier = Modifier.padding( start = 16.dp)
                 )
                 Text(
-                    text = "Rp.10.000 / 100 gram",
+                    text = "Rp.$harga/ $jumlah",
                     style = TextStyle(
                         fontSize = 16.sp
                     ),
@@ -149,7 +153,11 @@ fun InfoPesanan(){
 fun InfoPesananPreview(){
     TryUserAppTheme {
         Surface {
-            InfoPesanan()
+            InfoPesanan(
+                "Capcay",
+                "Hotel Megah",
+                10.000f,
+                "100 gram")
         }
     }
 }

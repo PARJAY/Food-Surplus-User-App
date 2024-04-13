@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.tryuserapp.R
 import com.example.tryuserapp.ui.component.ButtonKeranjangSmall
 import com.example.tryuserapp.ui.component.ButtonPesananAnda
 import com.example.tryuserapp.ui.component.InfoPesanan
@@ -97,17 +98,50 @@ fun HomeScreen(navController: NavController){
                        .padding(horizontal = 8.dp),
                    horizontalAlignment = Alignment.CenterHorizontally
                ){
-                   Katalis(nameMakanan = "Ayam Goreng", navController)
+                   Katalis(
+                       R.drawable.ic_launcher_background,
+                       "Capcay",
+                       "Hotel Megah",
+                       10.000f,
+                       "100 Gram",
+                       navController
+                   )
                    Spacer(modifier = Modifier.height(5.dp))
-                   Katalis(nameMakanan = "Mie Goreng", navController)
+                     Katalis(
+                       R.drawable.ic_launcher_background,
+                       "Capcay",
+                       "Hotel Megah",
+                       10.000f,
+                       "100 Gram",
+                       navController
+                   )
                    Spacer(modifier = Modifier.height(5.dp))
-                   Katalis(nameMakanan = "Bakso Goreng", navController)
+                     Katalis(
+                       R.drawable.ic_launcher_background,
+                       "Capcay",
+                       "Hotel Megah",
+                       10.000f,
+                       "100 Gram",
+                       navController
+                   )
                    Spacer(modifier = Modifier.height(5.dp))
-                   Katalis(nameMakanan = "Bakso Goreng", navController)
+                     Katalis(
+                       R.drawable.ic_launcher_background,
+                       "Capcay",
+                       "Hotel Megah",
+                       10.000f,
+                       "100 Gram",
+                       navController
+                   )
                    Spacer(modifier = Modifier.height(5.dp))
-                   Katalis(nameMakanan = "Bakso Goreng", navController)
-                   Spacer(modifier = Modifier.height(5.dp))
-
+                     Katalis(
+                       R.drawable.ic_launcher_background,
+                       "Capcay",
+                       "Hotel Megah",
+                       10.000f,
+                       "100 Gram",
+                       navController
+                   )
                }
             }
         }
@@ -115,31 +149,6 @@ fun HomeScreen(navController: NavController){
 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-//        Text(text = "Home Screen")
-//
-//        Button(onClick = { navController.navigate("screenDetailPesanan") }) {
-//            Text(text = "Detail Pesanan")
-//        }
-//        Button(onClick = { navController.navigate("screenProfile") }) {
-//            Text(text = "Profile")
-//        }
-//        Button(onClick = { navController.navigate("screenPesananAnda") }) {
-//            Text(text = "Pesanan Anda")
-//        }
-//        Button(onClick = { navController.navigate("screenCheckOut") }) {
-//                Text(text = "Check Out")
-//        }
 
 
 
