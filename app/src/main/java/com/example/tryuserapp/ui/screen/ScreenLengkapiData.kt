@@ -31,7 +31,7 @@ fun ScreenLengkapiData(){
         mutableStateOf("")
     }
     var noTelp by remember {
-        mutableStateOf(0)
+        mutableStateOf("")
     }
 
     Box(modifier = Modifier
@@ -63,8 +63,7 @@ fun ScreenLengkapiData(){
         }
         TextField(
             value = noTelp ,
-            onValueChange ={
-                    newValue ->
+            onValueChange ={ newValue ->
                 noTelp = newValue
             } )
         }
