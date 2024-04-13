@@ -2,17 +2,13 @@ package com.example.tryuserapp.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.lifecycle.viewmodel.viewModelFactory
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.tryuserapp.MyApp
-import com.example.tryuserapp.model.Customer
-import com.example.tryuserapp.presentation.customer.CustomerState
-import com.example.tryuserapp.presentation.customer.CustomerViewModel
+import com.example.tryuserapp.presentation.home_screen.HomeScreenViewModel
+import com.example.tryuserapp.presentation.viewModelFactory
 import com.example.tryuserapp.ui.screen.DetailPesanan
 import com.example.tryuserapp.ui.screen.HomeScreen
 import com.example.tryuserapp.ui.screen.PesananAnda
@@ -25,22 +21,13 @@ fun Navigation() {
 
     NavHost(navController, startDestination = Screen.HomeScreen.route) {
         composable(Screen.HomeScreen.route){
-            HomeScreen(navController = navController)
-            @Composable
-            fun NestedOutletListScreen(
-                customerVM: CustomerViewModel = viewModel(
-                    factory = viewModelFactory {
-                        CustomerViewModel(MyApp.appModule.customerRepository)
-                    }
-                )
-            ) {
-                val customerState by customerVM.state.collectAsState(initial = CustomerState())
-//                Customer(customerState, customerVM::onEvent)
+            val homeScreenVM: HomeScreenViewModel = viewModel(
+                factory = viewModelFactory { HomeScreenViewModel(MyApp.appModule.katalisRepositoryImpl) }
+            )
+            val homeScreenVMUiState = homeScreenVM.state.collectAsState().value
+            val homeScreenVMEffectFlow = homeScreenVM.effect
 
-                HomeScreen(navController)
-            }
-
-            NestedOutletListScreen()
+            HomeScreen(navController, homeScreenVMUiState, homeScreenVMEffectFlow, homeScreenVM::onEvent)
         }
         composable(Screen.ScreenDetailPesanan.route) {
             DetailPesanan(navController)

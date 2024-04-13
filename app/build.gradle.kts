@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -67,11 +68,22 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation ("androidx.navigation:navigation-compose:2.4.0-alpha04")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
+    implementation ("androidx.navigation:navigation-compose:2.7.7")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
 
-    implementation ("io.coil-kt:coil-compose:2.1.0")
+    implementation ("io.coil-kt:coil-compose:2.2.2")
 
     implementation ("androidx.compose.foundation:foundation:1.2.0-alpha03")
 
+    // Firebase
+    // When using the Firebase BoM, don't specify versions in Firebase dependencies
+    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-storage-ktx")
+
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
+    // Firebase Auth
 }

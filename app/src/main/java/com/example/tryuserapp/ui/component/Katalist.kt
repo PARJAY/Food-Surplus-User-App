@@ -38,74 +38,65 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.tryuserapp.R
 import com.example.tryuserapp.ui.navigation.Screen
+import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.ui.theme.Brown
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 @Composable
-fun Katalis(
-            urlGambar : Int,
-            nameMakanan : String,
-            hotel : String,
-            harga : Float,
-            jumlah : String,
-            navController: NavController
-) {
-    var jumlah by remember {
-        mutableIntStateOf(0)
-    }
+    fun Katalis(katalisModel: KatalisModel, navController: NavController) {
 
-    Row(
-        modifier = Modifier
-            .height(80.dp)
-            .width(380.dp)
-            .border(
-                BorderStroke(1.dp, Color.Black),
-                shape = RoundedCornerShape(16.dp)
-            )
-            .clickable { navController.navigate(Screen.ScreenDetailPesanan.route) }
-    ) {
-       Image(painter = painterResource(id = urlGambar),
-           contentDescription = "Gambar Makanan",
-           modifier = Modifier
-               .height(70.dp)
-               .width(63.dp)
-               .padding(top = 10.dp, bottom = 5.dp, start = 10.dp),
-       )
-        Column(
-            modifier = Modifier.padding(end = 0.dp)
+        var jumlah by remember {
+            mutableIntStateOf(0)
+        }
+
+        Row(
+            modifier = Modifier
+                .height(80.dp)
+                .width(380.dp)
+                .padding(start = 16.dp)
+                .border(
+                    BorderStroke(1.dp, Color.Black),
+                    shape = RoundedCornerShape(16.dp)
+                )
+                .clickable { navController.navigate(Screen.ScreenDetailPesanan.route) }
         ) {
-            Text(
-                text = nameMakanan,
-                style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
-            ),
-            modifier = Modifier.padding( start = 16.dp)
+            Image(
+                painter = painterResource(id = R.drawable.ic_launcher_background),
+                contentDescription = "Gambar Makanan",
+                modifier = Modifier
+                    .height(70.dp)
+                    .width(63.dp)
+                    .padding(top = 10.dp, bottom = 5.dp, start = 10.dp),
             )
-            Text(
-                text = hotel,
-                style = TextStyle(
-                    fontSize = 16.sp
-            ),
-            modifier = Modifier.padding( start = 16.dp)
-            )
-            Text(
-                text = "$harga/$jumlah",
-                style = TextStyle(
-                    fontSize = 16.sp
-            ),
-            modifier = Modifier.padding( start = 16.dp)
-            )
-        }
-        Row (
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Absolute.Right
-        ){
+            Column(
+                modifier = Modifier.padding(end = 0.dp)
+            ) {
+                Text(
+                    text = katalisModel.namaKatalis,
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp
+                    ),
+                    modifier = Modifier.padding(start = 16.dp)
+                )
+                Text(
+                    text = "${katalisModel.hargaJual}/${katalisModel.porsiJual}",
+                    style = TextStyle(
+                        fontSize = 16.sp
+                    ),
+                    modifier = Modifier.padding(start = 16.dp)
+                )
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Absolute.Right
+            ) {
                 TambahKurang()
-        }
+            }
 
+        }
     }
-}
+
 
 @Preview(showBackground = true)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
@@ -113,14 +104,7 @@ fun Katalis(
 fun KatalisPreview(){
     TryUserAppTheme {
         Surface {
-            Katalis(
-                R.drawable.ic_launcher_background,
-                "Capcay",
-                "Hotel Megah",
-                10.000f,
-                "100 Gram",
-                navController = rememberNavController()
-            )
+            Katalis(katalisModel = KatalisModel(namaKatalis = "Capcay"), navController = rememberNavController())
         }
     }
 }

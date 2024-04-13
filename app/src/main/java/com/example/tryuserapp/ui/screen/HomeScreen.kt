@@ -12,9 +12,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,12 +28,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.tryuserapp.R
+import com.example.tryuserapp.data.model.KatalisModel
+import com.example.tryuserapp.presentation.home_screen.HomeScreenEvent
+import com.example.tryuserapp.presentation.home_screen.HomeScreenSideEffects
+import com.example.tryuserapp.presentation.home_screen.HomeScreenUiState
 import com.example.tryuserapp.ui.component.ButtonKeranjangSmall
 import com.example.tryuserapp.ui.component.ButtonPesananAnda
 import com.example.tryuserapp.ui.component.InfoPesanan
@@ -40,114 +47,61 @@ import com.example.tryuserapp.ui.component.SearchBar
 import com.example.tryuserapp.ui.component.TopBar
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 import com.example.tryuserapp.ui.theme.backGroundScreen
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 @Composable
-fun HomeScreen(navController: NavController){
+fun HomeScreen(
+    navController: NavController,
+    homeScreenUiState: HomeScreenUiState,
+    homeScreenEffectFlow: Flow<HomeScreenSideEffects>,
+    onHomeScreenEvent: (HomeScreenEvent) -> Unit,
+){
     var jumlah by remember {
         mutableStateOf(0)
     }
-    val scrollState = rememberScrollState()
 
-    Box (
-        Modifier
+    LazyColumn(
+        modifier = Modifier
             .fillMaxSize()
-            .background(backGroundScreen),
-        contentAlignment = Alignment.TopCenter
-    ){
-        Column(
-            modifier = Modifier
-                .verticalScroll(state = scrollState)
-        ) {
+            .background(backGroundScreen)
+    ) {
+        item {
             TopBar(navController)
             Spacer(modifier = Modifier.height(16.dp))
-            Row(modifier = Modifier
-                .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = "Pesan Katalis",
-                    style = TextStyle(
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                )
-            }
+
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Pesan Katalis B",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
             Spacer(modifier = Modifier.height(24.dp))
-            Row(modifier = Modifier
-                .fillMaxWidth(),
+
+            Row(modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
                 SearchBar()
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Row(modifier = Modifier
-                .fillMaxWidth(),
+
+            Row(modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ) {
                 ButtonPesananAnda(navController)
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .padding(end = 8.dp),
-                horizontalArrangement = Arrangement.End
-            ) {
-               Column (
-                   modifier = Modifier
-                       .fillMaxWidth()
-                       .padding(horizontal = 8.dp),
-                   horizontalAlignment = Alignment.CenterHorizontally
-               ){
-                   Katalis(
-                       R.drawable.ic_launcher_background,
-                       "Capcay",
-                       "Hotel Megah",
-                       10.000f,
-                       "100 Gram",
-                       navController
-                   )
-                   Spacer(modifier = Modifier.height(5.dp))
-                     Katalis(
-                       R.drawable.ic_launcher_background,
-                       "Capcay",
-                       "Hotel Megah",
-                       10.000f,
-                       "100 Gram",
-                       navController
-                   )
-                   Spacer(modifier = Modifier.height(5.dp))
-                     Katalis(
-                       R.drawable.ic_launcher_background,
-                       "Capcay",
-                       "Hotel Megah",
-                       10.000f,
-                       "100 Gram",
-                       navController
-                   )
-                   Spacer(modifier = Modifier.height(5.dp))
-                     Katalis(
-                       R.drawable.ic_launcher_background,
-                       "Capcay",
-                       "Hotel Megah",
-                       10.000f,
-                       "100 Gram",
-                       navController
-                   )
-                   Spacer(modifier = Modifier.height(5.dp))
-                     Katalis(
-                       R.drawable.ic_launcher_background,
-                       "Capcay",
-                       "Hotel Megah",
-                       10.000f,
-                       "100 Gram",
-                       navController
-                   )
-               }
-            }
-        }
-       ButtonKeranjangSmall(navController)
 
+        }
+
+        items(homeScreenUiState.katalisList) { katalis ->
+            Katalis(katalisModel = katalis, navController)
+            Spacer(modifier = Modifier.height(5.dp))
+        }
     }
+
+    ButtonKeranjangSmall(navController)
 }
 
 
@@ -157,8 +111,31 @@ fun HomeScreen(navController: NavController){
 @Composable
 fun HomeScreenPreview() {
     TryUserAppTheme {
-        Surface {
-            HomeScreen(navController = rememberNavController())
-        }
+        HomeScreen(
+            navController = rememberNavController(),
+            homeScreenUiState = HomeScreenUiState(
+                katalisList = listOf(
+                    KatalisModel(namaKatalis = "Ayam Goreng"),
+                    KatalisModel(namaKatalis = "Mie Goreng"),
+                    KatalisModel(namaKatalis = "Bakso Goreng"),
+                    KatalisModel(namaKatalis = "Bakso Goreng"),
+                    KatalisModel(namaKatalis = "Bakso Goreng"),
+                )
+            ),
+            homeScreenEffectFlow = flow {
+                emit(HomeScreenSideEffects.ShowSnackBarMessage("this is a snackbar message"))
+            },
+            onHomeScreenEvent = {}
+        )
+//        Surface {
+//            HomeScreen(
+//                navController = rememberNavController(),
+//                homeScreenVMUiState = HomeScreenUiState(),
+//                homeScreenVMEffectFlow = flow {
+//                    emit(HomeScreenSideEffects.ShowSnackBarMessage("this is a snackbar message"))
+//                },
+//                onHomeScreenEvent = {}
+//            )
+//        }
     }
 }
