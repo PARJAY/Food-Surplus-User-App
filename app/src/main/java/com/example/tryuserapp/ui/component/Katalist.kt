@@ -26,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -53,11 +54,11 @@ import com.example.tryuserapp.ui.theme.TryUserAppTheme
             modifier = Modifier
                 .height(80.dp)
                 .width(380.dp)
-                .padding(start = 16.dp)
                 .border(
                     BorderStroke(1.dp, Color.Black),
                     shape = RoundedCornerShape(16.dp)
                 )
+                .padding(start = 16.dp)
                 .clickable { navController.navigate(Screen.ScreenDetailPesanan.route) }
         ) {
             Image(
@@ -77,7 +78,7 @@ import com.example.tryuserapp.ui.theme.TryUserAppTheme
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp
                     ),
-                    modifier = Modifier.padding(start = 16.dp)
+                    modifier = Modifier.padding(start = 16.dp, top = 5.dp)
                 )
                 Text(
                     text = "${katalisModel.hargaJual}/${katalisModel.porsiJual}",
@@ -87,8 +88,10 @@ import com.example.tryuserapp.ui.theme.TryUserAppTheme
                     modifier = Modifier.padding(start = 16.dp)
                 )
             }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
+                Row(
+                modifier = Modifier.fillMaxSize()
+                    .padding(end = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Absolute.Right
             ) {
                 TambahKurang()

@@ -82,7 +82,10 @@ fun ScreenCheckOut(navController: NavController){
         }
         Spacer(modifier = Modifier.height(5.dp))
         Column {
-            InfoPesanan()
+            InfoPesanan("Capcay",
+                "Hotel Megah",
+                10.000f,
+                "100 gram")
             Spacer(modifier = Modifier.height(10.dp))
             DiantarAtauAmbil()
             Spacer(modifier = Modifier.height(10.dp))

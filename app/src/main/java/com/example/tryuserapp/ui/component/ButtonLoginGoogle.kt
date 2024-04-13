@@ -16,25 +16,28 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.tryuserapp.R
+import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 @Composable
-fun GoogleButton(){
+fun GoogleButton(navController: NavController){
     Button(
         modifier = Modifier
-            .width(100.dp)
+            .width(230.dp)
             .height(70.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.White,
             contentColor = Color.Black
         ),
-        onClick = { /*TODO*/ }
+        onClick = { navController.navigate(Screen.ScreenLengkapiData.route) }
     ) {
         Image(painter = painterResource(id = R.drawable.devicon_google), contentDescription ="Google Icon" )
-        Spacer(modifier = Modifier.width(30.dp))
-        Text(text = "Sign in Wiht Google")
+        Spacer(modifier = Modifier.width(25.dp))
+        Text(text = "Sign in With Google")
     }
 }
 
@@ -44,7 +47,7 @@ fun GoogleButton(){
 fun GoogleButtonPreview(){
     TryUserAppTheme {
         Surface {
-            GoogleButton()
+            GoogleButton(navController = rememberNavController())
         }
     }
 }
