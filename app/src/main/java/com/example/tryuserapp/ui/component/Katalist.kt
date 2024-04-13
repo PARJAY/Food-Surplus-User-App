@@ -22,12 +22,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,6 +39,11 @@ import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 @Composable
 fun Katalis(nameMakanan : String, navController: NavController){
+
+    var jumlah by remember {
+        mutableIntStateOf(0)
+    }
+
     Row(
         modifier = Modifier
             .height(80.dp)
@@ -93,25 +97,30 @@ fun Katalis(nameMakanan : String, navController: NavController){
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Absolute.Right
         ){
-            Button(
-                modifier = Modifier
-                    .height(70.dp)
-                    .width(80.dp)
-                    .padding(top = 10.dp, bottom = 0.dp, end = 15.dp),
-                shape = RoundedCornerShape(4.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Brown,
-                    contentColor = Color.White
-                ),
-                onClick = { /*TODO*/ }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.ShoppingCart,
-                    contentDescription = "shopping cart",
+            if(jumlah <= 0 ){
+                Button(
                     modifier = Modifier
-                        .fillMaxSize(),
-                )
+                        .height(70.dp)
+                        .width(80.dp)
+                        .padding(top = 10.dp, bottom = 0.dp, end = 15.dp),
+                    shape = RoundedCornerShape(4.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Brown,
+                        contentColor = Color.White
+                    ),
+                    onClick = { jumlah++ }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ShoppingCart,
+                        contentDescription = "shopping cart",
+                        modifier = Modifier
+                            .fillMaxSize(),
+                    )
+                }
+            } else {
+                TambahKurang()
             }
+
         }
 
     }
