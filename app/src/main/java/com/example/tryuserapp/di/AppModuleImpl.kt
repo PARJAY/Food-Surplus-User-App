@@ -1,39 +1,21 @@
 package com.example.tryuserapp.di
 
-import android.app.Application
-import android.content.Context
-import com.example.tryuserapp.AppModule
-import com.example.tryuserapp.presentation.customer.CustomerRepository
+import com.example.tryuserapp.data.repository.KatalisRepositoryImpl
+import com.example.tryuserapp.data.repository.UserRepositoryImpl
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.ktx.storage
 
-class AppModuleImpl(
-    private val appContext: Context,
-    private val application: Application
-): AppModule {
 
-//    override val database: RoomDatabase by lazy {
-//        Room.databaseBuilder(appContext, RoomDatabase::class.java, "app_database")
-//            .fallbackToDestructiveMigration()
-//            .build()
-//    }
-//
-//    override val salesNameDataStore :SalesNameDataStoreManager by lazy {
-//        SalesNameDataStoreManager.getInstance(application.dataStore)
-//    }
-//
-//    override val sellingKitProductListDataStore : SellingKitProductListDataStore by lazy {
-//        SellingKitProductListDataStore.getInstance(application.dataStore)
-//    }
-//
-//    override val outletRepository: OutletRepository by lazy {
-//        OutletRepository(database.outletDao())
-//    }
-//
-//    override val productRepository: ProductRepository by lazy {
-//        ProductRepository(database.productDao())
-//    }
+class AppModuleImpl : AppModule {
+    override val db = Firebase.firestore
+    override val storage = com.google.firebase.ktx.Firebase.storage("gs://nofwa-indonesia.appspot.com")
 
-    override val customerRepository : CustomerRepository by lazy {
-        CustomerRepository()
-        }
+    override val userRepositoryImpl: UserRepositoryImpl by lazy {
+        UserRepositoryImpl(db)
+    }
 
+    override val katalisRepositoryImpl: KatalisRepositoryImpl by lazy {
+        KatalisRepositoryImpl(db)
+    }
 }

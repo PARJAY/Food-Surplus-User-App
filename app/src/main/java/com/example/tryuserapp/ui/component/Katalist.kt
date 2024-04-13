@@ -34,11 +34,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.ui.theme.Brown
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 @Composable
-fun Katalis(nameMakanan : String, navController: NavController){
+fun Katalis(katalisModel: KatalisModel, navController: NavController){
 
     var jumlah by remember {
         mutableIntStateOf(0)
@@ -48,6 +49,7 @@ fun Katalis(nameMakanan : String, navController: NavController){
         modifier = Modifier
             .height(80.dp)
             .width(380.dp)
+            .padding(start = 16.dp)
             .border(
                 BorderStroke(1.dp, Color.Black),
                 shape = RoundedCornerShape(16.dp)
@@ -71,7 +73,7 @@ fun Katalis(nameMakanan : String, navController: NavController){
             modifier = Modifier.padding(end = 0.dp)
         ) {
             Text(
-                text = nameMakanan,
+                text = katalisModel.namaKatalis,
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp
@@ -132,7 +134,7 @@ fun Katalis(nameMakanan : String, navController: NavController){
 fun KatalisPreview(){
     TryUserAppTheme {
         Surface {
-            Katalis("Capcay", navController = rememberNavController())
+            Katalis(katalisModel = KatalisModel(namaKatalis = "Capcay"), navController = rememberNavController())
         }
     }
 }

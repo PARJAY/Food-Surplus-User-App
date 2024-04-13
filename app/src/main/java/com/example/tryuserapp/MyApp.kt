@@ -1,6 +1,7 @@
 package com.example.tryuserapp
 
 import android.app.Application
+import com.example.tryuserapp.di.AppModule
 import com.example.tryuserapp.di.AppModuleImpl
 
 class MyApp: Application() {
@@ -11,9 +12,7 @@ class MyApp: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        appModule = AppModuleImpl(this, this)
-//        appModule.database.openHelper.writableDatabase
-        //        appModule.database.openHelper.readableDatabase
-        }
+        appModule = AppModuleImpl()
 
+    }
 }
