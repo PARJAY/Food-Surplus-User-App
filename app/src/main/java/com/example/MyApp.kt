@@ -1,8 +1,9 @@
-package com.example.dummyfirebaseauth
+package com.example.tryuserapp
 
 import android.app.Application
 import com.example.dummyfirebaseauth.di.AppModule
 import com.example.dummyfirebaseauth.di.AppModuleImpl
+import com.example.tryuserapp.di.AppModuleImpl
 
 class MyApp: Application() {
 
@@ -12,6 +13,6 @@ class MyApp: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        appModule = AppModuleImpl()
+//        appModule = AppModuleImpl(appModule, appModule)
     }
 }

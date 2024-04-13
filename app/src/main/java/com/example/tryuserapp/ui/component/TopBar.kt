@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.Brown
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
@@ -48,7 +49,7 @@ fun TopBar(navController : NavController){
                     .height(30.dp)
                     .width(30.dp),
                 shape = RoundedCornerShape(16.dp) ,
-                onClick = {  navController.navigate("screenProfile") }
+                onClick = {  navController.navigate(Screen.ScreenProfile.route) }
             ) {
 
             }

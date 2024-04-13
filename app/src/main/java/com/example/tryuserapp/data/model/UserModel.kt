@@ -1,4 +1,4 @@
-package com.example.dummyfirebaseauth.data.model
+package com.example.tryuserapp.data.model
 
 data class UserModel (
     val id : String = "",

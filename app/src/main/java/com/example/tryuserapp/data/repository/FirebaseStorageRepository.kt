@@ -1,4 +1,4 @@
-package com.example.dummyfirebaseauth.data.repository
+package com.example.tryuserapp.data.repository
 
 class FirebaseStorageRepository {
 }

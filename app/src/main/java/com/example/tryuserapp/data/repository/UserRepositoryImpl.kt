@@ -1,10 +1,10 @@
-package com.example.dummyfirebaseauth.data.repository
+package com.example.tryuserapp.data.repository
 
 import android.util.Log
 import com.example.dummyfirebaseauth.common.FirebaseResult
 import com.example.dummyfirebaseauth.common.INTERNET_ISSUE
 import com.example.dummyfirebaseauth.common.USER_COLLECTION
-import com.example.dummyfirebaseauth.data.model.UserModel
+import com.example.tryuserapp.data.model.UserModel
 import com.example.dummyfirebaseauth.tools.FirebaseHelper.Companion.fetchSnapshotToUserModel
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore

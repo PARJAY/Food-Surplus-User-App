@@ -37,7 +37,7 @@ fun Navigation() {
                 val customerState by customerVM.state.collectAsState(initial = CustomerState())
 //                Customer(customerState, customerVM::onEvent)
 
-//                HomeScreen(onNavigate())
+                HomeScreen(navController)
             }
 
             NestedOutletListScreen()
