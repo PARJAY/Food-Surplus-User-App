@@ -11,18 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.example.tryuserapp.ui.Navigation
-import com.example.tryuserapp.ui.component.ButtonKeranjang
-import com.example.tryuserapp.ui.component.ButtonKeranjangSmall
-import com.example.tryuserapp.ui.component.InfoPesanan
-import com.example.tryuserapp.ui.component.Katalis
-import com.example.tryuserapp.ui.component.SearchBar
-import com.example.tryuserapp.ui.component.StatusPesanan
-import com.example.tryuserapp.ui.component.TambahKurang
-import com.example.tryuserapp.ui.component.TidakAdaPesanan
-import com.example.tryuserapp.ui.screen.HomeScreen
+import com.example.tryuserapp.ui.navigation.Navigation
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 class MainActivity : ComponentActivity() {

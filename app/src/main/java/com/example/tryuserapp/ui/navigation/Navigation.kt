@@ -1,4 +1,4 @@
-package com.example.tryuserapp.ui
+package com.example.tryuserapp.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
@@ -15,20 +15,20 @@ import com.example.tryuserapp.ui.screen.ScreenCheckOut
 fun Navigation() {
     val navController = rememberNavController()
 
-    NavHost(navController, startDestination = "HomeScreen") {
-        composable("HomeScreen"){
+    NavHost(navController, startDestination = Screen.HomeScreen.route) {
+        composable(Screen.HomeScreen.route){
             HomeScreen(navController = navController)
         }
-        composable("screenDetailPesanan") {
+        composable(Screen.ScreenDetailPesanan.route) {
             DetailPesanan(navController)
         }
-        composable("screenCheckOut") {
+        composable(Screen.ScreenCheckOut.route) {
             ScreenCheckOut(navController)
         }
-        composable("screenPesananAnda") {
+        composable(Screen.ScreenPesananAnda.route) {
             PesananAnda(navController)
         }
-        composable("screenProfile") {
+        composable(Screen.ScreenProfile.route) {
             ProfileScreen(navController)
         }
     }
