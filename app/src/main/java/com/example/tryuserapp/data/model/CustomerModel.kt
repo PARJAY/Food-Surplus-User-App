@@ -1,6 +1,6 @@
 package com.example.tryuserapp.data.model
 
-data class UserModel (
+data class CustomerModel (
     val id : String = "",
     val name : String = "",
     val address : String = "",

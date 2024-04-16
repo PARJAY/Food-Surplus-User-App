@@ -1,5 +1,6 @@
 package com.example.tryuserapp.ui.screen
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -28,47 +30,46 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.tryuserapp.R
-import com.example.tryuserapp.presentation.sing_in.UserData
+import com.example.tryuserapp.data.model.CustomerModel
+import com.example.tryuserapp.presentation.sign_in.UserData
+import com.example.tryuserapp.ui.theme.TryUserAppTheme
 import com.example.tryuserapp.ui.theme.backGroundScreen
 
 @Composable
 fun ProfileScreen(
     userData: UserData?,
+    customerModel : CustomerModel,
     onSignOut: () -> Unit,
     navController: NavController
 ){
     var name by remember{ mutableStateOf("Gilang") }
-    var noTelp by remember{ mutableStateOf("085738623451") }
     var alamat by remember{ mutableStateOf("Badung") }
-    var jenisKelamin by remember{ mutableStateOf("Laki Laki") }
-    var umur by remember{ mutableStateOf("17thn") }
-    var ttl by remember{ mutableStateOf("Denpasar, 1 September 2006") }
     var email by remember{ mutableStateOf("gilang.okandhewanta@gmail.com") }
 
-    Box(modifier = Modifier
+    Box(
+        modifier = Modifier
         .fillMaxSize()
-        .background(backGroundScreen),){
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-        ){
+        .background(backGroundScreen),)
+    {
+        Column(modifier = Modifier.padding(16.dp)){
             Image(
                 modifier = Modifier
                     .size(20.dp)
                     .clickable { navController.navigate("HomeScreen") },
-                painter = painterResource(id = R.drawable.back)
-                , contentDescription = "Back")
+                painter = painterResource(id = R.drawable.back),
+                contentDescription = "Back"
+            )
             Spacer(modifier = Modifier.height(32.dp))
-            Row(modifier = Modifier
-                .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
                 if (userData?.profilePictureUrl != null){
                     AsyncImage(
                         model = userData.profilePictureUrl ,
@@ -82,118 +83,43 @@ fun ProfileScreen(
             }
             Spacer(modifier = Modifier.height(32.dp))
             Column {
-                if (userData?.username != null) {
-                    Text(
-                        text = userData.username,
-                        textAlign = TextAlign.Center,
-                        fontSize = 36.sp,
-                        fontWeight = FontWeight.SemiBold
-//                        modifier = Modifier
-//                            .fillMaxWidth(),
-//                    colors = TextFieldDefaults.colors(
-//                        focusedContainerColor = backGroundScreen,
-//                        unfocusedContainerColor = backGroundScreen
-//                    ),
-//                    value = name,
-//                    onValueChange = {
-//                            newValue ->
-//                        name = newValue
-//                    },
-//                    readOnly = false,
-//                    label = { Text("Nama") }
-                    )
-                }
                 TextField(
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     colors = TextFieldDefaults.colors(
-                        unfocusedContainerColor = backGroundScreen,
                         focusedContainerColor = backGroundScreen,
+                        unfocusedContainerColor = backGroundScreen
                     ),
-                    value = noTelp,
-                    onValueChange = {
-                            newValue ->
-                        noTelp = newValue
-                    },
+                    value = customerModel.name,
+                    onValueChange = { name = it },
                     readOnly = false,
-                    label = { Text("No Telepon") }
+                    label = { Text("Nama") }
                 )
+
                 TextField(
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = backGroundScreen,
                         unfocusedContainerColor = backGroundScreen
                     ),
                     value = alamat,
-                    onValueChange = {
-                            newValue ->
-                        alamat = newValue
-                    },
+                    onValueChange = { alamat = it },
                     readOnly = false,
                     label = { Text("Alamat") }
                 )
+
                 TextField(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = backGroundScreen,
-                        unfocusedContainerColor = backGroundScreen
-                    ),
-                    value = jenisKelamin,
-                    onValueChange = {
-                            newValue ->
-                        jenisKelamin = newValue
-                    },
-                    readOnly = false,
-                    label = { Text("Jenis Kelamin") }
-                )
-                TextField(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = backGroundScreen,
-                        unfocusedContainerColor = backGroundScreen
-                    ),
-                    value = umur,
-                    onValueChange = {
-                            newValue ->
-                        umur = newValue
-                    },
-                    readOnly = false,
-                    label = { Text("Umur") }
-                )
-                TextField(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = backGroundScreen,
-                        unfocusedContainerColor = backGroundScreen
-                    ),
-                    value = ttl,
-                    onValueChange = {
-                            newValue ->
-                        ttl = newValue
-                    },
-                    readOnly = false,
-                    label = { Text("Tempat Tanggal Lahir") }
-                )
-                TextField(
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = backGroundScreen,
                         unfocusedContainerColor = backGroundScreen
                     ),
                     value = email,
-                    onValueChange = {
-                            newValue ->
-                        email = newValue
-                    },
+                    onValueChange = { email = it },
                     readOnly = false,
                     label = { Text("Email") }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
+
                 Box(
                     modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.Center
@@ -204,26 +130,22 @@ fun ProfileScreen(
                 }
 
             }
-
         }
     }
-
 }
 
-//Column {
-//    Text(text = "Screen Profile")
-//    Button(onClick = {navController.navigate("HomeScreen") }) {
-//        Text(text = "Back")
-//    }
-//}
-
-//@Preview(showBackground = true)
-//@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
-//@Composable
-//fun ProfileScreenPreview() {
-//    TryUserAppTheme {
-//        Surface {
-//            ProfileScreen(navController = rememberNavController())
-//        }
-//    }
-//}
+@Preview(showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+fun ProfileScreenPreview() {
+    TryUserAppTheme {
+        Surface {
+            ProfileScreen(
+                navController = rememberNavController(),
+                userData = UserData(),
+                customerModel = CustomerModel(),
+                onSignOut = {}
+            )
+        }
+    }
+}

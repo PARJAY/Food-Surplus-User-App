@@ -1,5 +1,6 @@
 package com.example.tryuserapp.ui.navigation
 
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -18,9 +19,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.tryuserapp.MyApp
+import com.example.tryuserapp.data.model.CustomerModel
+import com.example.tryuserapp.presentation.customer.CustomerViewModel
 import com.example.tryuserapp.presentation.home_screen.HomeScreenViewModel
-import com.example.tryuserapp.presentation.sing_in.GoogleAuthUiClient
-import com.example.tryuserapp.presentation.sing_in.SignInViewModel
+import com.example.tryuserapp.presentation.sign_in.GoogleAuthUiClient
+import com.example.tryuserapp.presentation.sign_in.SignInViewModel
 import com.example.tryuserapp.presentation.viewModelFactory
 import com.example.tryuserapp.ui.screen.DetailPesanan
 import com.example.tryuserapp.ui.screen.HomeScreen
@@ -62,7 +65,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                 onResult = { result ->
                     if (result.resultCode == ComponentActivity.RESULT_OK) {
                         lifecycleScope.launch {
-                            val signInResult = googleAuthUiClient.SignInWithIntent(
+                            val signInResult = googleAuthUiClient.signInWithIntent(
                                 intent = result.data ?: return@launch
                             )
                             viewModel.onSignInResult(signInResult)
@@ -72,11 +75,31 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
             )
 
             LaunchedEffect(key1 = state.isSignInSuccessful) {
-                if (state.isSignInSuccessful) {
-                    Toast.makeText(context, "Sign in Success", Toast.LENGTH_LONG).show()
-                    navController.navigate(Screen.ScreenProfile.route)
-                    viewModel.resetState()
+                if (!state.isSignInSuccessful) return@LaunchedEffect
+
+                Toast.makeText(context, "Sign in Success", Toast.LENGTH_LONG).show()
+
+                val userData = viewModel.state.value.userData
+                userData?.let { fetchedUser ->
+                    val existingUser = MyApp.appModule.customerRepositoryImpl.getCustomerById(fetchedUser.userId)
+
+                    if (existingUser == null) {
+                        val newUser = CustomerModel(
+                            fetchedUser.userId,
+                            fetchedUser.username ?: ""
+                        )
+
+                        try {
+                            MyApp.appModule.customerRepositoryImpl.addCustomer(newUser)
+                            Log.d("NAVIGATION : ", "registering user success")
+                        } catch (e: Exception) {
+                            Log.d("NAVIGATION : ", "failed registering user $e")
+                        }
+                    }
                 }
+
+                navController.navigate(Screen.HomeScreen.route)
+                viewModel.resetState()
             }
 
             ScreenLogin(
@@ -94,7 +117,13 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
             )
 
         }
+
         composable(Screen.ScreenProfile.route) {
+            val customerVM: CustomerViewModel = viewModel(
+                factory = viewModelFactory { CustomerViewModel(MyApp.appModule.customerRepositoryImpl) }
+            )
+            val customerUiState = customerVM.state.collectAsStateWithLifecycle().value
+
             ProfileScreen (
                 userData = googleAuthUiClient.getSignedInUser(),
                 onSignOut = {
@@ -105,13 +134,13 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                         navController.popBackStack()
                     }
                 },
-                navController
+                customerModel = customerUiState.customerState,
+                navController = navController
             )
         }
 
-
-
         composable(Screen.HomeScreen.route){
+
             val homeScreenVM: HomeScreenViewModel = viewModel(
                 factory = viewModelFactory { HomeScreenViewModel(MyApp.appModule.katalisRepositoryImpl) }
             )

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tryuserapp.common.FirebaseResult
 import com.example.tryuserapp.data.model.KatalisModel
+import com.example.tryuserapp.data.repository.CustomerRepositoryImpl
 import com.example.tryuserapp.data.repository.KatalisRepositoryImpl
 import com.example.tryuserapp.logic.OrderAction
 import kotlinx.coroutines.channels.Channel
@@ -14,7 +15,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-class HomeScreenViewModel(private val katalisRepositoryImpl: KatalisRepositoryImpl) : ViewModel() {
+class HomeScreenViewModel(
+    private val katalisRepositoryImpl: KatalisRepositoryImpl
+) : ViewModel() {
 
     private val _state: MutableStateFlow<HomeScreenUiState> =
         MutableStateFlow(HomeScreenUiState())
@@ -91,7 +94,6 @@ class HomeScreenViewModel(private val katalisRepositoryImpl: KatalisRepositoryIm
         }
     }
 
-    private fun getKatalisById(id: String) : KatalisModel {
-        return KatalisModel()
-    }
+    private fun getKatalisById(id: String) : KatalisModel? =
+        _state.value.katalisList.find { it.id == id }
 }
