@@ -1,6 +1,5 @@
 package com.example.tryuserapp.ui.screen
 
-import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -26,32 +25,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
-import com.example.tryuserapp.R
-import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.presentation.home_screen.HomeScreenEvent
 import com.example.tryuserapp.presentation.home_screen.HomeScreenSideEffects
 import com.example.tryuserapp.presentation.home_screen.HomeScreenUiState
-import com.example.tryuserapp.presentation.sing_in.UserData
+import com.example.tryuserapp.presentation.sign_in.UserData
 import com.example.tryuserapp.ui.component.ButtonKeranjangSmall
 import com.example.tryuserapp.ui.component.ButtonPesananAnda
 import com.example.tryuserapp.ui.component.Katalis
 import com.example.tryuserapp.ui.component.SearchBar
-import com.example.tryuserapp.ui.component.TopBar
 import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.Brown
-import com.example.tryuserapp.ui.theme.TryUserAppTheme
 import com.example.tryuserapp.ui.theme.backGroundScreen
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 @Composable
 fun HomeScreen(
@@ -87,7 +77,7 @@ fun HomeScreen(
                             fontSize = 14.sp,
                             color = Color.White
                         )
-                        if (userData?.profilePictureUrl != null) {
+                        if (userData.profilePictureUrl != null) {
                             AsyncImage(
                                 model = userData.profilePictureUrl,
                                 contentDescription = "Profile Picture",

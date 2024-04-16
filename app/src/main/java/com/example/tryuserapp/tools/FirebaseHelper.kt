@@ -5,13 +5,13 @@ import android.util.Log
 import com.example.tryuserapp.MyApp
 import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.data.model.CustomerModel
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QueryDocumentSnapshot
 
 class FirebaseHelper {
     companion object {
-        fun fetchSnapshotToUserModel(queryDocumentSnapshot : QueryDocumentSnapshot) : CustomerModel {
+        fun fetchSnapshotToCustomerModel(queryDocumentSnapshot : DocumentSnapshot) : CustomerModel {
             return CustomerModel(
-                id = queryDocumentSnapshot.id,
                 name = queryDocumentSnapshot.getString("name") ?: "",
                 address = queryDocumentSnapshot.getString("address") ?: "",
                 phone_number = queryDocumentSnapshot.getString("phone_number") ?: ""

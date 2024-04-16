@@ -7,16 +7,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class CustomerViewModel(private val customerRepository: CustomerRepositoryImpl): ViewModel() {
+class CustomerViewModel(
+    private val customerRepository: CustomerRepositoryImpl,
+    customerId: String
+): ViewModel() {
 
     private val _state = MutableStateFlow(CustomerState())
     val state = _state.asStateFlow()
 
-    init { onEvent(CustomerEvent.ReadCustomer) }
-
-    private fun setState(newState: CustomerState) {
-        _state.value = newState
-    }
+    init { onEvent(CustomerEvent.GetCustomerById(customerId)) }
 
     fun onEvent(event: CustomerEvent) {
         when (event) {
@@ -28,19 +27,19 @@ class CustomerViewModel(private val customerRepository: CustomerRepositoryImpl):
 
             is CustomerEvent.UpdateCustomer -> {
                 viewModelScope.launch {
-                    customerRepository.updateCustomer(_state.value.customerState.id, event.customer)
+                    customerRepository.addOrUpdateCustomer(event.customerId, event.customer)
                 }
             }
 
-            is CustomerEvent.ReadCustomer -> {
+            is CustomerEvent.GetCustomerById -> {
                 viewModelScope.launch {
-                    customerRepository.getCustomerById(_state.value.customerState.id)
+                    customerRepository.getCustomerById(event.customerId)
                 }
             }
 
             is CustomerEvent.CreateCustomer -> {
                 viewModelScope.launch {
-                    customerRepository.addCustomer(event.customer)
+                    customerRepository.addOrUpdateCustomer(event.customerId, event.customer)
                 }
             }
         }
