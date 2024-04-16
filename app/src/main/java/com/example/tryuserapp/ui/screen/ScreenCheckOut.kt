@@ -33,7 +33,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.tryuserapp.R
 import com.example.tryuserapp.ui.component.ButtomButton
 import com.example.tryuserapp.ui.component.DiantarAtauAmbil
-import com.example.tryuserapp.ui.component.InfoPesanan
 import com.example.tryuserapp.ui.component.Pembayaran
 import com.example.tryuserapp.ui.component.RingkasanPesanan
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
@@ -82,7 +81,6 @@ fun ScreenCheckOut(navController: NavController){
         }
         Spacer(modifier = Modifier.height(5.dp))
         Column {
-            InfoPesanan()
             Spacer(modifier = Modifier.height(10.dp))
             DiantarAtauAmbil()
             Spacer(modifier = Modifier.height(10.dp))
