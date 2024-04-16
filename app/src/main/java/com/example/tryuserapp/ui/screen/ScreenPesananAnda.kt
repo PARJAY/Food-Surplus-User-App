@@ -31,11 +31,14 @@ import androidx.navigation.compose.rememberNavController
 import com.example.tryuserapp.R
 import com.example.tryuserapp.logic.StatusPesanan
 import com.example.tryuserapp.ui.component.StatusPesanan
+import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 import com.example.tryuserapp.ui.theme.backGroundScreen
 
 @Composable
-fun PesananAnda(navController: NavController) {
+fun PesananAnda(
+    onNavigateToScreen : (String) -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -45,12 +48,6 @@ fun PesananAnda(navController: NavController) {
         Column(
             modifier = Modifier.padding(8.dp)
         ) {
-            Image(
-                modifier = Modifier
-                    .size(20.dp)
-                    .clickable { navController.navigate("HomeScreen") },
-                painter = painterResource(id = R.drawable.back), contentDescription = "Back"
-            )
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -93,7 +90,7 @@ fun PesananAnda(navController: NavController) {
 fun ScreenPesananAndaPreview() {
     TryUserAppTheme {
         Surface {
-            PesananAnda(navController = rememberNavController())
+            PesananAnda(onNavigateToScreen = {})
         }
     }
 }

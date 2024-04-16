@@ -57,7 +57,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
 
             LaunchedEffect(key1 = Unit) {
                 if (googleAuthUiClient.getSignedInUser() != null)
-                    navController.navigate(Screen.ScreenProfile.route)
+                    navController.navigate(Screen.HomeScreen.route)
             }
             
             val launcher = rememberLauncherForActivityResult(
@@ -131,11 +131,11 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                         googleAuthUiClient.signOut()
                         Toast.makeText(context, "Signed Out", Toast.LENGTH_LONG).show()
 
-                        navController.popBackStack()
+                        navController.navigate(Screen.ScreenLogin.route)
                     }
                 },
                 customerModel = customerUiState.customerState,
-                navController = navController
+                onNavigateToScreen = { navController.navigate(it) }
             )
         }
 
@@ -148,6 +148,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
             val homeScreenVMEffectFlow = homeScreenVM.effect
 
             HomeScreen(
+                userData = googleAuthUiClient.getSignedInUser(),
                 homeScreenVMUiState,
                 homeScreenVMEffectFlow,
                 homeScreenVM::onEvent,
@@ -165,14 +166,18 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
         }
         composable(Screen.ScreenCheckOut.route) {
             ScreenCheckOut(
-                onNavigateToScreen = { navController.navigate(it) }
+                onNavigateToHome = { navController.popBackStack() }
             )
         }
         composable(Screen.ScreenPesananAnda.route) {
-            PesananAnda(navController)
+            PesananAnda(
+                onNavigateToScreen = { navController.navigate(it) }
+            )
         }
         composable(Screen.ScreenLengkapiData.route) {
-            ScreenLengkapiData(navController)
+            ScreenLengkapiData(
+                onNavigateToScreen = { navController.navigate(it) }
+            )
         }
     }
 

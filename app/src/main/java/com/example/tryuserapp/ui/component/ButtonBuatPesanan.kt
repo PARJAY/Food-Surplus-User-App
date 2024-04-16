@@ -1,6 +1,7 @@
 package com.example.tryuserapp.ui.component
 
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,7 +29,7 @@ import com.example.tryuserapp.ui.theme.backGroundScreen
 
 @Composable
 fun ButtomButton(
-    onNavigateToScreen : (String) -> Unit
+    onNavigateToScreen : () -> Unit
 ){
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -43,7 +44,9 @@ fun ButtomButton(
                 contentColor = androidx.compose.ui.graphics.Color.White,
                 containerColor = Brown
             ),
-            onClick = { onNavigateToScreen(Screen.ScreenPesananAnda.route) }
+            onClick = {
+                onNavigateToScreen()
+            }
         ) {
             Text(text = "Buat Pesanan")
         }
