@@ -29,7 +29,12 @@ fun Navigation() {
             val homeScreenVMUiState = homeScreenVM.state.collectAsState().value
             val homeScreenVMEffectFlow = homeScreenVM.effect
 
-            HomeScreen(navController, homeScreenVMUiState, homeScreenVMEffectFlow, homeScreenVM::onEvent)
+            HomeScreen(
+                homeScreenVMUiState,
+                homeScreenVMEffectFlow,
+                homeScreenVM::onEvent,
+                onNavigateToScreen = { navController.navigate(it) }
+            )
         }
         composable(Screen.ScreenDetailPesanan.route) {
             DetailPesanan("1. Sayuran segar seperti wortel, kembang kol, brokoli, kacang polong, jamur, sawi hijau, dan buncis.\n" +
@@ -41,7 +46,9 @@ fun Navigation() {
                     "7. Tepung maizena atau tepung terigu, untuk mengentalkan saus jika diperlukan.",navController)
         }
         composable(Screen.ScreenCheckOut.route) {
-            ScreenCheckOut(navController)
+            ScreenCheckOut(
+                onNavigateToScreen = { navController.navigate(it) }
+            )
         }
         composable(Screen.ScreenPesananAnda.route) {
             PesananAnda(navController)

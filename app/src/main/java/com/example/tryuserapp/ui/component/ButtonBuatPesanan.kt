@@ -21,12 +21,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.Brown
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 import com.example.tryuserapp.ui.theme.backGroundScreen
 
 @Composable
-fun ButtomButton(navController: NavController){
+fun ButtomButton(
+    onNavigateToScreen : (String) -> Unit
+){
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Bottom
@@ -40,7 +43,7 @@ fun ButtomButton(navController: NavController){
                 contentColor = androidx.compose.ui.graphics.Color.White,
                 containerColor = Brown
             ),
-            onClick = { navController.navigate("screenPesananAnda") }
+            onClick = { onNavigateToScreen(Screen.ScreenPesananAnda.route) }
         ) {
             Text(text = "Buat Pesanan")
         }
@@ -53,7 +56,9 @@ fun ButtomButton(navController: NavController){
 fun ButtomButtonPreview(){
     TryUserAppTheme {
         Surface {
-            ButtomButton(navController = rememberNavController())
+            ButtomButton(
+                onNavigateToScreen = {}
+            )
         }
     }
 }

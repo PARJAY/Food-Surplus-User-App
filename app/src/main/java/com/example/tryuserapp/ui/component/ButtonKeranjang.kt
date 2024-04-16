@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.tryuserapp.R
+import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.Brown
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 import org.w3c.dom.Text
@@ -58,7 +59,9 @@ fun ButtonKeranjang(){
 }
 
 @Composable
-fun ButtonKeranjangSmall(navController : NavController){
+fun ButtonKeranjangSmall(
+    onNavigateToScreen : (String) -> Unit
+){
     Box (
         modifier = Modifier
             .fillMaxSize()
@@ -73,7 +76,7 @@ fun ButtonKeranjangSmall(navController : NavController){
                 containerColor = Brown,
                 contentColor = Color.White,
                 shape = RoundedCornerShape(8.dp),
-                onClick = { navController.navigate("screenCheckOut")  }
+                onClick = { onNavigateToScreen(Screen.ScreenCheckOut.route)  }
             ) {
                 Icon(
                     imageVector = Icons.Default.ShoppingCart,
@@ -98,13 +101,16 @@ fun ButtonKeranjangPreview(){
         }
     }
 }
+
 @Preview(showBackground = true)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
 fun ButtonKeranjangSmallPreview(){
     TryUserAppTheme {
         Surface {
-            ButtonKeranjangSmall(navController = rememberNavController())
+            ButtonKeranjangSmall(
+                onNavigateToScreen = {}
+            )
         }
     }
 }

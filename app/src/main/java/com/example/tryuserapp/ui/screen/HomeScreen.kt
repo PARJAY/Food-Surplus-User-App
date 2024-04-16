@@ -41,10 +41,10 @@ import kotlinx.coroutines.flow.flow
 
 @Composable
 fun HomeScreen(
-    navController: NavController,
     homeScreenUiState: HomeScreenUiState,
     homeScreenEffectFlow: Flow<HomeScreenSideEffects>,
     onHomeScreenEvent: (HomeScreenEvent) -> Unit,
+    onNavigateToScreen : (String) -> Unit
 ){
     var jumlah by remember {
         mutableStateOf(0)
@@ -56,7 +56,8 @@ fun HomeScreen(
             .background(backGroundScreen)
     ) {
         item {
-            TopBar(navController)
+            TopBar(onNavigateToScreen)
+
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
@@ -78,7 +79,7 @@ fun HomeScreen(
             Row(modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ) {
-                ButtonPesananAnda(navController)
+                ButtonPesananAnda(onNavigateToScreen)
             }
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -86,13 +87,14 @@ fun HomeScreen(
 
         items(homeScreenUiState.katalisList) { katalis ->
 
+            // TODO : adjust UI state with viewmodel here
 //            if (katalis.id == homeScreenUiState.selectedKatalisList)
-            Katalis(katalisModel = katalis, navController, onHomeScreenEvent, )
+            Katalis(katalisModel = katalis, onNavigateToScreen, onHomeScreenEvent, )
             Spacer(modifier = Modifier.height(5.dp))
         }
     }
 
-    ButtonKeranjangSmall(navController)
+    ButtonKeranjangSmall(onNavigateToScreen)
 }
 
 
@@ -103,7 +105,7 @@ fun HomeScreen(
 fun HomeScreenPreview() {
     TryUserAppTheme {
         HomeScreen(
-            navController = rememberNavController(),
+            onNavigateToScreen = {  },
             homeScreenUiState = HomeScreenUiState(
                 katalisList = listOf(
                     KatalisModel(namaKatalis = "Ayam Goreng"),

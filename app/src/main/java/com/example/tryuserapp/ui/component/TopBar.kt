@@ -28,7 +28,9 @@ import com.example.tryuserapp.ui.theme.Brown
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 @Composable
-fun TopBar(navController : NavController){
+fun TopBar(
+    onNavigateToScreen : (String) -> Unit
+){
     Box (modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.TopCenter){
         Row(modifier = Modifier
@@ -49,7 +51,7 @@ fun TopBar(navController : NavController){
                     .height(30.dp)
                     .width(30.dp),
                 shape = RoundedCornerShape(16.dp) ,
-                onClick = {  navController.navigate(Screen.ScreenProfile.route) }
+                onClick = {  onNavigateToScreen(Screen.ScreenProfile.route) }
             ) {
 
             }
@@ -64,7 +66,9 @@ fun TopBar(navController : NavController){
 fun TopBarPreview(){
     TryUserAppTheme {
         Surface {
-            TopBar(navController = rememberNavController())
+            TopBar(
+                onNavigateToScreen = {}
+            )
         }
     }
 }
