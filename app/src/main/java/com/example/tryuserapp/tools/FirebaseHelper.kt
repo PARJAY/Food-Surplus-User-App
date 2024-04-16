@@ -20,8 +20,10 @@ class FirebaseHelper {
 
         fun fetchSnapshotToKatalisModel(queryDocumentSnapshot: QueryDocumentSnapshot): KatalisModel {
             val komposisi = queryDocumentSnapshot.getString("idHotel") ?: ""
+            val hargaAwal = queryDocumentSnapshot.getLong("hargaAwal")?.toFloat() ?: 0.0f
 
             Log.d("Helper", "$komposisi - ${komposisi::class.simpleName}")
+            Log.d("Helper", "$hargaAwal - ${hargaAwal::class.simpleName}")
 
             return KatalisModel(
                 id = queryDocumentSnapshot.id,

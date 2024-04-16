@@ -43,13 +43,14 @@ import com.example.tryuserapp.ui.theme.Orange
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 @Composable
-fun Pembayaran(){
-    var selectedImageUri by remember {
-        mutableStateOf<Uri?>(null)
-    }
+fun Pembayaran(
+    selectedImageUri : Uri?,
+    onSelectImageUri : (Uri) -> Unit
+){
+
     val singelPhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = {uri -> selectedImageUri = uri}
+        onResult = {uri -> uri?.let { onSelectImageUri(it) } }
     )
     Column(
         modifier = Modifier
@@ -115,7 +116,10 @@ fun Pembayaran(){
 fun PembayaranPreview(){
     TryUserAppTheme {
         Surface {
-            Pembayaran()
+            Pembayaran(
+                Uri.EMPTY,
+                onSelectImageUri = {}
+            )
         }
     }
 }
