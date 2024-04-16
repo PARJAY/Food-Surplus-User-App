@@ -105,7 +105,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                         navController.popBackStack()
                     }
                 },
-                navController
+                  onNavigateToScreen = { navController.navigate(it) }
             )
         }
 
@@ -140,10 +140,14 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
             )
         }
         composable(Screen.ScreenPesananAnda.route) {
-            PesananAnda(navController)
+            PesananAnda(
+                onNavigateToScreen = { navController.navigate(it) }
+            )
         }
         composable(Screen.ScreenLengkapiData.route) {
-            ScreenLengkapiData(navController)
+            ScreenLengkapiData(
+                onNavigateToScreen = { navController.navigate(it) }
+            )
         }
     }
 

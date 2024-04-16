@@ -32,17 +32,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.tryuserapp.R
 import com.example.tryuserapp.presentation.sing_in.UserData
+import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.backGroundScreen
 
 @Composable
 fun ProfileScreen(
     userData: UserData?,
     onSignOut: () -> Unit,
-    navController: NavController
+    onNavigateToScreen : (String) -> Unit
 ){
     var name by remember{ mutableStateOf("Gilang") }
     var noTelp by remember{ mutableStateOf("085738623451") }
@@ -62,7 +62,7 @@ fun ProfileScreen(
             Image(
                 modifier = Modifier
                     .size(20.dp)
-                    .clickable { navController.navigate("HomeScreen") },
+                    .clickable { onNavigateToScreen(Screen.HomeScreen.route) },
                 painter = painterResource(id = R.drawable.back)
                 , contentDescription = "Back")
             Spacer(modifier = Modifier.height(32.dp))

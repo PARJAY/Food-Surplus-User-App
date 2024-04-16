@@ -43,7 +43,9 @@ import com.example.tryuserapp.ui.theme.TryUserAppTheme
 import com.example.tryuserapp.ui.theme.backGroundScreen
 
 @Composable
-fun ScreenLengkapiData(navController: NavController){
+fun ScreenLengkapiData(
+    onNavigateToScreen : (String) -> Unit
+){
     var alamat by remember {
         mutableStateOf("")
     }
@@ -115,7 +117,7 @@ fun ScreenLengkapiData(navController: NavController){
                     contentColor = Color.White
                 ),
                 shape = RoundedCornerShape(4.dp),
-                onClick = { navController.navigate(Screen.HomeScreen.route) }
+                onClick = { onNavigateToScreen(Screen.HomeScreen.route) }
             ) {
                 Text(text = "Submit")
             }
@@ -131,7 +133,7 @@ fun ScreenLengkapiData(navController: NavController){
 fun ScreenLengkapiDataPreview() {
     TryUserAppTheme {
         Surface {
-            ScreenLengkapiData(navController = rememberNavController())
+            ScreenLengkapiData(onNavigateToScreen = {})
         }
     }
 }
