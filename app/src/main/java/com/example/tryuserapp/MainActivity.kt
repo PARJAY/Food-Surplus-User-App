@@ -26,9 +26,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Column {
-                       Navigation()
-                    }
+                       Navigation(lifecycleOwner = this)
                 }
             }
         }
