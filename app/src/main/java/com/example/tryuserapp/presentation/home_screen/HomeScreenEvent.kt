@@ -7,7 +7,7 @@ sealed class HomeScreenEvent {
     data object GetKatalis : HomeScreenEvent()
 
     data class ModifyOrder(
-        val katalisModel: KatalisModel,
+        val katalisId: String,
         val orderAction : OrderAction
     ) : HomeScreenEvent()
 

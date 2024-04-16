@@ -40,7 +40,7 @@ class HomeScreenViewModel(private val katalisRepositoryImpl: KatalisRepositoryIm
 
             is HomeScreenEvent.ModifyOrder -> {
                 modifyOrder(
-                    katalisModel= event.katalisModel,
+                    katalisId= event.katalisId,
                     action = event.orderAction
                 )
             }
@@ -66,22 +66,24 @@ class HomeScreenViewModel(private val katalisRepositoryImpl: KatalisRepositoryIm
         }
     }
 
-    private fun modifyOrder(katalisModel: KatalisModel, action : OrderAction) {
+    private fun modifyOrder(katalisId: String, action : OrderAction) {
         viewModelScope.launch {
             _state.value = _state.value.copy(isLoading = true) // Update loading state
 
             val currentSelectedList = _state.value.selectedKatalisList
-            val index = currentSelectedList.indexOfFirst { it.idKatalis == katalisModel.id }
+            val index = currentSelectedList.indexOfFirst { it.idKatalis == katalisId }
 
             if (action == OrderAction.INCREMENT) {
-                if (index == -1) currentSelectedList.add(SelectedKatalis(katalisModel.id, 1))
+                if (index == -1) currentSelectedList.add(SelectedKatalis(katalisId, 1))
                 else currentSelectedList[index].quantity++
+                Log.d("VIEWMODEL", "aksi : Increment ${currentSelectedList[index].quantity}")
             }
             else if (action == OrderAction.DECREMENT) {
                 val selectedItem = currentSelectedList[index]
 
                 if (selectedItem.quantity - 1 == 0) currentSelectedList.removeAt(index)
                 else currentSelectedList[index].quantity--
+                Log.d("VIEWMODEL", "aksi : Decrement ${currentSelectedList[index].quantity}")
             }
 
             // Update state with modified list

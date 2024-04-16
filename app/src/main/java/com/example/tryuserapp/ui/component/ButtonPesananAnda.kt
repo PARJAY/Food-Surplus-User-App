@@ -24,15 +24,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.Brown
 import com.example.tryuserapp.ui.theme.Gray
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 @Composable
-fun ButtonPesananAnda(navController: NavController) {
+fun ButtonPesananAnda(
+    onNavigateToScreen : (String) -> Unit
+) {
     Column {
         Button(
-            onClick = {  navController.navigate("screenPesananAnda")},
+            onClick = {  onNavigateToScreen(Screen.ScreenPesananAnda.route)},
             modifier = Modifier
                 .padding(horizontal = 16.dp, vertical = 8.dp)
                 .border(
@@ -63,7 +66,9 @@ fun ButtonPesananAnda(navController: NavController) {
 fun ButtonPesananAndaPreview(){
     TryUserAppTheme {
         Surface {
-            ButtonPesananAnda(navController = rememberNavController())
+            ButtonPesananAnda(
+                onNavigateToScreen = {}
+            )
         }
     }
 }
