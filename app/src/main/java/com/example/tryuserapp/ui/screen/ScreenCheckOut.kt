@@ -35,11 +35,14 @@ import com.example.tryuserapp.ui.component.ButtomButton
 import com.example.tryuserapp.ui.component.DiantarAtauAmbil
 import com.example.tryuserapp.ui.component.Pembayaran
 import com.example.tryuserapp.ui.component.RingkasanPesanan
+import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 import com.example.tryuserapp.ui.theme.backGroundScreen
 
 @Composable
-fun ScreenCheckOut(navController: NavController){
+fun ScreenCheckOut(
+    onNavigateToScreen : (String) -> Unit
+){
 
     val scrollState = rememberScrollState()
 
@@ -57,7 +60,7 @@ fun ScreenCheckOut(navController: NavController){
         Image(
             modifier = Modifier
                 .size(20.dp)
-                .clickable { navController.navigate("HomeScreen") },
+                .clickable { onNavigateToScreen(Screen.HomeScreen.route) },
             painter = painterResource(id = R.drawable.back)
             , contentDescription = "Back")
         Row (modifier = Modifier
@@ -81,6 +84,10 @@ fun ScreenCheckOut(navController: NavController){
         }
         Spacer(modifier = Modifier.height(5.dp))
         Column {
+//            InfoPesanan("Capcay",
+//                "Hotel Megah",
+//                10.000f,
+//                "100 gram")
             Spacer(modifier = Modifier.height(10.dp))
             DiantarAtauAmbil()
             Spacer(modifier = Modifier.height(10.dp))
@@ -90,7 +97,7 @@ fun ScreenCheckOut(navController: NavController){
 
         }
     }
-        ButtomButton(navController)
+        ButtomButton(onNavigateToScreen)
     }
 }
 
@@ -101,7 +108,9 @@ fun ScreenCheckOut(navController: NavController){
 fun ScreenCheckOutPreview() {
     TryUserAppTheme {
         Surface {
-            ScreenCheckOut(navController = rememberNavController())
+            ScreenCheckOut(
+                onNavigateToScreen = {}
+            )
         }
     }
 }

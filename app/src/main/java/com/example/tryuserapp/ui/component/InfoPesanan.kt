@@ -134,7 +134,6 @@ import com.example.tryuserapp.ui.theme.TryUserAppTheme
 //                )
 //            }
 //            QuantityCounter()
-//
 //        }
 //    }
 //}
@@ -145,7 +144,12 @@ import com.example.tryuserapp.ui.theme.TryUserAppTheme
 fun InfoPesananPreview(){
     TryUserAppTheme {
         Surface {
-//            InfoPesanan()
+//            InfoPesanan(
+//                "Capcay",
+//                "Hotel Megah",
+//                10.000f,
+//                "100 gram"
+//            )
         }
     }
 }

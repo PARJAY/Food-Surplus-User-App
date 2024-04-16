@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.tryuserapp.R
 import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.presentation.home_screen.HomeScreenEvent
 import com.example.tryuserapp.presentation.home_screen.HomeScreenSideEffects
@@ -80,6 +81,7 @@ fun HomeScreen(
                 ButtonPesananAnda(navController)
             }
             Spacer(modifier = Modifier.height(8.dp))
+
         }
 
         items(homeScreenUiState.katalisList) { katalis ->
@@ -92,6 +94,8 @@ fun HomeScreen(
 
     ButtonKeranjangSmall(navController)
 }
+
+
 
 @Preview(showBackground = true)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
