@@ -53,64 +53,65 @@ fun ScreenLogin(
         }
     }
 
-
     Box(modifier = Modifier
-    .fillMaxSize()
-    .background(Brown),
-    contentAlignment = Alignment.Center
-){
-    Column (
-        modifier = Modifier
-            .height(470.dp)
-            .width(280.dp)
-            .background(backGroundScreen),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Spacer(modifier = Modifier.height(32.dp))
-        Text(text = "Login",
-            textAlign = TextAlign.Center,
-            style = TextStyle(
-                fontSize = 25.sp,
-                fontWeight = FontWeight.Bold
+        .fillMaxSize()
+        .background(Brown),
+        contentAlignment = Alignment.Center
+    ){
+        Column (
+            modifier = Modifier
+                .height(470.dp)
+                .width(280.dp)
+                .background(backGroundScreen),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(32.dp))
+            Text(text = "Login",
+                textAlign = TextAlign.Center,
+                style = TextStyle(
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight.Bold
+                )
             )
-        )
-        Spacer(modifier = Modifier.height(50.dp))
-        Text(text = "Selamat datang silahkan  Login dengan akun user anda",
-            textAlign = TextAlign.Center,
+            Spacer(modifier = Modifier.height(50.dp))
+            Text(
+                text = "Selamat datang silahkan  Login dengan akun user anda",
+                textAlign = TextAlign.Center
             )
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(bottom = 50.dp),
-            contentAlignment = Alignment.BottomCenter
-        ){
-            Button(
-                modifier = Modifier
-                    .width(230.dp)
-                    .height(70.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.White,
-                    contentColor = Color.Black
-                ),
-                onClick = {
-                    onSignInClick
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 50.dp),
+                contentAlignment = Alignment.BottomCenter
+            ){
+                Button(
+                    modifier = Modifier
+                        .width(230.dp)
+                        .height(70.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.White,
+                        contentColor = Color.Black
+                    ),
+                    onClick = { onSignInClick() }
+                ) {
+                    Image(painter = painterResource(id = R.drawable.devicon_google), contentDescription ="Google Icon" )
+                    Spacer(modifier = Modifier.width(25.dp))
+                    Text(text = "Sign in With Google")
                 }
-            ) {
-                Image(painter = painterResource(id = R.drawable.devicon_google), contentDescription ="Google Icon" )
-                Spacer(modifier = Modifier.width(25.dp))
-                Text(text = "Sign in With Google")
             }
         }
     }
 }
-}
 
-//@Preview(showBackground = true)
-//@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
-//@Composable
-//fun ScreenLoginPreview() {
-//    TryUserAppTheme {
-//        Surface {
-//            ScreenLogin(navController = rememberNavController())
-//        }
-//    }
-//}
+@Preview(showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+fun ScreenLoginPreview() {
+    TryUserAppTheme {
+        Surface {
+            ScreenLogin(
+                state = SignInState(false, null),
+                onSignInClick = {}
+            )
+        }
+    }
+}

@@ -33,12 +33,8 @@ import com.google.android.gms.auth.api.identity.Identity
 import kotlinx.coroutines.launch
 
 @Composable
-fun Navigation(
-    lifecycleOwner: LifecycleOwner
-) {
+fun Navigation(lifecycleOwner: LifecycleOwner) {
     val context = LocalContext.current
-
-    val navController = rememberNavController()
 
     val googleAuthUiClient by lazy {
         GoogleAuthUiClient(
@@ -48,6 +44,8 @@ fun Navigation(
     }
 
     val lifecycleScope = lifecycleOwner.lifecycleScope
+
+    val navController = rememberNavController()
 
     NavHost(navController, startDestination = Screen.ScreenLogin.route) {
         composable(Screen.ScreenLogin.route){
