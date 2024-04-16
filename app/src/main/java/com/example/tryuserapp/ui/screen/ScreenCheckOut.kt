@@ -41,7 +41,7 @@ import com.example.tryuserapp.ui.theme.backGroundScreen
 
 @Composable
 fun ScreenCheckOut(
-    onNavigateToScreen : (String) -> Unit
+    onNavigateToHome : () -> Unit,
 ){
 
     val scrollState = rememberScrollState()
@@ -49,55 +49,53 @@ fun ScreenCheckOut(
     Box (
         Modifier
             .fillMaxSize()
+            .height(10000.dp)
             .background(backGroundScreen),
         contentAlignment = Alignment.TopCenter
     ){
         Column(
         modifier = Modifier
             .padding(8.dp)
+            .padding(bottom = 32.dp)
             .verticalScroll(state = scrollState)
-    ) {
-        Image(
-            modifier = Modifier
-                .size(20.dp)
-                .clickable { onNavigateToScreen(Screen.HomeScreen.route) },
-            painter = painterResource(id = R.drawable.back)
-            , contentDescription = "Back")
-        Row (modifier = Modifier
-            .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ){
-            Text(text = "Check Out Pesanan",
-                style = TextStyle(
-                    fontSize =25.sp,
-                    fontWeight = FontWeight.Bold)
-            )
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-        Row (modifier = Modifier
-            .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Absolute.Left
-            ) {
-            Text(text = "Info Pesanan Anda :",
-                style = TextStyle(fontWeight = FontWeight.W700)
-            )
-        }
-        Spacer(modifier = Modifier.height(5.dp))
-        Column {
-//            InfoPesanan("Capcay",
-//                "Hotel Megah",
-//                10.000f,
-//                "100 gram")
-            Spacer(modifier = Modifier.height(10.dp))
-            DiantarAtauAmbil()
-            Spacer(modifier = Modifier.height(10.dp))
-            RingkasanPesanan()
-            Spacer(modifier = Modifier.height(10.dp))
-            Pembayaran()
+        ) {
+            Row (modifier = Modifier
+                .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ){
+                Text(text = "Check Out Pesanan",
+                    style = TextStyle(
+                        fontSize =25.sp,
+                        fontWeight = FontWeight.Bold)
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Row (modifier = Modifier
+                .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Absolute.Left
+                ) {
+                Text(text = "Info Pesanan Anda :",
+                    style = TextStyle(fontWeight = FontWeight.W700)
+                )
+            }
+            Spacer(modifier = Modifier.height(5.dp))
+            Column {
+    //            InfoPesanan("Capcay",
+    //                "Hotel Megah",
+    //                10.000f,
+    //                "100 gram")
+                Spacer(modifier = Modifier.height(10.dp))
+                DiantarAtauAmbil()
+                Spacer(modifier = Modifier.height(10.dp))
+                RingkasanPesanan()
+                Spacer(modifier = Modifier.height(10.dp))
+                Pembayaran()
+                Spacer(modifier = Modifier.height(32.dp))
+
+            }
 
         }
-    }
-        ButtomButton(onNavigateToScreen)
+        ButtomButton(onNavigateToHome)
     }
 }
 
@@ -109,7 +107,7 @@ fun ScreenCheckOutPreview() {
     TryUserAppTheme {
         Surface {
             ScreenCheckOut(
-                onNavigateToScreen = {}
+                onNavigateToHome = {}
             )
         }
     }

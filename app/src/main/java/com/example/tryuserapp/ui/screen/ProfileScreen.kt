@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -52,162 +53,146 @@ fun ProfileScreen(
     var ttl by remember{ mutableStateOf("Denpasar, 1 September 2006") }
     var email by remember{ mutableStateOf("gilang.okandhewanta@gmail.com") }
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(backGroundScreen),){
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-        ){
-            Image(
-                modifier = Modifier
-                    .size(20.dp)
-                    .clickable { onNavigateToScreen(Screen.HomeScreen.route) },
-                painter = painterResource(id = R.drawable.back)
-                , contentDescription = "Back")
-            Spacer(modifier = Modifier.height(32.dp))
-            Row(modifier = Modifier
-                .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center) {
-                if (userData?.profilePictureUrl != null){
-                    AsyncImage(
-                        model = userData.profilePictureUrl ,
-                        contentDescription = "Profile Picture",
-                        modifier = Modifier
-                            .size(150.dp)
-                            .clip(CircleShape),
-                        contentScale = ContentScale.Crop
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.height(32.dp))
-            Column {
-                if (userData?.username != null) {
-                    Text(
-                        text = userData.username,
-                        textAlign = TextAlign.Center,
-                        fontSize = 36.sp,
-                        fontWeight = FontWeight.SemiBold
-//                        modifier = Modifier
-//                            .fillMaxWidth(),
-//                    colors = TextFieldDefaults.colors(
-//                        focusedContainerColor = backGroundScreen,
-//                        unfocusedContainerColor = backGroundScreen
-//                    ),
-//                    value = name,
-//                    onValueChange = {
-//                            newValue ->
-//                        name = newValue
-//                    },
-//                    readOnly = false,
-//                    label = { Text("Nama") }
-                    )
-                }
-                TextField(
+    LazyColumn {
+        item {
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .background(backGroundScreen),){
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    colors = TextFieldDefaults.colors(
-                        unfocusedContainerColor = backGroundScreen,
-                        focusedContainerColor = backGroundScreen,
-                    ),
-                    value = noTelp,
-                    onValueChange = {
-                            newValue ->
-                        noTelp = newValue
-                    },
-                    readOnly = false,
-                    label = { Text("No Telepon") }
-                )
-                TextField(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = backGroundScreen,
-                        unfocusedContainerColor = backGroundScreen
-                    ),
-                    value = alamat,
-                    onValueChange = {
-                            newValue ->
-                        alamat = newValue
-                    },
-                    readOnly = false,
-                    label = { Text("Alamat") }
-                )
-                TextField(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = backGroundScreen,
-                        unfocusedContainerColor = backGroundScreen
-                    ),
-                    value = jenisKelamin,
-                    onValueChange = {
-                            newValue ->
-                        jenisKelamin = newValue
-                    },
-                    readOnly = false,
-                    label = { Text("Jenis Kelamin") }
-                )
-                TextField(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = backGroundScreen,
-                        unfocusedContainerColor = backGroundScreen
-                    ),
-                    value = umur,
-                    onValueChange = {
-                            newValue ->
-                        umur = newValue
-                    },
-                    readOnly = false,
-                    label = { Text("Umur") }
-                )
-                TextField(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = backGroundScreen,
-                        unfocusedContainerColor = backGroundScreen
-                    ),
-                    value = ttl,
-                    onValueChange = {
-                            newValue ->
-                        ttl = newValue
-                    },
-                    readOnly = false,
-                    label = { Text("Tempat Tanggal Lahir") }
-                )
-                TextField(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = backGroundScreen,
-                        unfocusedContainerColor = backGroundScreen
-                    ),
-                    value = email,
-                    onValueChange = {
-                            newValue ->
-                        email = newValue
-                    },
-                    readOnly = false,
-                    label = { Text("Email") }
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
+                        .padding(16.dp)
                 ){
-                    Button(onClick = onSignOut) {
-                        Text(text = "Sign Out")
+                    Spacer(modifier = Modifier.height(32.dp))
+                    Row(modifier = Modifier
+                        .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center) {
+                        if (userData?.profilePictureUrl != null){
+                            AsyncImage(
+                                model = userData.profilePictureUrl ,
+                                contentDescription = "Profile Picture",
+                                modifier = Modifier
+                                    .size(150.dp)
+                                    .clip(CircleShape),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
                     }
+                    Spacer(modifier = Modifier.height(32.dp))
+                    Column {
+                        if (userData?.username != null) {
+                            Text(
+                                text = userData.username,
+                                textAlign = TextAlign.Center,
+                                fontSize = 36.sp,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        }
+                        TextField(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            colors = TextFieldDefaults.colors(
+                                unfocusedContainerColor = backGroundScreen,
+                                focusedContainerColor = backGroundScreen,
+                            ),
+                            value = noTelp,
+                            onValueChange = {
+                                    newValue ->
+                                noTelp = newValue
+                            },
+                            readOnly = false,
+                            label = { Text("No Telepon") }
+                        )
+                        TextField(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            colors = TextFieldDefaults.colors(
+                                focusedContainerColor = backGroundScreen,
+                                unfocusedContainerColor = backGroundScreen
+                            ),
+                            value = alamat,
+                            onValueChange = {
+                                    newValue ->
+                                alamat = newValue
+                            },
+                            readOnly = false,
+                            label = { Text("Alamat") }
+                        )
+                        TextField(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            colors = TextFieldDefaults.colors(
+                                focusedContainerColor = backGroundScreen,
+                                unfocusedContainerColor = backGroundScreen
+                            ),
+                            value = jenisKelamin,
+                            onValueChange = {
+                                    newValue ->
+                                jenisKelamin = newValue
+                            },
+                            readOnly = false,
+                            label = { Text("Jenis Kelamin") }
+                        )
+                        TextField(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            colors = TextFieldDefaults.colors(
+                                focusedContainerColor = backGroundScreen,
+                                unfocusedContainerColor = backGroundScreen
+                            ),
+                            value = umur,
+                            onValueChange = {
+                                    newValue ->
+                                umur = newValue
+                            },
+                            readOnly = false,
+                            label = { Text("Umur") }
+                        )
+                        TextField(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            colors = TextFieldDefaults.colors(
+                                focusedContainerColor = backGroundScreen,
+                                unfocusedContainerColor = backGroundScreen
+                            ),
+                            value = ttl,
+                            onValueChange = {
+                                    newValue ->
+                                ttl = newValue
+                            },
+                            readOnly = false,
+                            label = { Text("Tempat Tanggal Lahir") }
+                        )
+                        TextField(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            colors = TextFieldDefaults.colors(
+                                focusedContainerColor = backGroundScreen,
+                                unfocusedContainerColor = backGroundScreen
+                            ),
+                            value = email,
+                            onValueChange = {
+                                    newValue ->
+                                email = newValue
+                            },
+                            readOnly = false,
+                            label = { Text("Email") }
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ){
+                            Button(onClick = onSignOut) {
+                                Text(text = "Sign Out")
+                            }
+                        }
+
+                    }
+
                 }
-
             }
-
         }
     }
-
 }
 
 //Column {

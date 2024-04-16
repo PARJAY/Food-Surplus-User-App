@@ -48,12 +48,6 @@ fun DetailPesanan(DetailMakanan : String, navController: NavController){
             modifier = Modifier
                 .padding(16.dp)
         ){
-            Image(
-                modifier = Modifier
-                    .size(20.dp)
-                    .clickable { navController.navigate(Screen.HomeScreen.route) },
-                painter = painterResource(id = R.drawable.back)
-                , contentDescription = "Back")
             Row (modifier = Modifier
                 .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center

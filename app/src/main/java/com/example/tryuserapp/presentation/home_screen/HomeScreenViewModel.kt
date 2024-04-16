@@ -72,6 +72,8 @@ class HomeScreenViewModel(private val katalisRepositoryImpl: KatalisRepositoryIm
 
             val currentSelectedList = _state.value.selectedKatalisList
             val index = currentSelectedList.indexOfFirst { it.idKatalis == katalisId }
+            Log.d("VIEWMODEL", "Cek index $index")
+            Log.d("VIEWMODEL", "Cek currentSelectedList $currentSelectedList")
 
             if (action == OrderAction.INCREMENT) {
                 if (index == -1) currentSelectedList.add(SelectedKatalis(katalisId, 1))

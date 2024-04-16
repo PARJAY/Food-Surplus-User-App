@@ -28,7 +28,7 @@ import com.example.tryuserapp.ui.theme.backGroundScreen
 
 @Composable
 fun ButtomButton(
-    onNavigateToScreen : (String) -> Unit
+    onNavigateToScreen : () -> Unit
 ){
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -43,7 +43,7 @@ fun ButtomButton(
                 contentColor = androidx.compose.ui.graphics.Color.White,
                 containerColor = Brown
             ),
-            onClick = { onNavigateToScreen(Screen.ScreenPesananAnda.route) }
+            onClick = { onNavigateToScreen() }
         ) {
             Text(text = "Buat Pesanan")
         }

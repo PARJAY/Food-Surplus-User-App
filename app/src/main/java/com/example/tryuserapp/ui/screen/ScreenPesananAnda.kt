@@ -48,12 +48,6 @@ fun PesananAnda(
         Column(
             modifier = Modifier.padding(8.dp)
         ) {
-            Image(
-                modifier = Modifier
-                    .size(20.dp)
-                    .clickable { onNavigateToScreen(Screen.HomeScreen.route) },
-                painter = painterResource(id = R.drawable.back), contentDescription = "Back"
-            )
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),

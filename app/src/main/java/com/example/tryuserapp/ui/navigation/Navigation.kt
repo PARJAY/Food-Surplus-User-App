@@ -54,7 +54,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
 
             LaunchedEffect(key1 = Unit) {
                 if (googleAuthUiClient.getSignedInUser() != null)
-                    navController.navigate(Screen.ScreenProfile.route)
+                    navController.navigate(Screen.HomeScreen.route)
             }
             
             val launcher = rememberLauncherForActivityResult(
@@ -74,7 +74,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
             LaunchedEffect(key1 = state.isSignInSuccessful) {
                 if (state.isSignInSuccessful) {
                     Toast.makeText(context, "Sign in Success", Toast.LENGTH_LONG).show()
-                    navController.navigate(Screen.ScreenProfile.route)
+                    navController.navigate(Screen.HomeScreen.route)
                     viewModel.resetState()
                 }
             }
@@ -102,7 +102,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                         googleAuthUiClient.signOut()
                         Toast.makeText(context, "Signed Out", Toast.LENGTH_LONG).show()
 
-                        navController.popBackStack()
+                        navController.navigate(Screen.ScreenLogin.route)
                     }
                 },
                   onNavigateToScreen = { navController.navigate(it) }
@@ -119,6 +119,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
             val homeScreenVMEffectFlow = homeScreenVM.effect
 
             HomeScreen(
+                userData = googleAuthUiClient.getSignedInUser(),
                 homeScreenVMUiState,
                 homeScreenVMEffectFlow,
                 homeScreenVM::onEvent,
@@ -136,7 +137,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
         }
         composable(Screen.ScreenCheckOut.route) {
             ScreenCheckOut(
-                onNavigateToScreen = { navController.navigate(it) }
+                onNavigateToHome = { navController.popBackStack() }
             )
         }
         composable(Screen.ScreenPesananAnda.route) {
