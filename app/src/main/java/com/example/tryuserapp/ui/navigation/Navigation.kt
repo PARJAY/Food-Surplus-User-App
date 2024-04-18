@@ -105,7 +105,6 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
 
                     if (existingUser.name.isEmpty()) {
                         val newUser = CustomerModel(
-                            fetchedUser.userId,
                             fetchedUser.username ?: ""
                         )
 
