@@ -9,18 +9,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,7 +36,7 @@ import com.example.tryuserapp.ui.theme.Orange
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 @Composable
-fun StatusPesanan(StatusPhoto : Int, statusPesanan: StatusPesanan){
+fun CheckStatusPesanan(StatusPhoto : Int, statusPesanan: StatusPesanan){
 
     Row(
         modifier = Modifier
@@ -87,8 +83,10 @@ fun StatusPesanan(StatusPhoto : Int, statusPesanan: StatusPesanan){
                 text =
                 when (statusPesanan) {
                     StatusPesanan.SEDANG_DIANTAR-> "Sedang Diantarkan"
-                    StatusPesanan.SUDAH_DIPESAN -> "Sedang Memesan"
-                    else -> "Sudah Sampai!"
+                    StatusPesanan.MENUNGGU_KONFIRMASI -> "Sedang Memesan"
+                    StatusPesanan.PESANAN_TERKONFIRMASI -> "Sedang Memesan"
+                    StatusPesanan.PESANAN_SAMPAI -> "Sedang Memesan"
+                    else -> "Unknown Error"
                 },
                 style = TextStyle(
                     fontSize = 16.sp,
@@ -119,7 +117,6 @@ fun StatusPesanan(StatusPhoto : Int, statusPesanan: StatusPesanan){
                 Text(text = "Konfirmasi")
             }
         }
-
     }
 }
 
@@ -129,27 +126,29 @@ fun StatusPesanan(StatusPhoto : Int, statusPesanan: StatusPesanan){
 fun StatusPesananPreview(){
     TryUserAppTheme {
         Surface {
-            StatusPesanan(R.drawable.otw, StatusPesanan.SEDANG_DIANTAR)
+            CheckStatusPesanan(R.drawable.otw, StatusPesanan.SEDANG_DIANTAR)
         }
     }
 }
+
 @Preview(showBackground = true)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
 fun StatusPesananPreview2(){
     TryUserAppTheme {
         Surface {
-            StatusPesanan(R.drawable.sedang_dipesan, StatusPesanan.SUDAH_DIPESAN)
+            CheckStatusPesanan(R.drawable.sedang_dipesan, StatusPesanan.MENUNGGU_KONFIRMASI)
         }
     }
 }
+
 @Preview(showBackground = true)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
 fun StatusPesananPreview3(){
     TryUserAppTheme {
         Surface {
-            StatusPesanan(R.drawable.sudah_sampai, StatusPesanan.SUDAH_SAMPAI)
+            CheckStatusPesanan(R.drawable.sudah_sampai, StatusPesanan.PESANAN_SAMPAI)
         }
     }
 }

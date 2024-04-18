@@ -28,12 +28,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.tryuserapp.R
+import com.example.tryuserapp.data.model.KatalisModel
+import com.example.tryuserapp.logic.OrderAction
 import com.example.tryuserapp.ui.component.QuantityCounter
 import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.Orange
@@ -41,67 +44,88 @@ import com.example.tryuserapp.ui.theme.TryUserAppTheme
 import com.example.tryuserapp.ui.theme.backGroundScreen
 
 @Composable
-fun DetailPesanan(DetailMakanan : String, navController: NavController){
-    Box(modifier = Modifier
+fun DetailPesanan(
+    selectedDetailKatalis: KatalisModel,
+    onModifyQuantity: (katalisId : String, OrderAction) -> Unit,
+){
+    Column(modifier = Modifier
         .fillMaxSize()
-        .background(backGroundScreen),){
+        .background(backGroundScreen)
+        .padding(16.dp)
+    ) {
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            text = "Capcay",
+            style = TextStyle(
+                fontSize = 30.sp,
+                fontWeight = FontWeight.Bold,
+            ),
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center)
+        {
+           Image(
+               painter = painterResource(id = R.drawable.ic_launcher_background),
+               contentDescription = "Gambar Makanan",
+               modifier = Modifier
+                   .height(100.dp)
+                   .width(100.dp)
+           )
+        }
+        Spacer(modifier = Modifier.height(32.dp))
+
         Column(
             modifier = Modifier
+                .border(
+                    BorderStroke(1.dp, Color.Black),
+                    shape = RoundedCornerShape(16.dp)
+                )
+                .background(Orange)
                 .padding(16.dp)
+                .fillMaxWidth(),
+
+        ) {
+            Text(
+                text = "Harga Jual : ${selectedDetailKatalis.hargaJual}",
+                style = TextStyle(fontSize = 20.sp,  fontWeight = FontWeight.Bold)
+            )
+
+            Text(
+                text = "Porsi Jual : ${selectedDetailKatalis.porsiJual}",
+                style = TextStyle(fontSize = 20.sp,  fontWeight = FontWeight.Bold)
+            )
+
+            Text(
+                text = "Stok : ${selectedDetailKatalis.stokKatalis}",
+                style = TextStyle(fontSize = 20.sp,  fontWeight = FontWeight.Bold)
+            )
+
+            Text(
+                text = "Bahan Bahan : ",
+                style = TextStyle(fontSize = 20.sp,  fontWeight = FontWeight.Bold)
+            )
+
+            Text(text = selectedDetailKatalis.komposisi.joinToString { it })
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Row (
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Absolute.Right
         ){
-            Row (modifier = Modifier
-                .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ){
-                Text(text = "Capcay",
-                    style = TextStyle(
-                        fontSize = 30.sp,
-                        fontWeight = FontWeight.Bold)
-                )
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(modifier = Modifier
-                .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center) {
-               Image(painter = painterResource(id = R.drawable.ic_launcher_background)
-                   , contentDescription = "Gambar Makanan",
-                   modifier = Modifier
-                       .height(100.dp)
-                       .width(100.dp)
-               )
-            }
-            Spacer(modifier = Modifier.height(32.dp))
-            Column(
-                modifier = Modifier
-                    .border(
-                        BorderStroke(1.dp, Color.Black),
-                        shape = RoundedCornerShape(16.dp)
-                    )
-                    .background(Orange)
-                    .padding(16.dp),
 
-            ) {
-                Text(text = "Bahan Bahan : ",
-                    style = TextStyle(fontSize = 20.sp,  fontWeight = FontWeight.Bold)
-                )
-                Text(text = DetailMakanan)
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            Row (modifier = Modifier
-                .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Absolute.Right
-                ){
-
-                // TODO : change later
-                QuantityCounter(
-                    katalisId = "",
-                    onHomeScreenEvent = {},
-                    selectedQuantityKatalis = null
-                )
-            }
-            }
+            // TODO : change later
+            QuantityCounter(
+                onQuantityModified = { orderAction ->
+                    onModifyQuantity(selectedDetailKatalis.id, orderAction)
+                }
+            )
         }
     }
+}
 
 
 //Button(onClick = {navController.navigate("HomeScreen") }) {
@@ -112,13 +136,14 @@ fun DetailPesanan(DetailMakanan : String, navController: NavController){
 fun DetailPesananPreview() {
     TryUserAppTheme {
         Surface {
-            DetailPesanan("1. Sayuran segar seperti wortel, kembang kol, brokoli, kacang polong, jamur, sawi hijau, dan buncis.\n" +
-                    "2. Daging ayam, sapi, atau udang, yang biasanya dipotong kecil-kecil.\n" +
-                    "3. Bawang putih dan bawang merah, yang diiris tipis atau dicincang.\n" +
-                    "4. Saos tiram, kecap manis, kecap asin, dan saos cabai, untuk memberikan rasa dan aroma khas.\n" +
-                    "5. Minyak sayur untuk menumis bahan-bahan tersebut.\n" +
-                    "6. Garam, lada, dan gula, untuk menyesuaikan rasa sesuai selera.\n" +
-                    "7. Tepung maizena atau tepung terigu, untuk mengentalkan saus jika diperlukan." ,navController = rememberNavController())
+            DetailPesanan(
+                KatalisModel(
+
+                ),
+                onModifyQuantity = { katalisId, orderAction ->
+
+                }
+            )
         }
     }
 }

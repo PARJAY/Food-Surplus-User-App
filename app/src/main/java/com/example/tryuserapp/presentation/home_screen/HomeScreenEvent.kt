@@ -1,6 +1,5 @@
 package com.example.tryuserapp.presentation.home_screen
 
-import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.logic.OrderAction
 
 sealed class HomeScreenEvent {

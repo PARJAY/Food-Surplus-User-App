@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -17,6 +16,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,10 +27,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.tryuserapp.R
 import com.example.tryuserapp.data.model.KatalisModel
+import com.example.tryuserapp.logic.OrderAction
 import com.example.tryuserapp.presentation.home_screen.HomeScreenEvent
 import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
@@ -36,21 +37,23 @@ import com.example.tryuserapp.ui.theme.TryUserAppTheme
 @Composable
 fun Katalis(
     katalisModel: KatalisModel,
-    onNavigateToScreen : (String) -> Unit,
+    onNavigateToScreen: (String) -> Unit,
     onHomeScreenEvent: (HomeScreenEvent) -> Unit,
-    selectedQuantityKatalis : Int? = 0,
+    selectedQuantityKatalis: Int? = 0,
+    onModifyQuantity: (katalisId : String, OrderAction) -> Unit,
 ) {
-
     Row (
         modifier = Modifier
+            .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
             .height(80.dp)
             .width(380.dp)
             .border(
                 BorderStroke(1.dp, Color.Black),
                 shape = RoundedCornerShape(16.dp)
             )
-            .padding(start = 16.dp)
-            .clickable { onNavigateToScreen(Screen.ScreenDetailPesanan.route) },
+            .clickable {
+                onNavigateToScreen(Screen.ScreenDetailPesanan.route)
+            },
         horizontalArrangement = Arrangement.Absolute.Right
     ){
         Image(
@@ -82,7 +85,11 @@ fun Katalis(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Absolute.Right
         ) {
-            QuantityCounter(katalisModel.id, onHomeScreenEvent, selectedQuantityKatalis)
+            QuantityCounter(
+                onQuantityModified = { orderAction ->
+                    onModifyQuantity(katalisModel.id, orderAction)
+                }
+            )
         }
     }
 }
@@ -102,6 +109,8 @@ fun KatalisPreview(){
                 ),
                 onNavigateToScreen = {},
                 onHomeScreenEvent = {},
+                onModifyQuantity = { katalisId, orderAction ->
+                },
                 selectedQuantityKatalis = null
             )
         }

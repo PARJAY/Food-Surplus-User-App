@@ -16,10 +16,6 @@ class CustomerRepositoryImpl(private val db : FirebaseFirestore) {
         return fetchSnapshotToCustomerModel(documentSnapshot)
     }
 
-//    suspend fun addCustomer(customer: CustomerModel) {
-//        db.collection(CUSTOMER_COLLECTION).document("[your ID]").set(customer).await()
-//    }
-
     suspend fun addOrUpdateCustomer(customerId: String, newCustomer: CustomerModel) {
         db.collection(CUSTOMER_COLLECTION).document(customerId).set(newCustomer).await()
     }

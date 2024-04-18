@@ -38,13 +38,9 @@ import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 @Composable
 fun QuantityCounter(
-    katalisId : String,
-    onHomeScreenEvent: (HomeScreenEvent) -> Unit,
-    selectedQuantityKatalis : Int? = 0,
+    onQuantityModified: (OrderAction) -> Unit
 ){
-    var jumlah by remember {
-        mutableIntStateOf(0)
-    }
+    var itemCounter by remember { mutableIntStateOf(0) }
 
     val operatorIconModifier = Modifier
         .border(
@@ -70,15 +66,16 @@ fun QuantityCounter(
             painterResource(R.drawable.vector__2_),
             contentDescription = "",
             modifier = operatorIconModifier.clickable {
-                jumlah--
-                onHomeScreenEvent(HomeScreenEvent.ModifyOrder(katalisId, OrderAction.DECREMENT))
+                Log.d("Component", "Quality Counter minus icon Clicked")
+                itemCounter--
+                onQuantityModified(OrderAction.DECREMENT)
             }
         )
 
         Spacer(modifier = Modifier.size(width = 10.dp, height = 0.dp))
         Text(
             modifier = Modifier.wrapContentHeight(align = CenterVertically),
-            text = selectedQuantityKatalis.toString()
+            text = itemCounter.toString()
         )
         Spacer(modifier = Modifier.size(width = 10.dp, height = 0.dp))
 
@@ -86,8 +83,9 @@ fun QuantityCounter(
             Icons.Default.Add,
             contentDescription = "",
             modifier = operatorIconModifier.clickable {
-                jumlah++
-                onHomeScreenEvent(HomeScreenEvent.ModifyOrder(katalisId, OrderAction.INCREMENT))
+                Log.d("Component", "Quality Counter plus icon Clicked")
+                itemCounter++
+                onQuantityModified(OrderAction.INCREMENT)
             }
         )
     }
@@ -101,9 +99,9 @@ fun TambahKurangPreview(){
     TryUserAppTheme {
         Surface {
             QuantityCounter(
-                katalisId = "",
-                onHomeScreenEvent = {},
-                selectedQuantityKatalis = null
+                onQuantityModified = { orderAction ->
+
+                }
             )
         }
     }

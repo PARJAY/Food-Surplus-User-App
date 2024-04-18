@@ -37,7 +37,7 @@ import org.w3c.dom.Text
 
 @Composable
 fun ButtonKeranjang(){
-    Column(){
+    Column {
             Button(
                 modifier = Modifier
                     .height(72.dp)
@@ -67,8 +67,8 @@ fun ButtonKeranjangSmall(
             .fillMaxSize()
             .padding(15.dp),
         contentAlignment = Alignment.BottomEnd
-    ){
-        Column(){
+    ) {
+        Column {
             FloatingActionButton(
                 modifier = Modifier
                     .height(72.dp)
