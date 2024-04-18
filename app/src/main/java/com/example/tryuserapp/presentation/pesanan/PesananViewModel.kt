@@ -2,8 +2,7 @@ package com.example.tryuserapp.presentation.pesanan
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tryuserapp.model.Pesanan
-import com.example.tryuserapp.presentation.customer.CustomerState
+import com.example.tryuserapp.data.model.Pesanan
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -13,11 +12,11 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class PesananViewModel(
-    private val pesananRepository: PesananRepository
+    private val pesananRepositoryImpl: PesananRepositoryImpl
 ): ViewModel() {
     private val _state = MutableStateFlow(PesananState())
 
-    private val _transaksi = pesananRepository.getAllPesanan()
+    private val _transaksi = pesananRepositoryImpl.getAllPesanan()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     val state = combine(_state, _transaksi) { state, transaksi ->
@@ -60,7 +59,7 @@ class PesananViewModel(
             setState(_state.value.copy(isLoading = true))
 
             try {
-                pesananRepository.insertTransaksi(newPesanan)
+                pesananRepositoryImpl.insertTransaksi(newPesanan)
                 setState(_state.value.copy(isLoading = false))
                 setEffect { PesananSideEffects.ShowSnackBarMessage(message = "Transaksi added successfully") }
             } catch (e: Exception) {

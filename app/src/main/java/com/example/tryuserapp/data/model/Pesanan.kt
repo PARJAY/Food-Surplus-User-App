@@ -1,4 +1,4 @@
-package com.example.tryuserapp.model
+package com.example.tryuserapp.data.model
 
 import com.example.tryuserapp.logic.StatusPesanan
 

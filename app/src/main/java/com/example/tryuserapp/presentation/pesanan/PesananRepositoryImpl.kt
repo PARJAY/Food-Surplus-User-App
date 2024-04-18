@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.tasks.await
 
-class PesananRepository(private val db : FirebaseFirestore) {
+class PesananRepositoryImpl(private val db : FirebaseFirestore) {
     fun getAllPesanan(): Flow<List<Pesanan>> = flowOf(DummyData.dummyPesananFlow)
     suspend fun insertTransaksi(pesanan: Pesanan) {
         db.collection(PESANAN_COLLECTION).add(pesanan).await()

@@ -1,4 +1,4 @@
-package com.example.tryuserapp.model
+package com.example.tryuserapp.data.model
 
 data class DaftarKatalis(
     var id_daftar_katalis : Int,

@@ -1,6 +1,6 @@
 package com.example.tryuserapp.presentation.pesanan
 
-import com.example.tryuserapp.model.Pesanan
+import com.example.tryuserapp.data.model.Pesanan
 
 data class PesananState(
     val isLoading: Boolean = false,
