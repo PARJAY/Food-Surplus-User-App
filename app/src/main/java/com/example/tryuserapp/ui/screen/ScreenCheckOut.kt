@@ -37,10 +37,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.tryuserapp.R
 import com.example.tryuserapp.common.DUMMY_STORAGE_LOCATION
+import com.example.tryuserapp.logic.StatusPesanan
+import com.example.tryuserapp.model.DaftarKatalis
+import com.example.tryuserapp.model.Pesanan
+import com.example.tryuserapp.presentation.pesanan.PesananEvent
+import com.example.tryuserapp.presentation.pesanan.PesananState
+import com.example.tryuserapp.presentation.pesanan.PesananViewModel
 import com.example.tryuserapp.tools.FirebaseHelper.Companion.uploadImageToFirebaseStorage
 import com.example.tryuserapp.ui.component.ButtomButton
 import com.example.tryuserapp.ui.component.DiantarAtauAmbil
@@ -50,10 +57,12 @@ import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.Brown
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 import com.example.tryuserapp.ui.theme.backGroundScreen
+import java.util.Calendar
 
 @Composable
 fun ScreenCheckOut(
     onNavigateToHome : () -> Unit,
+    pesananViewModel: PesananViewModel
 ){
 
     val context = LocalContext.current
@@ -61,7 +70,7 @@ fun ScreenCheckOut(
     val scrollState = rememberScrollState()
 
     var selectedImageUri by remember {
-        mutableStateOf<Uri?>(null)
+        mutableStateOf<Uri?>(Uri.EMPTY)
     }
 
     Box (
@@ -132,7 +141,14 @@ fun ScreenCheckOut(
                     containerColor = Brown
                 ),
                 onClick = {
-                    if (selectedImageUri?.path!!.isNotEmpty()) {
+                    if (selectedImageUri?.path!!.isEmpty()) {
+                        Toast.makeText(context, "Select an Image", Toast.LENGTH_SHORT).show()
+                    }
+                    // if data not null
+//                    if () {
+//
+//                    }
+                    else {
                         uploadImageToFirebaseStorage(
                             DUMMY_STORAGE_LOCATION,
                             selectedImageUri!!,
@@ -143,9 +159,20 @@ fun ScreenCheckOut(
                                 Toast.makeText(context, "$it", Toast.LENGTH_SHORT).show()
                             }
                         )
-                    } else {
-                        Toast.makeText(context, "Select an Image", Toast.LENGTH_SHORT).show()
                     }
+
+                    pesananViewModel.createPesanan(newPesanan = Pesanan(
+                        2231,
+                        3112323,
+                        50031211,
+                        1500213452,
+                        DaftarKatalis(12123,323132,1123232,12312232,),
+                        500f,
+                        "Gambar",
+                        StatusPesanan.SUDAH_DIPESAN,
+                        Calendar.getInstance().time.toString()
+                    ))
+
                     onNavigateToHome()
                 }
             ) {
@@ -156,15 +183,15 @@ fun ScreenCheckOut(
 }
 
 
-@Preview(showBackground = true)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
-@Composable
-fun ScreenCheckOutPreview() {
-    TryUserAppTheme {
-        Surface {
-            ScreenCheckOut(
-                onNavigateToHome = {}
-            )
-        }
-    }
-}
+//@Preview(showBackground = true)
+//@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+//@Composable
+//fun ScreenCheckOutPreview() {
+//    TryUserAppTheme {
+//        Surface {
+//            ScreenCheckOut(
+//                onNavigateToHome = {}
+//            )
+//        }
+//    }
+//}

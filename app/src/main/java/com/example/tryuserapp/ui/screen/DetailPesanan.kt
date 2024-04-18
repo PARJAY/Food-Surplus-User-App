@@ -41,7 +41,9 @@ import com.example.tryuserapp.ui.theme.TryUserAppTheme
 import com.example.tryuserapp.ui.theme.backGroundScreen
 
 @Composable
-fun DetailPesanan(DetailMakanan : String, navController: NavController){
+fun DetailPesanan(DetailMakanan : String,
+                  onNavigateToScreen : (String) -> Unit
+){
     Box(modifier = Modifier
         .fillMaxSize()
         .background(backGroundScreen),){
@@ -118,7 +120,7 @@ fun DetailPesananPreview() {
                     "4. Saos tiram, kecap manis, kecap asin, dan saos cabai, untuk memberikan rasa dan aroma khas.\n" +
                     "5. Minyak sayur untuk menumis bahan-bahan tersebut.\n" +
                     "6. Garam, lada, dan gula, untuk menyesuaikan rasa sesuai selera.\n" +
-                    "7. Tepung maizena atau tepung terigu, untuk mengentalkan saus jika diperlukan." ,navController = rememberNavController())
+                    "7. Tepung maizena atau tepung terigu, untuk mengentalkan saus jika diperlukan." , onNavigateToScreen = {})
         }
     }
 }

@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.flowOf
 
 class CustomerRepository {
     fun getAllCustomer(): Flow<List<Customer>> = flowOf(DummyData.dummyCustomerFlow)
-
     suspend fun insertCustomer(customer: Customer) {
         insertCustomer(customer)
     }

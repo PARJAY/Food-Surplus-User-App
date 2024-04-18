@@ -1,6 +1,7 @@
 package com.example.tryuserapp.ui.screen
 
 import android.content.res.Configuration
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -77,7 +78,7 @@ fun HomeScreen(
                     .fillMaxWidth()
                     .background(Brown)
                     .padding(8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
+                      verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Absolute.SpaceBetween
                 ) {
                     if (userData?.username != null) {
@@ -87,7 +88,16 @@ fun HomeScreen(
                             fontSize = 14.sp,
                             color = Color.White
                         )
-                        if (userData?.profilePictureUrl != null) {
+                    }else{
+                        Text(
+                            text = "UserName",
+                            textAlign = TextAlign.Center,
+                            fontSize = 14.sp,
+                            color = Color.White
+                        )
+                    }
+
+                    if (userData?.profilePictureUrl != null) {
                             AsyncImage(
                                 model = userData.profilePictureUrl,
                                 contentDescription = "Profile Picture",
@@ -97,7 +107,6 @@ fun HomeScreen(
                                     .clickable { onNavigateToScreen(Screen.ScreenProfile.route) },
                                 contentScale = ContentScale.Crop
                             )
-                        }
                     }
                 }
             }

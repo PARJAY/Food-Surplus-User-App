@@ -66,7 +66,7 @@ class HomeScreenViewModel(private val katalisRepositoryImpl: KatalisRepositoryIm
         }
     }
 
-    private fun modifyOrder(katalisId: String, action : OrderAction) {
+    private fun modifyOrder(katalisId: String,  action : OrderAction) {
         viewModelScope.launch {
             _state.value = _state.value.copy(isLoading = true) // Update loading state
 
