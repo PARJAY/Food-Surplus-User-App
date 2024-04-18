@@ -1,23 +1,23 @@
 package com.example.tryuserapp.data
 
 import com.example.tryuserapp.logic.StatusPesanan
-import com.example.tryuserapp.model.Customer
-import com.example.tryuserapp.model.DaftarKatalis
-import com.example.tryuserapp.model.Pesanan
+import com.example.tryuserapp.data.model.DaftarKatalis
+import com.example.tryuserapp.data.model.Pesanan
 import java.util.Calendar
+import com.example.tryuserapp.data.model.CustomerModel
 
 
 class DummyData {
 
     companion object {
 
-        val customer1 = Customer(1, "John Doe", "john.doe@example.com", "ABC123", )
+        val customer1 = CustomerModel("John Doe", "john.doe@example.com", "ABC123")
 
-        val customer2 = Customer(2, "Jane Smith", "jane.smith@example.com", "XYZ789", )
+        val customer2 = CustomerModel("Jane Smith", "jane.smith@example.com", "XYZ789")
 
-        val customer3 = Customer(3, "Michael Johnson", "michael.johnson@example.com", "DEF456")
+        val customer3 = CustomerModel("Michael Johnson", "michael.johnson@example.com", "DEF456")
 
-        val dummyCustomerFlow: List<Customer> = listOf(customer1, customer2, customer3)
+        val dummyCustomerFlow: List<CustomerModel> = listOf(customer1, customer2, customer3)
 
         val pesanan1 = Pesanan(
             21,
@@ -38,7 +38,7 @@ class DummyData {
             DaftarKatalis(12123,323132,1123232,12312232,),
             500f,
             "Gambar",
-            StatusPesanan.SUDAH_DIPESAN,
+            StatusPesanan.PESANAN_SAMPAI,
             Calendar.getInstance().time.toString()
         )
         val pesanan3 = Pesanan(
@@ -49,10 +49,11 @@ class DummyData {
             DaftarKatalis(12321,132123,123211,41241232,),
             500f,
             "Gambar",
-            StatusPesanan.SUDAH_SAMPAI,
+            StatusPesanan.MENUNGGU_KONFIRMASI,
             Calendar.getInstance().time.toString()
         )
         val dummyPesananFlow: List<Pesanan> = listOf(pesanan1, pesanan2, pesanan3)
 
+        val dummyCustomerModelFlow: List<CustomerModel> = listOf(customer1, customer2, customer3)
     }
 }

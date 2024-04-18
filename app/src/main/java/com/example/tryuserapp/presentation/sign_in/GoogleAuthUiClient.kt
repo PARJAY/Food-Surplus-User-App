@@ -1,4 +1,4 @@
-package com.example.tryuserapp.presentation.sing_in
+package com.example.tryuserapp.presentation.sign_in
 
 import android.content.Context
 import android.content.Intent
@@ -22,10 +22,8 @@ class GoogleAuthUiClient (
 
     suspend fun signIn(): IntentSender?{
         val result = try {
-            oneTapClient.beginSignIn(
-                buildSignInRequest()
-            ).await()
-        }catch (e: Exception){
+            oneTapClient.beginSignIn(buildSignInRequest()).await()
+        } catch (e: Exception){
             e.printStackTrace()
             if (e is CancellationException) throw e
             null
@@ -33,7 +31,7 @@ class GoogleAuthUiClient (
         return result?.pendingIntent?.intentSender
     }
 
-    suspend fun SignInWithIntent(intent: Intent): SignInResult{
+    suspend fun signInWithIntent(intent: Intent): SignInResult{
         val credential =oneTapClient.getSignInCredentialFromIntent(intent)
         val googleIdToken = credential.googleIdToken
         val googleCredential = GoogleAuthProvider.getCredential(googleIdToken, null)

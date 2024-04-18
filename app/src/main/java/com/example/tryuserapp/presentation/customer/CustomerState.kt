@@ -1,7 +1,7 @@
 package com.example.tryuserapp.presentation.customer
 
-import com.example.tryuserapp.model.Customer
+import com.example.tryuserapp.data.model.CustomerModel
 
 data class CustomerState(
-    val customerListState: List<Customer> = emptyList()
+    val customerState: CustomerModel = CustomerModel()
 )

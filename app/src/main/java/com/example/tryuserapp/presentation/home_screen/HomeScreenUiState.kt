@@ -6,7 +6,7 @@ data class HomeScreenUiState(
     val isLoading: Boolean = false,
     val katalisList: List<KatalisModel> = emptyList(),
     val selectedKatalisList: ArrayList<SelectedKatalis> = arrayListOf(),
-    val errorMessage: String? = null,
+    val errorMessage: String? = null
 )
 
 data class SelectedKatalis(

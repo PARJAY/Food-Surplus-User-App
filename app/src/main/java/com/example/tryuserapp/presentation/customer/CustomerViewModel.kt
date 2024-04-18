@@ -2,50 +2,44 @@ package com.example.tryuserapp.presentation.customer
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.tryuserapp.data.repository.CustomerRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class CustomerViewModel(
-    private val customerRepository: CustomerRepository
+    private val customerRepository: CustomerRepositoryImpl,
+    customerId: String
 ): ViewModel() {
+
     private val _state = MutableStateFlow(CustomerState())
+    val state = _state.asStateFlow()
 
-    private val _customer = customerRepository.getAllCustomer()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
-
-    val state = combine(_state, _customer) { state, customer ->
-        state.copy(
-            customerListState = customer
-        )
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), CustomerState())
+    init { onEvent(CustomerEvent.GetCustomerById(customerId)) }
 
     fun onEvent(event: CustomerEvent) {
         when (event) {
             is CustomerEvent.DeleteCustomer -> {
                 viewModelScope.launch {
-                    customerRepository.deleteCustomer(event.customer)
+                    // TODO : not yet implemented
                 }
             }
 
             is CustomerEvent.UpdateCustomer -> {
                 viewModelScope.launch {
-                    customerRepository.updateCustomer(event.customer)
+                    customerRepository.addOrUpdateCustomer(event.customerId, event.customer)
                 }
             }
 
-            is CustomerEvent.ReadCustomer -> {
+            is CustomerEvent.GetCustomerById -> {
                 viewModelScope.launch {
-                    customerRepository.readCustomer(event.customer)
+                    customerRepository.getCustomerById(event.customerId)
                 }
             }
 
             is CustomerEvent.CreateCustomer -> {
                 viewModelScope.launch {
-                    customerRepository.insertCustomer(event.customer)
-
+                    customerRepository.addOrUpdateCustomer(event.customerId, event.customer)
                 }
             }
         }

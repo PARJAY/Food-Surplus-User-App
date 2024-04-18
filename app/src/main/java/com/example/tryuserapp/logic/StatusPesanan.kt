@@ -1,7 +1,9 @@
 package com.example.tryuserapp.logic
 
 enum class StatusPesanan {
-    SUDAH_DIPESAN,
+    MENUNGGU_KONFIRMASI,
+    PESANAN_TERKONFIRMASI,
     SEDANG_DIANTAR,
-    SUDAH_SAMPAI
+    PESANAN_SAMPAI,
+    BATAL
 }

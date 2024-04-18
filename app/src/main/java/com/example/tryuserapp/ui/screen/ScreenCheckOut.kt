@@ -3,9 +3,7 @@ package com.example.tryuserapp.ui.screen
 import android.content.res.Configuration
 import android.net.Uri
 import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -31,40 +28,33 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.example.tryuserapp.R
-import com.example.tryuserapp.common.DUMMY_STORAGE_LOCATION
-import com.example.tryuserapp.logic.StatusPesanan
-import com.example.tryuserapp.model.DaftarKatalis
-import com.example.tryuserapp.model.Pesanan
-import com.example.tryuserapp.presentation.pesanan.PesananEvent
-import com.example.tryuserapp.presentation.pesanan.PesananState
 import com.example.tryuserapp.presentation.pesanan.PesananViewModel
+import com.example.tryuserapp.logic.StatusPesanan
+import com.example.tryuserapp.data.model.DaftarKatalis
+import com.example.tryuserapp.data.model.Pesanan
+import com.example.tryuserapp.presentation.pesanan.PesananRepositoryImpl
+import com.example.tryuserapp.presentation.sign_in.UserData
 import com.example.tryuserapp.tools.FirebaseHelper.Companion.uploadImageToFirebaseStorage
-import com.example.tryuserapp.ui.component.ButtomButton
 import com.example.tryuserapp.ui.component.DiantarAtauAmbil
 import com.example.tryuserapp.ui.component.Pembayaran
 import com.example.tryuserapp.ui.component.RingkasanPesanan
-import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.Brown
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 import com.example.tryuserapp.ui.theme.backGroundScreen
+import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Calendar
 
 @Composable
 fun ScreenCheckOut(
     onNavigateToHome : () -> Unit,
-    pesananViewModel: PesananViewModel
+    pesananViewModel: PesananViewModel,
+    userData :UserData,
 ){
-
     val context = LocalContext.current
 
     val scrollState = rememberScrollState()
@@ -86,31 +76,29 @@ fun ScreenCheckOut(
             .padding(bottom = 32.dp)
             .verticalScroll(state = scrollState)
         ) {
-            Row (modifier = Modifier
-                .fillMaxWidth(),
+            Row (
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ){
-                Text(text = "Check Out Pesanan",
+                Text(
+                    text = "Check Out Pesanan",
                     style = TextStyle(
                         fontSize =25.sp,
-                        fontWeight = FontWeight.Bold)
+                        fontWeight = FontWeight.Bold
+                    )
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Row (modifier = Modifier
-                .fillMaxWidth(),
+            Row (
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Absolute.Left
-                ) {
+            ) {
                 Text(text = "Info Pesanan Anda :",
                     style = TextStyle(fontWeight = FontWeight.W700)
                 )
             }
             Spacer(modifier = Modifier.height(5.dp))
             Column {
-    //            InfoPesanan("Capcay",
-    //                "Hotel Megah",
-    //                10.000f,
-    //                "100 gram")
                 Spacer(modifier = Modifier.height(10.dp))
                 DiantarAtauAmbil()
                 Spacer(modifier = Modifier.height(10.dp))
@@ -144,13 +132,9 @@ fun ScreenCheckOut(
                     if (selectedImageUri?.path!!.isEmpty()) {
                         Toast.makeText(context, "Select an Image", Toast.LENGTH_SHORT).show()
                     }
-                    // if data not null
-//                    if () {
-//
-//                    }
                     else {
                         uploadImageToFirebaseStorage(
-                            DUMMY_STORAGE_LOCATION,
+                            "User ${userData.userId}",
                             selectedImageUri!!,
                             onSuccess = {
                                 Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
@@ -169,7 +153,7 @@ fun ScreenCheckOut(
                         DaftarKatalis(12123,323132,1123232,12312232,),
                         500f,
                         "Gambar",
-                        StatusPesanan.SUDAH_DIPESAN,
+                        StatusPesanan.MENUNGGU_KONFIRMASI,
                         Calendar.getInstance().time.toString()
                     ))
 
@@ -183,15 +167,17 @@ fun ScreenCheckOut(
 }
 
 
-//@Preview(showBackground = true)
-//@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
-//@Composable
-//fun ScreenCheckOutPreview() {
-//    TryUserAppTheme {
-//        Surface {
-//            ScreenCheckOut(
-//                onNavigateToHome = {}
-//            )
-//        }
-//    }
-//}
+@Preview(showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+fun ScreenCheckOutPreview() {
+    TryUserAppTheme {
+        Surface {
+            ScreenCheckOut(
+                onNavigateToHome = {},
+                PesananViewModel(PesananRepositoryImpl(db =  FirebaseFirestore.getInstance())),
+                UserData()
+            )
+        }
+    }
+}
