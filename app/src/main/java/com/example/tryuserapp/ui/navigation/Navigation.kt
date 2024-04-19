@@ -28,14 +28,16 @@ import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.logic.OrderAction
 import com.example.tryuserapp.presentation.customer.CustomerViewModel
 import com.example.tryuserapp.presentation.home_screen.HomeScreenViewModel
+import com.example.tryuserapp.presentation.katalis_screen.KatalisScreenViewModel
 import com.example.tryuserapp.presentation.pesanan.PesananRepositoryImpl
 import com.example.tryuserapp.presentation.pesanan.PesananViewModel
-import com.example.tryuserapp.presentation.home_screen.SelectedKatalis
+import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
 import com.example.tryuserapp.presentation.sign_in.GoogleAuthUiClient
 import com.example.tryuserapp.presentation.sign_in.SignInViewModel
 import com.example.tryuserapp.presentation.viewModelFactory
 import com.example.tryuserapp.ui.screen.DetailPesanan
 import com.example.tryuserapp.ui.screen.HomeScreen
+import com.example.tryuserapp.ui.screen.KatalisScreen
 import com.example.tryuserapp.ui.screen.PesananAnda
 import com.example.tryuserapp.ui.screen.ProfileScreen
 import com.example.tryuserapp.ui.screen.ScreenCheckOut
@@ -106,7 +108,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                     if (existingUser.name.isEmpty()) {
                         val newUser = CustomerModel(
                             fetchedUser.userId,
-                            fetchedUser.username ?: ""
+                            fetchedUser.username ?: "",
                         )
 
                         try {
@@ -118,7 +120,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                     }
                 }
 
-                navController.navigate(Screen.HomeScreen.route)
+                navController.navigate(Screen.ScreenLengkapiData.route)
                 viewModel.resetState()
             }
 
@@ -163,18 +165,18 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
             )
         }
 
-        composable(Screen.HomeScreen.route){
-            val homeScreenVM: HomeScreenViewModel = viewModel(
-                factory = viewModelFactory { HomeScreenViewModel(MyApp.appModule.katalisRepositoryImpl) }
+        composable(Screen.KatalisScreen.route){
+            val katalisScreenVM: KatalisScreenViewModel = viewModel(
+                factory = viewModelFactory { KatalisScreenViewModel(MyApp.appModule.katalisRepositoryImpl) }
             )
-            val homeScreenVMUiState = homeScreenVM.state.collectAsState().value
-            val homeScreenVMEffectFlow = homeScreenVM.effect
+            val katalisScreenVMUiState = katalisScreenVM.state.collectAsState().value
+            val katalisScreenVMEffectFlow = katalisScreenVM.effect
 
-            HomeScreen(
+            KatalisScreen(
                 userData = googleAuthUiClient.getSignedInUser(),
-                homeScreenVMUiState,
-                homeScreenVMEffectFlow,
-                homeScreenVM::onEvent,
+                katalisScreenVMUiState,
+                katalisScreenVMEffectFlow,
+                katalisScreenVM::onEvent,
                 selectedKatalisList = selectedKatalis,
                 onModifyQuantity = { katalisId, orderAction ->
 //                    Utility.modifyOrder(selectedKatalis.value, katalisId, orderAction)
@@ -187,12 +189,26 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                     }
 
                     if (orderAction == OrderAction.DECREMENT) {
-                        if (existingKatalis == null) return@HomeScreen
+                        if (existingKatalis == null) return@KatalisScreen
                         if (existingKatalis.quantity - 1 == 0) selectedKatalis.remove(existingKatalis)
                         else existingKatalis.quantity--
                     }
                 },
                 onSetSelectedDetailKatalis = { selectedDetailKatalis = it },
+                onNavigateToScreen = { navController.navigate(it) }
+            )
+        }
+        composable(Screen.HomeScreen.route){
+            val homeScreenVM: HomeScreenViewModel = viewModel(
+                factory = viewModelFactory { HomeScreenViewModel(MyApp.appModule.hotelRepositoryImpl) }
+            )
+            val homeScreenVMUiState = homeScreenVM.state.collectAsState().value
+            val homeScreenVMEffectFlow = homeScreenVM.effect
+
+            HomeScreen(
+                userData = googleAuthUiClient.getSignedInUser(),
+                homeScreenUiState = homeScreenVMUiState,
+                onHomeScreenEvent = homeScreenVM::onEvent,
                 onNavigateToScreen = { navController.navigate(it) }
             )
         }
@@ -214,7 +230,10 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
 
             ScreenCheckOut(
                 pesananViewModel = PesananViewModel(PesananRepositoryImpl(db =  FirebaseFirestore.getInstance())),
-                onNavigateToHome = { navController.popBackStack() },
+                onNavigateToHome = {
+                    navController.popBackStack()
+                    navController.popBackStack()
+                                   },
                 userData = googleAuthUiClient.getSignedInUser()!!,
             )
         }
