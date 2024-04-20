@@ -25,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.tryuserapp.MyApp
 import com.example.tryuserapp.data.model.CustomerModel
 import com.example.tryuserapp.data.model.KatalisModel
+import com.example.tryuserapp.data.repository.KatalisRepositoryImpl
 import com.example.tryuserapp.logic.OrderAction
 import com.example.tryuserapp.presentation.customer.CustomerViewModel
 import com.example.tryuserapp.presentation.home_screen.HomeScreenViewModel
@@ -72,7 +73,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
     }
 
     NavHost(navController, startDestination = Screen.ScreenLogin.route) {
-        composable(Screen.ScreenLogin.route){
+        composable(Screen.ScreenLogin.route) {
             val viewModel = viewModel<SignInViewModel>()
             val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -80,7 +81,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                 if (googleAuthUiClient.getSignedInUser() != null)
                     navController.navigate(Screen.HomeScreen.route)
             }
-            
+
             val launcher = rememberLauncherForActivityResult(
                 contract = ActivityResultContracts.StartIntentSenderForResult(),
                 onResult = { result ->
@@ -102,7 +103,8 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
 
                 val userData = viewModel.state.value.userData
                 userData?.let { fetchedUser ->
-                    val existingUser = MyApp.appModule.customerRepositoryImpl.getCustomerById(fetchedUser.userId)
+                    val existingUser =
+                        MyApp.appModule.customerRepositoryImpl.getCustomerById(fetchedUser.userId)
                     Log.d("NAVIGATION : ", "logged in user firebase data : $existingUser")
 
                     if (existingUser.name.isEmpty()) {
@@ -112,7 +114,10 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                         )
 
                         try {
-                            MyApp.appModule.customerRepositoryImpl.addOrUpdateCustomer(fetchedUser.userId, newUser)
+                            MyApp.appModule.customerRepositoryImpl.addOrUpdateCustomer(
+                                fetchedUser.userId,
+                                newUser
+                            )
                             Log.d("NAVIGATION : ", "registering user success")
                         } catch (e: Exception) {
                             Log.d("NAVIGATION : ", "failed registering user $e")
@@ -140,6 +145,38 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
 
         }
 
+        composable(Screen.ScreenLengkapiData.route) {
+
+            ScreenLengkapiData(
+                onNavigateToScreen = { navController.navigate(it) }
+            )
+        }
+
+        composable(Screen.ScreenCheckOut.route) {
+            val pesananViewModel: PesananViewModel = viewModel(
+                factory = viewModelFactory {
+                    PesananViewModel(
+                        MyApp.appModule.pesananRepositoryImpl,
+                        MyApp.appModule.katalisRepositoryImpl
+                    )
+                }
+            )
+            val pesananScreenVMUiState = pesananViewModel.state.collectAsState().value
+
+            ScreenCheckOut(
+                pesananViewModel = PesananViewModel(
+                    PesananRepositoryImpl(db = FirebaseFirestore.getInstance()),
+                    KatalisRepositoryImpl(db = FirebaseFirestore.getInstance())
+                ),
+                onNavigateToHome = {
+                    navController.popBackStack()
+                    navController.popBackStack()
+                },
+                userData = googleAuthUiClient.getSignedInUser()!!,
+            )
+        }
+
+
         composable(Screen.ScreenProfile.route) {
             val customerVM: CustomerViewModel = viewModel(
                 factory = viewModelFactory {
@@ -151,7 +188,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
             )
             val customerUiState = customerVM.state.collectAsStateWithLifecycle().value
 
-            ProfileScreen (
+            ProfileScreen(
                 userData = googleAuthUiClient.getSignedInUser(),
                 customerModel = customerUiState.customerState,
                 onSignOut = {
@@ -165,7 +202,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
             )
         }
 
-        composable(Screen.KatalisScreen.route){
+        composable(Screen.KatalisScreen.route) {
             val katalisScreenVM: KatalisScreenViewModel = viewModel(
                 factory = viewModelFactory { KatalisScreenViewModel(MyApp.appModule.katalisRepositoryImpl) }
             )
@@ -184,13 +221,20 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                     val existingKatalis = selectedKatalis.firstOrNull { it.idKatalis == katalisId }
 
                     if (orderAction == OrderAction.INCREMENT) {
-                        if (existingKatalis == null) selectedKatalis.add(SelectedKatalis(katalisId, 1))
+                        if (existingKatalis == null) selectedKatalis.add(
+                            SelectedKatalis(
+                                katalisId,
+                                1
+                            )
+                        )
                         else existingKatalis.quantity++
                     }
 
                     if (orderAction == OrderAction.DECREMENT) {
                         if (existingKatalis == null) return@KatalisScreen
-                        if (existingKatalis.quantity - 1 == 0) selectedKatalis.remove(existingKatalis)
+                        if (existingKatalis.quantity - 1 == 0) selectedKatalis.remove(
+                            existingKatalis
+                        )
                         else existingKatalis.quantity--
                     }
                 },
@@ -198,6 +242,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                 onNavigateToScreen = { navController.navigate(it) }
             )
         }
+
         composable(Screen.HomeScreen.route){
             val homeScreenVM: HomeScreenViewModel = viewModel(
                 factory = viewModelFactory { HomeScreenViewModel(MyApp.appModule.hotelRepositoryImpl) }
@@ -222,32 +267,12 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
             )
         }
 
-        composable(Screen.ScreenCheckOut.route) {
-            val pesananViewModel: PesananViewModel = viewModel(
-                factory = viewModelFactory { PesananViewModel(MyApp.appModule.pesananRepositoryImpl) }
-            )
-            val pesananScreenVMUiState = pesananViewModel.state.collectAsState().value
-
-            ScreenCheckOut(
-                pesananViewModel = PesananViewModel(PesananRepositoryImpl(db =  FirebaseFirestore.getInstance())),
-                onNavigateToHome = {
-                    navController.popBackStack()
-                    navController.popBackStack()
-                                   },
-                userData = googleAuthUiClient.getSignedInUser()!!,
-            )
-        }
 
         composable(Screen.ScreenPesananAnda.route) {
             PesananAnda(
                 onNavigateToScreen = { navController.navigate(it) }
             )
         }
-        composable(Screen.ScreenLengkapiData.route) {
-            ScreenLengkapiData(
-                onNavigateToScreen = { navController.navigate(it) }
-            )
-        }
-    }
 
+    }
 }
