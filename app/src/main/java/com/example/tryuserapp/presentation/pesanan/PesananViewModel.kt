@@ -92,10 +92,9 @@ class PesananViewModel(
                 setEffect { PesananSideEffects.ShowSnackBarMessage(message = "Update Stok successfully") }
             } catch (e: Exception) {
                 setState(_state.value.copy(isLoading = false, errorMessage = e.localizedMessage))
-                setEffect { PesananSideEffects.ShowSnackBarMessage(e.message ?: "Error fetching users") }
+                setEffect { PesananSideEffects.ShowSnackBarMessage(e.message ?: "Error Stok ") }
             }
         }
     }
-
 
 }
