@@ -23,6 +23,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -35,8 +36,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.tryuserapp.R
+import com.example.tryuserapp.common.BEGIN_QUANTITY_KATALIS
 import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.logic.OrderAction
+import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
 import com.example.tryuserapp.ui.component.QuantityCounter
 import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.Orange
@@ -48,7 +51,16 @@ import com.example.tryuserapp.ui.theme.backGroundScreen
 fun DetailPesanan(
     selectedDetailKatalis: KatalisModel,
     onModifyQuantity: (katalisId : String, OrderAction) -> Unit,
+    selectedQuantityKatalisList: SelectedKatalis?,
+
+    onAddSelectedKatalisList : () -> Unit,
+    onModifySelectedKatalisList : (Int) -> Unit,
+    onRemoveSelectedKatalisListById : (String) -> Unit,
 ){
+    Log.d("Detail Pesanan", "selectedQuantityKatalisList = $selectedQuantityKatalisList")
+    Log.d("Detail Pesanan", "selectedQuantityKatalisList.idKatalis = ${selectedQuantityKatalisList?.idKatalis}")
+    Log.d("Detail Pesanan", "selectedQuantityKatalisList.quantity = ${selectedQuantityKatalisList?.quantity}")
+
     Column(modifier = Modifier
         .fillMaxSize()
         .background(backGroundScreen)
@@ -56,7 +68,7 @@ fun DetailPesanan(
     ) {
         Text(
             modifier = Modifier.fillMaxWidth(),
-            text = "Capcay",
+            text = selectedDetailKatalis.namaKatalis,
             style = TextStyle(
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold,
@@ -122,6 +134,12 @@ fun DetailPesanan(
             QuantityCounter(
                 onQuantityModified = { orderAction ->
                     onModifyQuantity(selectedDetailKatalis.id, orderAction)
+                },
+                selectedQuantityKatalis = selectedQuantityKatalisList?.quantity,
+                onAddSelectedKatalisList = onAddSelectedKatalisList,
+                onModifySelectedKatalisList = onModifySelectedKatalisList,
+                onRemoveSelectedKatalisListById = {
+                    onRemoveSelectedKatalisListById(selectedDetailKatalis.id)
                 }
             )
         }
@@ -143,7 +161,15 @@ fun DetailPesananPreview() {
                 ),
                 onModifyQuantity = { katalisId, orderAction ->
 
-                }
+                },
+                onAddSelectedKatalisList = {},
+                onModifySelectedKatalisList = {},
+                onRemoveSelectedKatalisListById = {},
+
+                selectedQuantityKatalisList = SelectedKatalis(
+                    "",
+                    1
+                )
             )
         }
     }

@@ -147,7 +147,7 @@ fun HomeScreen(
         }
     }
 
-    ButtonKeranjangSmall(onNavigateToScreen)
+//    ButtonKeranjangSmall(onNavigateToScreen)
 }
 
 

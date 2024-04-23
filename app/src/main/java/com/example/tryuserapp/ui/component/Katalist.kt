@@ -28,6 +28,7 @@ import com.example.tryuserapp.R
 import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.logic.OrderAction
 import com.example.tryuserapp.presentation.katalis_screen.KatalisScreenEvent
+import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
 import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
@@ -36,9 +37,15 @@ fun Katalis(
     katalisModel: KatalisModel,
     onNavigateToScreen: (String) -> Unit,
     onKatalisScreenEvent: (KatalisScreenEvent) -> Unit,
+
     selectedQuantityKatalis: Int? = 0,
+    onAddSelectedKatalisList : () -> Unit,
+    onModifySelectedKatalisList : (Int) -> Unit,
+    onRemoveSelectedKatalisListById : () -> Unit,
+
     onModifyQuantity: (katalisId : String, OrderAction) -> Unit,
 ) {
+
     Row (
         modifier = Modifier
             .height(80.dp)
@@ -82,6 +89,10 @@ fun Katalis(
             horizontalArrangement = Arrangement.Absolute.Right
         ) {
             QuantityCounter(
+                selectedQuantityKatalis,
+                onAddSelectedKatalisList,
+                onModifySelectedKatalisList,
+                onRemoveSelectedKatalisListById,
                 onQuantityModified = { orderAction ->
                     onModifyQuantity(katalisModel.id, orderAction)
                 }
@@ -107,6 +118,9 @@ fun KatalisPreview(){
                 onKatalisScreenEvent = {},
                 onModifyQuantity = { katalisId, orderAction ->
                 },
+                onAddSelectedKatalisList = {},
+                onModifySelectedKatalisList = {},
+                onRemoveSelectedKatalisListById = {},
                 selectedQuantityKatalis = null
             )
         }

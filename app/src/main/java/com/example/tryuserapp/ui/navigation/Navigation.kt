@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -23,6 +24,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.tryuserapp.MyApp
+import com.example.tryuserapp.common.BEGIN_QUANTITY_KATALIS
 import com.example.tryuserapp.data.model.CustomerModel
 import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.data.repository.KatalisRepositoryImpl
@@ -64,9 +66,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
 
     val navController = rememberNavController()
 
-    val selectedKatalis by remember {
-        mutableStateOf<ArrayList<SelectedKatalis>>(arrayListOf())
-    }
+    val selectedKatalis = remember { mutableStateListOf<SelectedKatalis>() }
 
     var selectedDetailKatalis by remember {
         mutableStateOf(KatalisModel())
@@ -163,6 +163,12 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
             )
             val pesananScreenVMUiState = pesananViewModel.state.collectAsState().value
 
+            Log.d("Screen Checkout", "Passed here")
+
+            selectedKatalis.toList().forEach {
+                Log.d("Screen Checkout", "selected Katalis List : $it")
+            }
+
             ScreenCheckOut(
                 pesananViewModel = PesananViewModel(
                     PesananRepositoryImpl(db = FirebaseFirestore.getInstance()),
@@ -212,35 +218,33 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
             KatalisScreen(
                 userData = googleAuthUiClient.getSignedInUser(),
                 katalisScreenVMUiState,
-                katalisScreenVMEffectFlow,
                 katalisScreenVM::onEvent,
-                selectedKatalisList = selectedKatalis,
-                onModifyQuantity = { katalisId, orderAction ->
+                onNavigateToScreen = { navController.navigate(it) },
+                onSetSelectedDetailKatalis = { selectedDetailKatalis = it },
+                selectedKatalisList = selectedKatalis
+            ) { katalisId, orderAction ->
 //                    Utility.modifyOrder(selectedKatalis.value, katalisId, orderAction)
 
-                    val existingKatalis = selectedKatalis.firstOrNull { it.idKatalis == katalisId }
+                val existingKatalis = selectedKatalis.firstOrNull { it.idKatalis == katalisId }
 
-                    if (orderAction == OrderAction.INCREMENT) {
-                        if (existingKatalis == null) selectedKatalis.add(
-                            SelectedKatalis(
-                                katalisId,
-                                1
-                            )
+                if (orderAction == OrderAction.INCREMENT) {
+                    if (existingKatalis == null) selectedKatalis.add(
+                        SelectedKatalis(
+                            katalisId,
+                            1
                         )
-                        else existingKatalis.quantity++
-                    }
+                    )
+                    else existingKatalis.quantity++
+                }
 
-                    if (orderAction == OrderAction.DECREMENT) {
-                        if (existingKatalis == null) return@KatalisScreen
-                        if (existingKatalis.quantity - 1 == 0) selectedKatalis.remove(
-                            existingKatalis
-                        )
-                        else existingKatalis.quantity--
-                    }
-                },
-                onSetSelectedDetailKatalis = { selectedDetailKatalis = it },
-                onNavigateToScreen = { navController.navigate(it) }
-            )
+                if (orderAction == OrderAction.DECREMENT) {
+                    if (existingKatalis == null) return@KatalisScreen
+                    if (existingKatalis.quantity - 1 == 0) selectedKatalis.remove(
+                        existingKatalis
+                    )
+                    else existingKatalis.quantity--
+                }
+            }
         }
 
         composable(Screen.HomeScreen.route){
@@ -257,13 +261,31 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                 onNavigateToScreen = { navController.navigate(it) }
             )
         }
+
         composable(Screen.ScreenDetailPesanan.route) {
             DetailPesanan(
                 selectedDetailKatalis = selectedDetailKatalis,
                 onModifyQuantity = { katalisId, orderAction ->
 
+                },
+                onAddSelectedKatalisList = {
+                    selectedKatalis.add(
+                        SelectedKatalis(selectedDetailKatalis.id, BEGIN_QUANTITY_KATALIS)
+                    )
+                },
+                onModifySelectedKatalisList = { modifiedQuantityKatalis ->
+                    selectedKatalis.find { loopedKatalis ->
+                        loopedKatalis.idKatalis == selectedDetailKatalis.id
+                    }?.quantity = modifiedQuantityKatalis
+                },
+                onRemoveSelectedKatalisListById = { removedKatalisId ->
+                    selectedKatalis.removeAll {
+                        it.idKatalis == removedKatalisId
+                    }
+                },
+                selectedQuantityKatalisList = selectedKatalis.find { loopedKatalis ->
+                    loopedKatalis.idKatalis == selectedDetailKatalis.id
                 }
-
             )
         }
 

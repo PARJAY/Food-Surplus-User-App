@@ -32,13 +32,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tryuserapp.R
 import com.example.tryuserapp.logic.OrderAction
+import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 @Composable
 fun QuantityCounter(
+    selectedQuantityKatalis: Int? = 0,
+    onAddSelectedKatalisList : () -> Unit,
+    onModifySelectedKatalisList : (Int) -> Unit,
+    onRemoveSelectedKatalisListById : () -> Unit,
     onQuantityModified: (OrderAction) -> Unit
 ){
-    var itemCounter by remember { mutableIntStateOf(0) }
+    var itemCounter by remember { mutableIntStateOf(selectedQuantityKatalis ?: 0) }
 
     val operatorIconModifier = Modifier
         .border(
@@ -64,9 +69,11 @@ fun QuantityCounter(
             painterResource(R.drawable.vector__2_),
             contentDescription = "",
             modifier = operatorIconModifier.clickable {
-                Log.d("Component", "Quality Counter minus icon Clicked")
-                itemCounter--
-                onQuantityModified(OrderAction.DECREMENT)
+                itemCounter --
+                if (itemCounter <= 0) onRemoveSelectedKatalisListById()
+
+//                Log.d("Component", "Quality Counter minus icon Clicked")
+//                onQuantityModified(OrderAction.DECREMENT)
             }
         )
 
@@ -81,9 +88,17 @@ fun QuantityCounter(
             Icons.Default.Add,
             contentDescription = "",
             modifier = operatorIconModifier.clickable {
-                Log.d("Component", "Quality Counter plus icon Clicked")
-                itemCounter++
-                onQuantityModified(OrderAction.INCREMENT)
+                if (itemCounter == 0) {
+                    onAddSelectedKatalisList()
+                    itemCounter++
+                }
+                else {
+                    itemCounter++
+                    onModifySelectedKatalisList(itemCounter)
+                }
+
+//                Log.d("Component", "Quality Counter plus icon Clicked")
+//                onQuantityModified(OrderAction.INCREMENT)
             }
         )
     }
@@ -99,7 +114,16 @@ fun TambahKurangPreview(){
             QuantityCounter(
                 onQuantityModified = { orderAction ->
 
-                }
+                },
+                onAddSelectedKatalisList = {
+
+                },
+                onModifySelectedKatalisList = {
+
+                },
+                onRemoveSelectedKatalisListById = {
+
+                },
             )
         }
     }

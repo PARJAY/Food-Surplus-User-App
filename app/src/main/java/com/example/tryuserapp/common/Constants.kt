@@ -8,3 +8,5 @@ const val INTERNET_ISSUE = "Please check your internet connection"
 const val CUSTOMER_COLLECTION = "Customer"
 const val HOTEL_COLLECTION = "Hotel"
 
+
+const val BEGIN_QUANTITY_KATALIS = 1
