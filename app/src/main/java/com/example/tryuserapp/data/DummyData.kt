@@ -49,7 +49,7 @@ class DummyData {
             DaftarKatalis(12321,132123,123211,41241232,),
             500f,
             "Gambar",
-            StatusPesanan.MENUNGGU_KONFIRMASI,
+            StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN,
             Calendar.getInstance().time.toString()
         )
         val dummyPesananFlow: List<Pesanan> = listOf(pesanan1, pesanan2, pesanan3)

@@ -153,7 +153,7 @@ fun ScreenCheckOut(
                         DaftarKatalis(12123,323132,1123232,12312232,),
                         500f,
                         "Gambar",
-                        StatusPesanan.MENUNGGU_KONFIRMASI,
+                        StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN,
                         Calendar.getInstance().time.toString()
                     ))
 
