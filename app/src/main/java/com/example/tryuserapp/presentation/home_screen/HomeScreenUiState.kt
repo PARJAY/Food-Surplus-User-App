@@ -1,15 +1,10 @@
 package com.example.tryuserapp.presentation.home_screen
 
-import com.example.tryuserapp.data.model.KatalisModel
+import com.example.tryuserapp.data.model.HotelModel
+import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
 
-data class HomeScreenUiState(
+data class HomeScreenUiState (
     val isLoading: Boolean = false,
-    val katalisList: List<KatalisModel> = emptyList(),
-    val selectedKatalisList: ArrayList<SelectedKatalis> = arrayListOf(),
+    val hotelList: List<HotelModel> = emptyList(),
     val errorMessage: String? = null
-)
-
-data class SelectedKatalis(
-    val idKatalis: String,
-    var quantity: Int
 )

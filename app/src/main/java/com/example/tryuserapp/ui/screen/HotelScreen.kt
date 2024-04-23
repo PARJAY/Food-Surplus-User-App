@@ -1,11 +1,10 @@
 package com.example.tryuserapp.ui.screen
 
-import android.annotation.SuppressLint
 import android.content.res.Configuration
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,37 +28,30 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.tryuserapp.data.model.HotelModel
 import com.example.tryuserapp.data.model.KatalisModel
-import com.example.tryuserapp.logic.OrderAction
+import com.example.tryuserapp.logic.StatusHotel
 import com.example.tryuserapp.presentation.home_screen.HomeScreenEvent
-import com.example.tryuserapp.presentation.home_screen.HomeScreenSideEffects
 import com.example.tryuserapp.presentation.home_screen.HomeScreenUiState
-import com.example.tryuserapp.presentation.home_screen.SelectedKatalis
+import com.example.tryuserapp.presentation.katalis_screen.KatalisScreenEvent
+import com.example.tryuserapp.presentation.katalis_screen.KatalisScreenUiState
 import com.example.tryuserapp.presentation.sign_in.UserData
 import com.example.tryuserapp.ui.component.ButtonKeranjangSmall
 import com.example.tryuserapp.ui.component.ButtonPesananAnda
-import com.example.tryuserapp.ui.component.Katalis
+import com.example.tryuserapp.ui.component.HotelList
 import com.example.tryuserapp.ui.component.SearchBar
 import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.Brown
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 import com.example.tryuserapp.ui.theme.backGroundScreen
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
-@SuppressLint("MutableCollectionMutableState")
 @Composable
 fun HomeScreen(
     userData: UserData?,
     homeScreenUiState: HomeScreenUiState,
-    homeScreenEffectFlow: Flow<HomeScreenSideEffects>,
     onHomeScreenEvent: (HomeScreenEvent) -> Unit,
     onNavigateToScreen : (String) -> Unit,
-    onSetSelectedDetailKatalis : (KatalisModel) -> Unit,
-    selectedKatalisList : ArrayList<SelectedKatalis>,
-    onModifyQuantity: (katalisId : String, OrderAction) -> Unit,
-) {
-
+    ){
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -97,7 +89,7 @@ fun HomeScreen(
 
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Pesan Katalis B",
+                text = "Daftar Hotel",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
@@ -140,20 +132,18 @@ fun HomeScreen(
 //            }
 //        }
 
-        items(homeScreenUiState.katalisList) { katalis ->
-            Katalis(
-                katalisModel = katalis,
-                onNavigateToScreen = {
-                    onSetSelectedDetailKatalis(katalis)
-                    onNavigateToScreen(it)
-                },
-                onHomeScreenEvent,
-                selectedQuantityKatalis = (selectedKatalisList.find {
-                    it.idKatalis == katalis.id
-                })?.quantity ?: 0,
-                onModifyQuantity = onModifyQuantity
-            )
-            Spacer(modifier = Modifier.height(5.dp))
+        items(homeScreenUiState.hotelList) {Hotel ->
+            Column (
+                modifier = Modifier.padding(start = 8.dp)
+            ){
+                HotelList(
+                    hotelModel = Hotel,
+                    onHomeScreenEvent,
+                    onNavigateToScreen
+                )
+                Spacer(modifier = Modifier.height(5.dp))
+            }
+
         }
     }
 
@@ -168,38 +158,40 @@ fun HomeScreen(
 fun HomeScreenPreview() {
     TryUserAppTheme {
         HomeScreen(
-            onNavigateToScreen = {  },
+            userData = null,
             homeScreenUiState = HomeScreenUiState(
-                katalisList = listOf(
-                    KatalisModel(namaKatalis = "Ayam Goreng"),
-                    KatalisModel(namaKatalis = "Mie Goreng"),
-                    KatalisModel(namaKatalis = "Bakso Goreng"),
-                    KatalisModel(namaKatalis = "Bakso Goreng"),
-                    KatalisModel(namaKatalis = "Bakso Goreng"),
+                hotelList = listOf(
+                    HotelModel(
+                        idHotel = "asdasd",
+                        name =  "Ayam Goreng",
+                        phoneNumber = "12313",
+                        email = "dfamksfas",
+                        alamat = "asdad",
+                        listIdKatalis = listOf(""),
+                        statusHotel = StatusHotel.SUDAH_DI_ACC
+                    ),
+                    HotelModel(
+                        idHotel = "asdasd",
+                        name = "Ayam Goreng",
+                        phoneNumber = "12313",
+                        email = "dfamksfas",
+                        alamat = "asdad",
+                        listIdKatalis = listOf(""),
+                        statusHotel = StatusHotel.SUDAH_DI_ACC
+                    ),
+                    HotelModel(
+                        idHotel = "asdasd",
+                        name = "Ayam Goreng",
+                        phoneNumber = "12313",
+                        email = "dfamksfas",
+                        alamat = "asdad",
+                        listIdKatalis = listOf(""),
+                        statusHotel = StatusHotel.SUDAH_DI_ACC
+                    ),
                 )
             ),
-            homeScreenEffectFlow = flow {
-                emit(HomeScreenSideEffects.ShowSnackBarMessage("this is a snackbar message"))
-            },
             onHomeScreenEvent = {},
-            userData = null,
-            onSetSelectedDetailKatalis = {
-
-            },
-            selectedKatalisList = arrayListOf(),
-            onModifyQuantity = { katalisId, orderAction ->
-
-            }
+            onNavigateToScreen = { },
         )
-//        Surface {
-//            HomeScreen(
-//                navController = rememberNavController(),
-//                homeScreenVMUiState = HomeScreenUiState(),
-//                homeScreenVMEffectFlow = flow {
-//                    emit(HomeScreenSideEffects.ShowSnackBarMessage("this is a snackbar message"))
-//                },
-//                onHomeScreenEvent = {}
-//            )
-//        }
     }
 }

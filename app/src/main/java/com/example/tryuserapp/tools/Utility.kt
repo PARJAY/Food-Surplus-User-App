@@ -1,10 +1,7 @@
 package com.example.tryuserapp.tools
 
-import android.util.Log
-import androidx.lifecycle.viewModelScope
 import com.example.tryuserapp.logic.OrderAction
-import com.example.tryuserapp.presentation.home_screen.SelectedKatalis
-import kotlinx.coroutines.launch
+import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
 
 class Utility {
     companion object {

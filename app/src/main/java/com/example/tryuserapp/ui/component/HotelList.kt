@@ -8,7 +8,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -25,20 +24,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tryuserapp.R
-import com.example.tryuserapp.data.model.KatalisModel
-import com.example.tryuserapp.logic.OrderAction
+import com.example.tryuserapp.data.model.HotelModel
+import com.example.tryuserapp.logic.StatusHotel
+import com.example.tryuserapp.presentation.home_screen.HomeScreenEvent
 import com.example.tryuserapp.presentation.katalis_screen.KatalisScreenEvent
 import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 @Composable
-fun Katalis(
-    katalisModel: KatalisModel,
+fun HotelList(
+    hotelModel: HotelModel,
+    onHomeScreenEvent: (HomeScreenEvent) -> Unit,
     onNavigateToScreen: (String) -> Unit,
-    onKatalisScreenEvent: (KatalisScreenEvent) -> Unit,
-    selectedQuantityKatalis: Int? = 0,
-    onModifyQuantity: (katalisId : String, OrderAction) -> Unit,
-) {
+){
     Row (
         modifier = Modifier
             .height(80.dp)
@@ -47,10 +45,12 @@ fun Katalis(
                 BorderStroke(1.dp, Color.Black),
                 shape = RoundedCornerShape(16.dp)
             )
+            .padding(bottom = 8.dp)
             .clickable {
-                onNavigateToScreen(Screen.ScreenDetailPesanan.route)
+                onNavigateToScreen(Screen.KatalisScreen.route)
             },
-        horizontalArrangement = Arrangement.Absolute.Right
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Absolute.Left
     ){
         Image(
             painter = painterResource(id = R.drawable.ic_launcher_background),
@@ -62,55 +62,38 @@ fun Katalis(
         )
         Column(modifier = Modifier.padding(end = 0.dp)) {
             Text(
-                text = katalisModel.namaKatalis,
+                text = hotelModel.name,
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
                 modifier = Modifier.padding(start = 16.dp, top = 5.dp)
             )
             Text(
-                text = "${katalisModel.hargaJual}/${katalisModel.porsiJual}",
+                text = hotelModel.alamat,
                 fontSize = 16.sp,
                 modifier = Modifier.padding(start = 16.dp)
             )
         }
-
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(end = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Absolute.Right
-        ) {
-            QuantityCounter(
-                onQuantityModified = { orderAction ->
-                    onModifyQuantity(katalisModel.id, orderAction)
-                }
-            )
-        }
     }
 }
-
 
 @Preview(showBackground = true)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
-fun KatalisPreview(){
+fun HotelListPreview(){
     TryUserAppTheme {
         Surface {
-            Katalis(
-                katalisModel = KatalisModel(
-                    namaKatalis = "Capcay",
-                    hargaJual = 10000f,
-                    porsiJual = "100 gram"
+            HotelList(
+                hotelModel = HotelModel(
+                    idHotel = "dasd",
+                    name = "Hotel Gilang",
+                    phoneNumber = "1231132",
+                    email = "hotelgilang@gmail.com",
+                    listIdKatalis = listOf(""),
+                    statusHotel = StatusHotel.SUDAH_DI_ACC
                 ),
-                onNavigateToScreen = {},
-                onKatalisScreenEvent = {},
-                onModifyQuantity = { katalisId, orderAction ->
-                },
-                selectedQuantityKatalis = null
+                onHomeScreenEvent = {},
+              onNavigateToScreen = {}
             )
         }
     }
 }
-
-

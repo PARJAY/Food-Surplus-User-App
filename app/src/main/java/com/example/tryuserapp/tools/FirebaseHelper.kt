@@ -1,10 +1,13 @@
 package com.example.tryuserapp.tools
 
 import android.net.Uri
+import android.os.StrictMode
 import android.util.Log
 import com.example.tryuserapp.MyApp
 import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.data.model.CustomerModel
+import com.example.tryuserapp.data.model.HotelModel
+import com.example.tryuserapp.logic.StatusHotel
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QueryDocumentSnapshot
 
@@ -18,7 +21,7 @@ class FirebaseHelper {
             )
         }
 
-        fun fetchSnapshotToKatalisModel(queryDocumentSnapshot: QueryDocumentSnapshot): KatalisModel {
+        fun fetchSnapshotToKatalisModel(queryDocumentSnapshot: DocumentSnapshot): KatalisModel {
             val komposisi = queryDocumentSnapshot.getString("idHotel") ?: ""
             val hargaAwal = queryDocumentSnapshot.getLong("hargaAwal")?.toFloat() ?: 0.0f
 
@@ -35,6 +38,25 @@ class FirebaseHelper {
                 hargaAwal = queryDocumentSnapshot.getLong("hargaAwal")?.toFloat() ?: 0.0f,
                 hargaJual = queryDocumentSnapshot.getLong("hargaJual")?.toFloat() ?: 0.0f,
                 porsiJual = queryDocumentSnapshot.getString("porsiJual") ?: "",
+            )
+        }
+        fun fetchSnapshotToHotelModel(queryDocumentSnapshot: QueryDocumentSnapshot): HotelModel {
+
+            val statusHotelQS = queryDocumentSnapshot.getLong("statusHotel")?.toInt()
+            var statusHotel : StatusHotel = StatusHotel.DECLINED
+
+            if (statusHotelQS == 0)  statusHotel = StatusHotel.WAITING
+            else if (statusHotelQS == 1 ) statusHotel = StatusHotel.SUDAH_DI_ACC
+            else if (statusHotelQS == 2 ) statusHotel = StatusHotel.DECLINED
+
+            return HotelModel(
+                idHotel = queryDocumentSnapshot.id,
+                name =  queryDocumentSnapshot.getString("name") ?: "",
+                phoneNumber = queryDocumentSnapshot.getString("phoneNumber") ?: "",
+                email = queryDocumentSnapshot.getString("email")?: "",
+                alamat = queryDocumentSnapshot.getString("alamat")?: "" ,
+                listIdKatalis = queryDocumentSnapshot.getString("katalis")?.split(",") ?: emptyList(),
+                statusHotel = statusHotel
             )
         }
 

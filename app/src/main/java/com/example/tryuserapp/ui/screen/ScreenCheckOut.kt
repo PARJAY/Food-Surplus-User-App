@@ -37,6 +37,8 @@ import com.example.tryuserapp.presentation.pesanan.PesananViewModel
 import com.example.tryuserapp.logic.StatusPesanan
 import com.example.tryuserapp.data.model.DaftarKatalis
 import com.example.tryuserapp.data.model.Pesanan
+import com.example.tryuserapp.data.repository.KatalisRepositoryImpl
+import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
 import com.example.tryuserapp.presentation.pesanan.PesananRepositoryImpl
 import com.example.tryuserapp.presentation.sign_in.UserData
 import com.example.tryuserapp.tools.FirebaseHelper.Companion.uploadImageToFirebaseStorage
@@ -150,11 +152,15 @@ fun ScreenCheckOut(
                         3112323,
                         50031211,
                         1500213452,
-                        DaftarKatalis(12123,323132,1123232,12312232,),
+                        DaftarKatalis(12123,323132,"1123232",12312232,),
                         500f,
                         "Gambar",
                         StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN,
                         Calendar.getInstance().time.toString()
+                    ))
+
+                    pesananViewModel.decrementStok(SelectedKatalis(
+                        "RTrok9tDlzWKhaXVMkqQ", 1
                     ))
 
                     onNavigateToHome()
@@ -175,7 +181,10 @@ fun ScreenCheckOutPreview() {
         Surface {
             ScreenCheckOut(
                 onNavigateToHome = {},
-                PesananViewModel(PesananRepositoryImpl(db =  FirebaseFirestore.getInstance())),
+                PesananViewModel(
+                    PesananRepositoryImpl(db =  FirebaseFirestore.getInstance()),
+                    KatalisRepositoryImpl(db = FirebaseFirestore.getInstance())
+                ),
                 UserData()
             )
         }

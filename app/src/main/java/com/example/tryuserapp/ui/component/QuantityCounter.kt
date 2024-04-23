@@ -27,13 +27,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tryuserapp.R
 import com.example.tryuserapp.logic.OrderAction
-import com.example.tryuserapp.presentation.home_screen.HomeScreenEvent
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 @Composable
