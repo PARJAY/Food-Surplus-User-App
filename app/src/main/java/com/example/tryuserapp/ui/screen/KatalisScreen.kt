@@ -56,9 +56,7 @@ fun KatalisScreen(
     onKatalisScreenEvent: (KatalisScreenEvent) -> Unit,
     onNavigateToScreen: (String) -> Unit,
     onSetSelectedDetailKatalis: (KatalisModel) -> Unit,
-
     selectedKatalisList: SnapshotStateList<SelectedKatalis>,
-
     onModifyQuantity: (katalisId: String, OrderAction) -> Unit,
 ) {
     LazyColumn(

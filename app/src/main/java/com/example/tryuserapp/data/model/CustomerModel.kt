@@ -6,3 +6,8 @@ data class CustomerModel (
     val address : String = "",
     val phone_number : String = ""
 )
+data class EditedCustomerModel (
+    val id : String = "",
+    val address : String = "",
+    val phone_number : String = ""
+)

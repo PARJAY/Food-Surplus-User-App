@@ -37,6 +37,7 @@ import com.example.tryuserapp.presentation.pesanan.PesananViewModel
 import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
 import com.example.tryuserapp.presentation.sign_in.GoogleAuthUiClient
 import com.example.tryuserapp.presentation.sign_in.SignInViewModel
+import com.example.tryuserapp.presentation.sign_in.UserData
 import com.example.tryuserapp.presentation.viewModelFactory
 import com.example.tryuserapp.ui.screen.DetailPesanan
 import com.example.tryuserapp.ui.screen.HomeScreen
@@ -161,7 +162,13 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
         composable(Screen.ScreenLengkapiData.route) {
 
             ScreenLengkapiData(
-                onNavigateToScreen = { navController.navigate(it) }
+                onNavigateToScreen = { navController.navigate(it) },
+                userData = googleAuthUiClient.getSignedInUser(),
+                customerModel = CustomerModel(),
+                customerViewModel = CustomerViewModel(
+                    MyApp.appModule.customerRepositoryImpl,
+                    googleAuthUiClient.getSignedInUser()!!.userId
+                )
             )
         }
 
