@@ -29,14 +29,14 @@ fun CustomerItem(customer : CustomerModel) {
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    MaterialTheme {
-        CustomerListScreen(
-            CustomerState(DummyData.dummyCustomerModelFlow[0]),
-            onEvent = {}
-        )
-    }
-}
+//
+//@Preview(showBackground = true)
+//@Composable
+//fun DefaultPreview() {
+//    MaterialTheme {
+//        CustomerListScreen(
+//            CustomerState(DummyData.dummyCustomerModelFlow[0]),
+//            onEvent = {}
+//        )
+//    }
+//}

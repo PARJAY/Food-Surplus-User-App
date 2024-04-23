@@ -1,6 +1,5 @@
 package com.example.tryuserapp.ui.screen
 
-import android.content.res.Configuration
 import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -18,7 +17,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,26 +28,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.tryuserapp.presentation.pesanan.PesananViewModel
-import com.example.tryuserapp.logic.StatusPesanan
 import com.example.tryuserapp.data.model.DaftarKatalis
 import com.example.tryuserapp.data.model.Pesanan
-import com.example.tryuserapp.data.repository.KatalisRepositoryImpl
+import com.example.tryuserapp.logic.StatusPesanan
 import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
-import com.example.tryuserapp.presentation.pesanan.PesananRepositoryImpl
+import com.example.tryuserapp.presentation.pesanan.PesananViewModel
 import com.example.tryuserapp.presentation.sign_in.UserData
 import com.example.tryuserapp.tools.FirebaseHelper.Companion.uploadImageToFirebaseStorage
 import com.example.tryuserapp.ui.component.DiantarAtauAmbil
 import com.example.tryuserapp.ui.component.Pembayaran
 import com.example.tryuserapp.ui.component.RingkasanPesanan
 import com.example.tryuserapp.ui.theme.Brown
-import com.example.tryuserapp.ui.theme.TryUserAppTheme
 import com.example.tryuserapp.ui.theme.backGroundScreen
 import com.google.android.gms.maps.model.LatLng
-import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Calendar
 
 @Composable
