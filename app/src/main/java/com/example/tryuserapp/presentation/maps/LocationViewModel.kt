@@ -2,6 +2,7 @@ package com.example.tryuserapp.presentation.maps
 
 import android.annotation.SuppressLint
 import android.location.Geocoder
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -17,8 +18,9 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.PlacesClient
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
-class LocationViewModel: ViewModel() {
+class LocationViewModel : ViewModel() {
     lateinit var fusedLocationClient: FusedLocationProviderClient
     lateinit var placesClient: PlacesClient
     lateinit var geoCoder: Geocoder

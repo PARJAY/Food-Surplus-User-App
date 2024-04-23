@@ -183,11 +183,11 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
             )
             val pesananScreenVMUiState = pesananViewModel.state.collectAsState().value
 
-            Log.d("Screen Checkout", "Passed here")
-
-            selectedKatalis.toList().forEach {
-                Log.d("Screen Checkout", "selected Katalis List : $it")
-            }
+//            Log.d("Screen Checkout", "Passed here")
+//
+//            selectedKatalis.toList().forEach {
+//                Log.d("Screen Checkout", "selected Katalis List : $it")
+//            }
 
             ScreenCheckOut(
                 pesananViewModel = PesananViewModel(
@@ -320,11 +320,11 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
         }
         composable(Screen.MapsScreen.route) {
             MapsScreen(
-                onSelectedLocation = { alamatByName, alamatByGeolocation ->
+                onButtonSelectLocationClick = { alamatByName, alamatByGeolocation ->
                     navAlamatByName = alamatByName
                     navAlamatByGeolocation = alamatByGeolocation
-                },
-                onNavigateToScreen = {navController.popBackStack()}
+                    navController.popBackStack()
+                }
             )
         }
 
