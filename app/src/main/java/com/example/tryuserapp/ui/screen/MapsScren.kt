@@ -37,7 +37,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -46,7 +45,6 @@ import com.example.tryuserapp.BuildConfig
 import com.example.tryuserapp.R
 import com.example.tryuserapp.presentation.maps.LocationState
 import com.example.tryuserapp.presentation.maps.LocationViewModel
-import com.example.tryuserapp.ui.navigation.Screen
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.android.gms.common.api.ResolvableApiException
@@ -62,14 +60,12 @@ import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.launch
-import kotlin.math.log
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MapsScreen(
     viewModel: LocationViewModel = LocationViewModel(),
-    onSelectedLocation : (alamatByName : String, alamatByGeolocation : LatLng) -> Unit,
-    onNavigateToScreen : () -> Unit
+    onButtonSelectLocationClick : (alamatByName : String, alamatByGeolocation : LatLng) -> Unit
 ) {
     val context = LocalContext.current
     val activity = LocalContext.current as Activity
@@ -84,7 +80,6 @@ fun MapsScreen(
             Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION
         )
     )
-
 
     LaunchedEffect(locationPermissionState.allPermissionsGranted) {
         if (locationPermissionState.allPermissionsGranted) {
@@ -176,7 +171,6 @@ fun MapsScreen(
                             .align(Alignment.BottomCenter)
                             .padding(8.dp)
                             .fillMaxWidth(),
-                        color = Color.White,
                         shape = RoundedCornerShape(8.dp)
                     ) {
                         Column(
@@ -216,13 +210,15 @@ fun MapsScreen(
                                     .fillMaxWidth()
                                     .padding(8.dp)
                             )
-                            Button(onClick = {
-                                Log.d("LocationByAlamat", "${viewModel.text}")
-                                Log.d("LocationByGeolokasi", "${viewModel.currentLatLong}")
-                                onSelectedLocation(viewModel.text, viewModel.currentLatLong)
-                                onNavigateToScreen()
-                            }) {
-
+                            Button (
+                                modifier = Modifier.fillMaxWidth(),
+                                onClick = {
+                                    Log.d("LocationByAlamat", viewModel.text)
+                                    Log.d("LocationByGeolokasi", "${viewModel.currentLatLong}")
+                                    onButtonSelectLocationClick(viewModel.text, viewModel.currentLatLong)
+                                }
+                            ) {
+                                Text(text = "Pilih Lokasi")
                             }
                         }
                     }

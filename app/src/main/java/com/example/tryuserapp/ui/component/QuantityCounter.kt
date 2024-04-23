@@ -69,6 +69,7 @@ fun QuantityCounter(
             painterResource(R.drawable.vector__2_),
             contentDescription = "",
             modifier = operatorIconModifier.clickable {
+                if (itemCounter - 1 == 0) return@clickable
                 itemCounter --
                 if (itemCounter <= 0) onRemoveSelectedKatalisListById()
 
