@@ -2,7 +2,6 @@ package com.example.tryuserapp.presentation.maps
 
 import android.annotation.SuppressLint
 import android.location.Geocoder
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -18,7 +17,6 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.PlacesClient
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 
 class LocationViewModel : ViewModel() {
     lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -55,9 +53,7 @@ class LocationViewModel : ViewModel() {
         val placeFields = listOf(Place.Field.LAT_LNG)
         val request = FetchPlaceRequest.newInstance(result.placeId, placeFields)
         placesClient.fetchPlace(request).addOnSuccessListener {
-            if (it != null) {
-                currentLatLong = it.place.latLng!!
-            }
+            if (it != null) currentLatLong = it.place.latLng!!
         }.addOnFailureListener {
             it.printStackTrace()
         }
@@ -69,9 +65,9 @@ class LocationViewModel : ViewModel() {
         fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
             .addOnSuccessListener { location ->
                 locationState =
-                    if (location == null && locationState !is LocationState.LocationAvailable) {
+                    if (location == null && locationState !is LocationState.LocationAvailable)
                         LocationState.Error
-                    } else {
+                    else {
                         currentLatLong = LatLng(location.latitude, location.longitude)
                         LocationState.LocationAvailable(
                             LatLng(

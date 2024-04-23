@@ -61,7 +61,7 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun MapsScreen(
     viewModel: LocationViewModel = LocationViewModel(),
@@ -83,11 +83,8 @@ fun MapsScreen(
 
     LaunchedEffect(locationPermissionState.allPermissionsGranted) {
         if (locationPermissionState.allPermissionsGranted) {
-            if (locationEnabled(activity)) {
-                viewModel.getCurrentLocation()
-            } else {
-                viewModel.locationState = LocationState.LocationDisabled
-            }
+            if (locationEnabled(activity)) viewModel.getCurrentLocation()
+            else viewModel.locationState = LocationState.LocationDisabled
         }
     }
 

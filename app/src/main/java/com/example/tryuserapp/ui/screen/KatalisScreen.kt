@@ -134,9 +134,14 @@ fun KatalisScreen(
                 selectedQuantityKatalis = (selectedKatalisList.find {
                     it.idKatalis == katalis.id
                 })?.quantity ?: 0,
+
                 onAddSelectedKatalisList = {
                     selectedKatalisList.add(
-                        SelectedKatalis(katalis.id, BEGIN_QUANTITY_KATALIS)
+                        SelectedKatalis(
+                            katalis.id, BEGIN_QUANTITY_KATALIS,
+                            namaKatalis = katalis.namaKatalis,
+                            hargaKatalis = katalis.hargaJual
+                        )
                     )
 
                     Log.d("Katalis Screen", "Added Katalis with id ${katalis.id}")

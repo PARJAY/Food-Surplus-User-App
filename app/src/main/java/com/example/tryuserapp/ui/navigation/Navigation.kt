@@ -176,11 +176,11 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
             )
             val pesananScreenVMUiState = pesananViewModel.state.collectAsState().value
 
-//            Log.d("Screen Checkout", "Passed here")
-//
-//            selectedKatalis.toList().forEach {
-//                Log.d("Screen Checkout", "selected Katalis List : $it")
-//            }
+            Log.d("Screen Checkout", "Passed here")
+
+            selectedKatalis.toList().forEach {
+                Log.d("Screen Checkout", "selected Katalis List : $it")
+            }
 
             ScreenCheckOut(
                 pesananViewModel = PesananViewModel(
@@ -286,7 +286,12 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                 },
                 onAddSelectedKatalisList = {
                     selectedKatalis.add(
-                        SelectedKatalis(selectedDetailKatalis.id, BEGIN_QUANTITY_KATALIS)
+                        SelectedKatalis(
+                            selectedDetailKatalis.id,
+                            BEGIN_QUANTITY_KATALIS,
+                            namaKatalis = selectedDetailKatalis.namaKatalis,
+                            hargaKatalis = selectedDetailKatalis.hargaJual
+                        )
                     )
                 },
                 onModifySelectedKatalisList = { modifiedQuantityKatalis ->

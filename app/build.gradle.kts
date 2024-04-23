@@ -120,4 +120,8 @@ dependencies {
     implementation("com.google.android.libraries.places:places:3.4.0")
 
     implementation("androidx.appcompat:appcompat:1.6.1")
+
+    // retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 }
