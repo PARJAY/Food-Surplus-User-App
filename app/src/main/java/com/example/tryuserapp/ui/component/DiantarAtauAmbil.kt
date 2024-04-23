@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -29,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 
@@ -39,7 +41,10 @@ data class Toggleableinfo(
     val extretextview : Boolean,
 )
 @Composable
-fun DiantarAtauAmbil(){
+fun DiantarAtauAmbil(
+    onNavigateToScreen : (String) -> Unit,
+    alamatByName : String
+){
     var Alamat by remember {
         mutableStateOf("")
     }
@@ -110,19 +115,27 @@ fun DiantarAtauAmbil(){
                 DropDownYayasan()
             }
             if (!radioButtons[0].isChecked == true){
+
+                Button(onClick = { onNavigateToScreen(Screen.MapsScreen.route) }) {
+                    Text(text = "Pilih Lokasi")
+                }
+                Text(text = alamatByName)
 //        display input text Alamat
-                TextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    value = Alamat,
-                    onValueChange = {
-                            newValue ->
-                        Alamat = newValue
-                    },
-                    readOnly = false,
-                    label = { Text("alamat") }
-                )
+// //               TextField(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .clickable {
+//                            onNavigateToScreen(Screen.MapsScreen.route)
+//                        }
+//                        .padding(16.dp),
+//                    value = Alamat,
+//                    onValueChange = {
+//                            newValue ->
+//                        Alamat = newValue
+//                    },
+//                    readOnly = false,
+//                    label = { Text("alamat") }
+//                )
             }
         }
     }
@@ -134,7 +147,9 @@ fun DiantarAtauAmbil(){
 fun RadioButtonsPreview(){
     TryUserAppTheme {
         Surface {
-            DiantarAtauAmbil()
+            DiantarAtauAmbil(onNavigateToScreen = {},
+                alamatByName = String()
+            )
         }
     }
 }

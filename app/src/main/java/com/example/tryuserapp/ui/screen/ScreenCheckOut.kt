@@ -48,14 +48,19 @@ import com.example.tryuserapp.ui.component.RingkasanPesanan
 import com.example.tryuserapp.ui.theme.Brown
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 import com.example.tryuserapp.ui.theme.backGroundScreen
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Calendar
 
 @Composable
 fun ScreenCheckOut(
     onNavigateToHome : () -> Unit,
+    onNavigateToScreen : (String) -> Unit,
     pesananViewModel: PesananViewModel,
     userData :UserData,
+    alamatByName : String,
+    alamatByGeolocation : LatLng,
+
 ){
     val context = LocalContext.current
 
@@ -102,7 +107,10 @@ fun ScreenCheckOut(
             Spacer(modifier = Modifier.height(5.dp))
             Column {
                 Spacer(modifier = Modifier.height(10.dp))
-                DiantarAtauAmbil()
+                DiantarAtauAmbil(
+                    onNavigateToScreen,
+                    alamatByName = alamatByName
+                )
                 Spacer(modifier = Modifier.height(10.dp))
                 RingkasanPesanan()
                 Spacer(modifier = Modifier.height(10.dp))
@@ -173,20 +181,23 @@ fun ScreenCheckOut(
 }
 
 
-@Preview(showBackground = true)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
-@Composable
-fun ScreenCheckOutPreview() {
-    TryUserAppTheme {
-        Surface {
-            ScreenCheckOut(
-                onNavigateToHome = {},
-                PesananViewModel(
-                    PesananRepositoryImpl(db =  FirebaseFirestore.getInstance()),
-                    KatalisRepositoryImpl(db = FirebaseFirestore.getInstance())
-                ),
-                UserData()
-            )
-        }
-    }
-}
+//@Preview(showBackground = true)
+//@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+//@Composable
+//fun ScreenCheckOutPreview() {
+//    TryUserAppTheme {
+//        Surface {
+//            ScreenCheckOut(
+//                onNavigateToHome = {},
+//                onNavigateToScreen = {},
+//                PesananViewModel(
+//                    PesananRepositoryImpl(db =  FirebaseFirestore.getInstance()),
+//                    KatalisRepositoryImpl(db = FirebaseFirestore.getInstance())
+//                ),
+//                UserData(),
+//                alamatByName = (),
+//                alamatByGeolocation = (0.0,0.0)
+//            )
+//        }
+//    }
+//}

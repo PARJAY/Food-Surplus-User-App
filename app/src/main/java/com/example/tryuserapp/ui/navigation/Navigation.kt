@@ -39,12 +39,16 @@ import com.example.tryuserapp.presentation.viewModelFactory
 import com.example.tryuserapp.ui.screen.DetailPesanan
 import com.example.tryuserapp.ui.screen.HomeScreen
 import com.example.tryuserapp.ui.screen.KatalisScreen
+import com.example.tryuserapp.ui.screen.LocationGpsScreen
+import com.example.tryuserapp.ui.screen.MapsScreen
 import com.example.tryuserapp.ui.screen.PesananAnda
 import com.example.tryuserapp.ui.screen.ProfileScreen
 import com.example.tryuserapp.ui.screen.ScreenCheckOut
 import com.example.tryuserapp.ui.screen.ScreenLengkapiData
 import com.example.tryuserapp.ui.screen.ScreenLogin
+import com.example.tryuserapp.ui.screen.TrackUserLocationScreen
 import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 
@@ -70,6 +74,15 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
 
     var selectedDetailKatalis by remember {
         mutableStateOf(KatalisModel())
+    }
+
+    var navAlamatByName by remember {
+        mutableStateOf("")
+    }
+
+    var navAlamatByGeolocation by remember {
+
+        mutableStateOf(LatLng(0.0, 0.0))
     }
 
     NavHost(navController, startDestination = Screen.ScreenLogin.route) {
@@ -173,6 +186,9 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                     navController.popBackStack()
                 },
                 userData = googleAuthUiClient.getSignedInUser()!!,
+                onNavigateToScreen = {navController.navigate(it) },
+                alamatByName = navAlamatByName,
+                alamatByGeolocation = navAlamatByGeolocation
             )
         }
 
@@ -272,6 +288,27 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
             PesananAnda(
                 onNavigateToScreen = { navController.navigate(it) }
             )
+        }
+        composable(Screen.MapsScreen.route) {
+            MapsScreen(
+                onSelectedLocation = { alamatByName, alamatByGeolocation ->
+                    navAlamatByName = alamatByName
+                    navAlamatByGeolocation = alamatByGeolocation
+                },
+                onNavigateToScreen = {navController.popBackStack()}
+            )
+        }
+
+        composable(Screen.TrackUserLocationScreen.route) {
+            TrackUserLocationScreen(
+                onPermissionGranted = {},
+                onPermissionDenied = {},
+                onPermissionsRevoked = {}
+            )
+        }
+
+        composable(Screen.LocationGpsScreen.route) {
+            LocationGpsScreen()
         }
 
     }
