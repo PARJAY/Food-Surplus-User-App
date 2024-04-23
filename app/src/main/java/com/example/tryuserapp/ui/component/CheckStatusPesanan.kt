@@ -83,7 +83,7 @@ fun CheckStatusPesanan(StatusPhoto : Int, statusPesanan: StatusPesanan){
                 text =
                 when (statusPesanan) {
                     StatusPesanan.SEDANG_DIANTAR-> "Sedang Diantarkan"
-                    StatusPesanan.MENUNGGU_KONFIRMASI -> "Sedang Memesan"
+                    StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN -> "Sedang Memesan"
                     StatusPesanan.PESANAN_TERKONFIRMASI -> "Sedang Memesan"
                     StatusPesanan.PESANAN_SAMPAI -> "Sedang Memesan"
                     else -> "Unknown Error"
@@ -137,7 +137,7 @@ fun StatusPesananPreview(){
 fun StatusPesananPreview2(){
     TryUserAppTheme {
         Surface {
-            CheckStatusPesanan(R.drawable.sedang_dipesan, StatusPesanan.MENUNGGU_KONFIRMASI)
+            CheckStatusPesanan(R.drawable.sedang_dipesan, StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN)
         }
     }
 }

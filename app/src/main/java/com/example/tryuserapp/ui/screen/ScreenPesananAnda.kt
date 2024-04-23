@@ -54,7 +54,7 @@ fun PesananAnda(onNavigateToScreen : (String) -> Unit) {
             ){
                 CheckStatusPesanan(R.drawable.otw, StatusPesanan.SEDANG_DIANTAR)
                 Spacer(modifier = Modifier.height(8.dp))
-                CheckStatusPesanan(R.drawable.sedang_dipesan, StatusPesanan.MENUNGGU_KONFIRMASI)
+                CheckStatusPesanan(R.drawable.sedang_dipesan, StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN)
                 Spacer(modifier = Modifier.height(8.dp))
                 CheckStatusPesanan(R.drawable.sudah_sampai, StatusPesanan.PESANAN_SAMPAI)
             }
