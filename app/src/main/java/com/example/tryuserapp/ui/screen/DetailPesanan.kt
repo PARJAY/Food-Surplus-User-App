@@ -50,7 +50,6 @@ import com.example.tryuserapp.ui.theme.backGroundScreen
 
 fun DetailPesanan(
     selectedDetailKatalis: KatalisModel,
-    onModifyQuantity: (katalisId : String, OrderAction) -> Unit,
     selectedQuantityKatalisList: SelectedKatalis?,
 
     onAddSelectedKatalisList : () -> Unit,
@@ -132,9 +131,6 @@ fun DetailPesanan(
 
             // TODO : change later
             QuantityCounter(
-                onQuantityModified = { orderAction ->
-                    onModifyQuantity(selectedDetailKatalis.id, orderAction)
-                },
                 selectedQuantityKatalis = selectedQuantityKatalisList?.quantity,
                 onAddSelectedKatalisList = onAddSelectedKatalisList,
                 onModifySelectedKatalisList = onModifySelectedKatalisList,
@@ -160,16 +156,14 @@ fun DetailPesananPreview() {
                 KatalisModel(
 
                 ),
-                onModifyQuantity = { katalisId, orderAction ->
-
-                },
                 onAddSelectedKatalisList = {},
                 onModifySelectedKatalisList = {},
                 onRemoveSelectedKatalisListById = {},
 
                 selectedQuantityKatalisList = SelectedKatalis(
                     "",
-                    1
+                    1,
+                    stokKatalis = 0
                 )
             )
         }

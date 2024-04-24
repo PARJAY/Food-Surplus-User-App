@@ -44,14 +44,15 @@ import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.Brown
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 import com.example.tryuserapp.ui.theme.backGroundScreen
+import com.google.android.gms.maps.model.LatLng
 
 @Composable
 fun HomeScreen(
     userData: UserData?,
     homeScreenUiState: HomeScreenUiState,
-    onHomeScreenEvent: (HomeScreenEvent) -> Unit,
     onNavigateToScreen : (String) -> Unit,
-    ){
+    onSelectHotel : (idHotel : String, geolocationHotel : String) -> Unit,
+) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -114,40 +115,23 @@ fun HomeScreen(
 
         }
 
-//        homeScreenUiState.katalisList.forEach { katalis ->
-//            item {
-//                Katalis(
-//                    katalisModel = katalis,
-//                    onNavigateToScreen = {
-//                        onSetSelectedDetailKatalis(katalis)
-//                        onNavigateToScreen(it)
-//                    },
-//                    onHomeScreenEvent,
-//                    selectedQuantityKatalis = (selectedKatalisList.find {
-//                        it.idKatalis == katalis.id
-//                    })?.quantity ?: 0,
-//                    onModifyQuantity = onModifyQuantity
-//                )
-//                Spacer(modifier = Modifier.height(5.dp))
-//            }
-//        }
-
-        items(homeScreenUiState.hotelList) {Hotel ->
-            Column (
-                modifier = Modifier.padding(start = 8.dp)
-            ){
+        items(homeScreenUiState.hotelList) {hotel ->
+            Column (modifier = Modifier.padding(start = 8.dp)) {
                 HotelList(
-                    hotelModel = Hotel,
-                    onHomeScreenEvent,
-                    onNavigateToScreen
+                    hotelModel = hotel,
+                    onNavigateToScreen = {
+                        onNavigateToScreen(it)
+                        onSelectHotel(
+                            hotel.idHotel,
+                            hotel.alamat
+                        )
+                    }
                 )
                 Spacer(modifier = Modifier.height(5.dp))
             }
 
         }
     }
-
-//    ButtonKeranjangSmall(onNavigateToScreen)
 }
 
 
@@ -190,8 +174,10 @@ fun HomeScreenPreview() {
                     ),
                 )
             ),
-            onHomeScreenEvent = {},
             onNavigateToScreen = { },
+            onSelectHotel = { idHotel, geolocationHotel ->  
+                
+            }
         )
     }
 }

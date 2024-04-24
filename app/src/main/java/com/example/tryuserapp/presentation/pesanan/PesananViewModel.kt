@@ -3,7 +3,6 @@ package com.example.tryuserapp.presentation.pesanan
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tryuserapp.data.model.DaftarKatalis
-import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.data.model.Pesanan
 import com.example.tryuserapp.data.repository.KatalisRepositoryImpl
 import com.example.tryuserapp.presentation.katalis_screen.KatalisScreenUiState
@@ -56,27 +55,55 @@ class PesananViewModel(
 //                    transaksiRepository.insertTransaksi(event.transaksi)
 //                }
 //            }
-            is PesananEvent.CreatePesanan -> createPesanan(event.pesanan)
+            is PesananEvent.CreatePesanan -> {
+//                createPesanan(event.pesanan)
+            }
 
         }
     }
 
-     fun createPesanan(newPesanan: Pesanan) {
+     fun createPesanan(
+         newPesanan: Pesanan,
+         newDaftarKatalis: DaftarKatalis
+     ) {
         viewModelScope.launch {
             setState(_state.value.copy(isLoading = true))
 
             try {
-                pesananRepositoryImpl.insertTransaksi(newPesanan)
+                var createdDocumentId = ""
+                pesananRepositoryImpl.insertDaftarKatalis(
+                    newDaftarKatalis,
+                    createdDocumentId = {
+                        createdDocumentId = it
+                    }
+                )
+
+                pesananRepositoryImpl.insertPesanan(
+                    Pesanan(
+                        newPesanan.id_customer,
+                        newPesanan.id_hotel,
+                        newPesanan.id_kurir,
+                        createdDocumentId,
+                        newPesanan.total_harga,
+                        newPesanan.transfer_proof_image_link,
+                        newPesanan.status_pesanan,
+                        newPesanan.waktu_pesanan_dibuat,
+                    )
+                )
+
                 setState(_state.value.copy(isLoading = false))
                 setEffect { PesananSideEffects.ShowSnackBarMessage(message = "Pesanan added successfully") }
+                setEffect { PesananSideEffects.ShowSnackBarMessage(message = "Daftar Katalis added successfully") }
             } catch (e: Exception) {
                 setState(_state.value.copy(isLoading = false, errorMessage = e.localizedMessage))
                 setEffect { PesananSideEffects.ShowSnackBarMessage(e.message ?: "Error fetching Pesanan") }
+                setEffect { PesananSideEffects.ShowSnackBarMessage(e.message ?: "Failed Added Daftar Katalis  ") }
             }
         }
     }
+
     fun createDaftarKatalisPesanan(
-        newDaftarKatalis: Map<String, Int>,
+        newDaftarKatalis: DaftarKatalis,
         createdDocumentId : (String) -> Unit
     ) {
         viewModelScope.launch {
@@ -96,7 +123,7 @@ class PesananViewModel(
             }
         }
     }
-    fun decrementStok(minStokKatalis: SelectedKatalis, selectedKatalisId : String, stok : Int, quantity: Int ) {
+    fun decrementStok(selectedKatalisId : String, stok : Int, quantity: Int ) {
         viewModelScope.launch {
             setState(_state.value.copy(isLoading = true))
             val newStok = (stok - quantity)

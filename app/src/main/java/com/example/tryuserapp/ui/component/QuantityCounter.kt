@@ -42,7 +42,6 @@ fun QuantityCounter(
     onAddSelectedKatalisList : () -> Unit,
     onModifySelectedKatalisList : (Int) -> Unit,
     onRemoveSelectedKatalisListById : () -> Unit,
-    onQuantityModified: (OrderAction) -> Unit,
     katalisModel: KatalisModel
 ){
     var itemCounter by remember { mutableIntStateOf(selectedQuantityKatalis ?: 0) }
@@ -114,9 +113,6 @@ fun TambahKurangPreview(){
     TryUserAppTheme {
         Surface {
             QuantityCounter(
-                onQuantityModified = { orderAction ->
-
-                },
                 onAddSelectedKatalisList = {
 
                 },

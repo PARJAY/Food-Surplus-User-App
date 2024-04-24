@@ -34,9 +34,8 @@ import com.example.tryuserapp.ui.theme.TryUserAppTheme
 @Composable
 fun HotelList(
     hotelModel: HotelModel,
-    onHomeScreenEvent: (HomeScreenEvent) -> Unit,
     onNavigateToScreen: (String) -> Unit,
-){
+) {
     Row (
         modifier = Modifier
             .height(80.dp)
@@ -91,7 +90,6 @@ fun HotelListPreview(){
                     listIdKatalis = listOf(""),
                     statusHotel = StatusHotel.SUDAH_DI_ACC
                 ),
-                onHomeScreenEvent = {},
               onNavigateToScreen = {}
             )
         }

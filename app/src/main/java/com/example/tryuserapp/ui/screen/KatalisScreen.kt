@@ -53,11 +53,9 @@ import com.example.tryuserapp.ui.theme.backGroundScreen
 fun KatalisScreen(
     userData: UserData?,
     katalisScreenUiState: KatalisScreenUiState,
-    onKatalisScreenEvent: (KatalisScreenEvent) -> Unit,
     onNavigateToScreen: (String) -> Unit,
     onSetSelectedDetailKatalis: (KatalisModel) -> Unit,
-    selectedKatalisList: SnapshotStateList<SelectedKatalis>,
-    onModifyQuantity: (katalisId: String, OrderAction) -> Unit,
+    selectedKatalisList: SnapshotStateList<SelectedKatalis>
 ) {
     LazyColumn(
         modifier = Modifier
@@ -128,7 +126,6 @@ fun KatalisScreen(
                     onSetSelectedDetailKatalis(katalis)
                     onNavigateToScreen(it)
                 },
-                onKatalisScreenEvent,
                 selectedQuantityKatalis = (selectedKatalisList.find {
                     it.idKatalis == katalis.id
                 })?.quantity ?: 0,
@@ -138,7 +135,8 @@ fun KatalisScreen(
                         SelectedKatalis(
                             katalis.id, BEGIN_QUANTITY_KATALIS,
                             namaKatalis = katalis.namaKatalis,
-                            hargaKatalis = katalis.hargaJual
+                            hargaKatalis = katalis.hargaJual,
+                            stokKatalis = katalis.stok
                         )
                     )
 
@@ -155,7 +153,6 @@ fun KatalisScreen(
                     selectedKatalisList.removeAll { it.idKatalis == katalis.id }
                     Log.d("Katalis Screen", "Removed Katalis with id ${katalis.id}")
                 },
-                onModifyQuantity = onModifyQuantity
             )
             Spacer(modifier = Modifier.height(5.dp))
         }
@@ -182,15 +179,12 @@ fun KatlisScreenPreview() {
                     KatalisModel(namaKatalis = "Bakso Goreng"),
                 )
             ),
-            onKatalisScreenEvent = {},
             onNavigateToScreen = {  },
             onSetSelectedDetailKatalis = {
 
             },
             selectedKatalisList = SnapshotStateList(),
-        ) { katalisId, orderAction ->
-
-        }
+        )
 //        Surface {
 //            HomeScreen(
 //                navController = rememberNavController(),

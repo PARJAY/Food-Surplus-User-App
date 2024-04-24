@@ -37,14 +37,11 @@ import com.example.tryuserapp.ui.theme.TryUserAppTheme
 fun Katalis(
     katalisModel: KatalisModel,
     onNavigateToScreen: (String) -> Unit,
-    onKatalisScreenEvent: (KatalisScreenEvent) -> Unit,
 
     selectedQuantityKatalis: Int? = 0,
     onAddSelectedKatalisList : () -> Unit,
     onModifySelectedKatalisList : (Int) -> Unit,
     onRemoveSelectedKatalisListById : () -> Unit,
-
-    onModifyQuantity: (katalisId : String, OrderAction) -> Unit,
 ) {
 
     Row (
@@ -102,9 +99,6 @@ fun Katalis(
                 onAddSelectedKatalisList,
                 onModifySelectedKatalisList,
                 onRemoveSelectedKatalisListById,
-                onQuantityModified = { orderAction ->
-                    onModifyQuantity(katalisModel.id, orderAction)
-                },
                 katalisModel = katalisModel
             )
         }
@@ -125,9 +119,6 @@ fun KatalisPreview(){
                     porsiJual = "100 gram"
                 ),
                 onNavigateToScreen = {},
-                onKatalisScreenEvent = {},
-                onModifyQuantity = { katalisId, orderAction ->
-                },
                 onAddSelectedKatalisList = {},
                 onModifySelectedKatalisList = {},
                 onRemoveSelectedKatalisListById = {},

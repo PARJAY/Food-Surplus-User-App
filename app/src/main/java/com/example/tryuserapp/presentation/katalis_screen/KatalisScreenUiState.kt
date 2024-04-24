@@ -14,5 +14,6 @@ data class SelectedKatalis(
     var quantity: Int ,
     var namaKatalis : String = "",
     var hargaKatalis : Float = 0F,
-    var id_hotel : String = ""
+    var stokKatalis : Int,
+
 )

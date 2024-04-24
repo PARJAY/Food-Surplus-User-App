@@ -1,7 +1,7 @@
 package com.example.tryuserapp.ui.screen
 
 import android.net.Uri
-import android.widget.Toast
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,7 +18,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -32,8 +34,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tryuserapp.data.model.DaftarKatalis
 import com.example.tryuserapp.data.model.Pesanan
+import com.example.tryuserapp.data.retrofit.RetrofitInstance
 import com.example.tryuserapp.logic.StatusPesanan
-import com.example.tryuserapp.presentation.katalis_screen.KatalisScreenUiState
 import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
 import com.example.tryuserapp.presentation.pesanan.PesananViewModel
 import com.example.tryuserapp.presentation.sign_in.UserData
@@ -45,6 +47,9 @@ import com.example.tryuserapp.ui.component.RingkasanPesanan
 import com.example.tryuserapp.ui.theme.Brown
 import com.example.tryuserapp.ui.theme.backGroundScreen
 import com.google.android.gms.maps.model.LatLng
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
 @Composable
@@ -53,20 +58,61 @@ fun ScreenCheckOut(
     onNavigateToScreen : (String) -> Unit,
     pesananViewModel: PesananViewModel,
     userData :UserData,
+    selectedIdHotel : String,
     alamatByName : String,
-    alamatByGeolocation : LatLng,
+    alamatByGeolocation : LatLng?,
+    alamatHotelByGeolocation : String,
     selectedKatalis: SnapshotStateList<SelectedKatalis>,
-    ){
+) {
     val context = LocalContext.current
 
-    var selectedImageUri by remember {
-        mutableStateOf<Uri?>(Uri.EMPTY)
-    }
+    var selectedImageUri by remember { mutableStateOf<Uri?>(Uri.EMPTY) }
 
-    var createdDocumentId by remember {
-        mutableStateOf("")
-    }
+    var createdDocumentId by remember { mutableStateOf("") }
 
+    var hotelToUserDistance by remember { mutableFloatStateOf(0f) }
+
+    val daftarKatalis by remember { mutableStateOf(DaftarKatalis()) }
+
+    daftarKatalis.daftarKatalis += Pair("dummyID", 2)
+    Log.d("ScreenCheckOut", "initial add daftarKatalis : ${daftarKatalis.daftarKatalis}")
+
+    var totalHarga = 0F
+
+    if (
+        alamatByGeolocation != LatLng(0.0,0.0) && alamatHotelByGeolocation != ""
+    )
+    LaunchedEffect(key1 = hotelToUserDistance != 0f) {
+        val geolocationPart = alamatHotelByGeolocation.split(",")
+
+        Log.d("ScreenCheckOut", "Launched Effect Status -> Running")
+        val apiService = RetrofitInstance.api
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = apiService.getDirections(
+                "${alamatByGeolocation?.latitude},${alamatByGeolocation?.longitude}",
+                "${geolocationPart[0].toFloat()},${geolocationPart[1].toFloat()}"
+            )
+
+            Log.d("ScreenCheckOut", "response : $response")
+            Log.d("ScreenCheckOut", "direction : ${response.routes[0].legs[0].distance?.text}")
+
+            val parts = response.routes[0].legs[0].distance?.text?.split(" ")
+            if (parts?.size != 2) return@launch
+
+            val value = parts[0].toFloatOrNull() ?: return@launch
+            val unit = parts[1]
+
+            hotelToUserDistance = when (unit) {
+                "m" -> value
+                "km" -> value * 1000f
+                else -> {
+                    Log.d("ScreenCheckOut", "distance type not found : $unit")
+                    0f
+                }
+            }
+
+        }
+    }
 
 
     LazyColumn {
@@ -123,66 +169,66 @@ fun ScreenCheckOut(
                     }
 
                 }
-                Column(verticalArrangement = Arrangement.Bottom){
-                    Button(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        shape = RoundedCornerShape(0.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            contentColor = androidx.compose.ui.graphics.Color.White,
-                            containerColor = Brown
-                        ),
-                        onClick = {
-                            if (selectedImageUri?.path!!.isEmpty())
-                                showToast(context, "Select an Image")
-                            else
-                                uploadImageToFirebaseStorage(
-                                    "User_${userData.userId}",
-                                    selectedImageUri!!,
-                                    onSuccess = { showToast(context, it) },
-                                    onError = { showToast(context, "$it") }
-                                )
-
-
-                            val daftarKatalis : Map<String, Int> = mapOf()
-                            var totalHarga = 0F
-
-                            selectedKatalis.forEach {
-                                daftarKatalis.plus(Pair(it.idKatalis, it.quantity))
-                                totalHarga += (it.quantity * it.hargaKatalis)
-                            }
-
-                            pesananViewModel.createDaftarKatalisPesanan(
-                                daftarKatalis,
-                                createdDocumentId = { createdDocumentId = it }
-                            )
-
-                            pesananViewModel.createPesanan(newPesanan = Pesanan(
-                                id_customer =  userData.userId,
-                                id_hotel = selectedKatalis[0].id_hotel,
-                                id_kurir = "",
-                                list_id_daftar_katalis = createdDocumentId,
-                                total_harga = totalHarga,
-                                transfer_proof_image_link = selectedImageUri.toString(),
-                                StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN,
-                                Calendar.getInstance().time.toString()
-                            ))
-
-                            selectedKatalis.forEach {
-                                pesananViewModel.decrementStok(
-                                    minStokKatalis =  SelectedKatalis(it.idKatalis, it.quantity),
-                                    selectedKatalisId = it.idKatalis,
-                                    stok =
-                                )
-                            }
-                            onNavigateToHome()
-                        }
-                    ) {
-                        Text(text = "Buat Pesanan")
-                    }
-                }
             }
+        }
+    }
+
+    Box (
+        Modifier.fillMaxSize(),
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            shape = RoundedCornerShape(0.dp),
+            colors = ButtonDefaults.buttonColors(
+                contentColor = androidx.compose.ui.graphics.Color.White,
+                containerColor = Brown
+            ),
+            onClick = {
+                if (selectedImageUri?.path!!.isEmpty()) showToast(context, "Select an Image")
+                else uploadImageToFirebaseStorage(
+                    userIdForFileReference = "User_${userData.userId}",
+                    file = selectedImageUri!!,
+                    onSuccess = { showToast(context, it) },
+                    onError = { showToast(context, "$it") }
+                )
+
+                Log.d("ScreenCheckOut", "selected katalis : $selectedKatalis")
+                selectedKatalis.forEach {
+                    daftarKatalis.daftarKatalis += Pair(it.idKatalis, it.quantity)
+                    totalHarga += (it.quantity * it.hargaKatalis)
+                    Log.d("ScreenCheckOut", "daftarKatalis : ${daftarKatalis.daftarKatalis}")
+                }
+
+                pesananViewModel.createPesanan(
+                    newPesanan = Pesanan(
+                        id_customer =  userData.userId,
+                        id_hotel = selectedIdHotel,
+                        id_kurir = "",
+                        list_id_daftar_katalis = createdDocumentId,
+                        total_harga = totalHarga,
+                        transfer_proof_image_link = selectedImageUri.toString(),
+                        StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN,
+                        Calendar.getInstance().time.toString()
+                    ),
+                    newDaftarKatalis = daftarKatalis,
+
+                )
+
+                selectedKatalis.forEach {
+                    pesananViewModel.decrementStok(
+                        selectedKatalisId = it.idKatalis,
+                        stok = it.stokKatalis,
+                        quantity = it.quantity
+                    )
+                }
+                onNavigateToHome()
+                Log.d("ScreenCheckOut", "created document Id :$createdDocumentId")
+            }
+        ) {
+            Text(text = "Buat Pesanan")
         }
     }
 }

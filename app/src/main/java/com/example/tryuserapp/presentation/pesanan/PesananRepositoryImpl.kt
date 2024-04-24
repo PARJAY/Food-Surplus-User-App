@@ -12,14 +12,16 @@ import kotlinx.coroutines.tasks.await
 
 class PesananRepositoryImpl(private val db : FirebaseFirestore) {
     fun getAllPesanan(): Flow<List<Pesanan>> = flowOf(DummyData.dummyPesananFlow)
-    suspend fun insertTransaksi(pesanan: Pesanan) {
+    suspend fun insertPesanan(pesanan: Pesanan) {
         db.collection(PESANAN_COLLECTION).add(pesanan).await()
     }
     suspend fun insertDaftarKatalis(
-        daftarKatalis: Map<String, Int>,
+        daftarKatalis: DaftarKatalis,
         createdDocumentId : (String) -> Unit
     ) {
-        createdDocumentId(db.collection(LIST_PESANAN_KATALIS).add(daftarKatalis).await().id)
+        createdDocumentId(db.collection(LIST_PESANAN_KATALIS).add(
+            daftarKatalis
+        ).await().id)
     }
 
 }

@@ -59,25 +59,5 @@ class Utility {
             Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
         }
 
-
-        fun modifyOrder(
-            selectedKatalisList: ArrayList<SelectedKatalis>,
-            katalisId: String,
-            action: OrderAction,
-        ) {
-            val existingKatalis = selectedKatalisList.firstOrNull { it.idKatalis == katalisId }
-
-            if (action == OrderAction.INCREMENT) {
-                if (existingKatalis == null) selectedKatalisList.add(SelectedKatalis(katalisId, 1))
-                else existingKatalis.quantity++
-            }
-
-            if (action == OrderAction.DECREMENT) {
-                if (existingKatalis == null) return
-                if (existingKatalis.quantity - 1 == 0) selectedKatalisList.remove(existingKatalis)
-                else existingKatalis.quantity--
-            }
-
-        }
     }
 }

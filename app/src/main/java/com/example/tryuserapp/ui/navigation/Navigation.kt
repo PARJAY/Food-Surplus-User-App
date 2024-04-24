@@ -73,21 +73,15 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
 
     val selectedKatalis = remember { mutableStateListOf<SelectedKatalis>() }
 
-    val selectedHotelId by remember {
-        mutableStateOf("")
-    }
-    var selectedDetailKatalis by remember {
-        mutableStateOf(KatalisModel())
-    }
+    // TODO : Set from hotel screen, get in Checkout Screen
+    var selectedHotelId by remember { mutableStateOf("") }
 
-    var navAlamatByName by remember {
-        mutableStateOf("")
-    }
+    var selectedDetailKatalis by remember { mutableStateOf(KatalisModel()) }
 
-    var navAlamatByGeolocation by remember {
+    var navAlamatByName by remember { mutableStateOf("") }
 
-        mutableStateOf(LatLng(0.0, 0.0))
-    }
+    var navAlamatByGeolocation by remember { mutableStateOf(LatLng(0.0, 0.0)) }
+    var navAlamatHotelByGeolocation by remember { mutableStateOf("") }
 
     NavHost(navController, startDestination = Screen.ScreenLogin.route) {
         composable(Screen.ScreenLogin.route) {
@@ -184,7 +178,6 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                     )
                 }
             )
-            val pesananScreenVMUiState = pesananViewModel.state.collectAsState().value
 
             Log.d("Screen Checkout", "Passed here")
 
@@ -206,7 +199,8 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                 alamatByName = navAlamatByName,
                 alamatByGeolocation = navAlamatByGeolocation,
                 selectedKatalis = selectedKatalis,
-
+                selectedIdHotel = selectedHotelId,
+                alamatHotelByGeolocation = navAlamatHotelByGeolocation
             )
         }
 
@@ -241,38 +235,14 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                 factory = viewModelFactory { KatalisScreenViewModel(MyApp.appModule.katalisRepositoryImpl) }
             )
             val katalisScreenVMUiState = katalisScreenVM.state.collectAsState().value
-            val katalisScreenVMEffectFlow = katalisScreenVM.effect
 
             KatalisScreen(
                 userData = googleAuthUiClient.getSignedInUser(),
                 katalisScreenVMUiState,
-                katalisScreenVM::onEvent,
                 onNavigateToScreen = { navController.navigate(it) },
                 onSetSelectedDetailKatalis = { selectedDetailKatalis = it },
                 selectedKatalisList = selectedKatalis
-            ) { katalisId, orderAction ->
-//                    Utility.modifyOrder(selectedKatalis.value, katalisId, orderAction)
-
-                val existingKatalis = selectedKatalis.firstOrNull { it.idKatalis == katalisId }
-
-                if (orderAction == OrderAction.INCREMENT) {
-                    if (existingKatalis == null) selectedKatalis.add(
-                        SelectedKatalis(
-                            katalisId,
-                            1
-                        )
-                    )
-                    else existingKatalis.quantity++
-                }
-
-                if (orderAction == OrderAction.DECREMENT) {
-                    if (existingKatalis == null) return@KatalisScreen
-                    if (existingKatalis.quantity - 1 == 0) selectedKatalis.remove(
-                        existingKatalis
-                    )
-                    else existingKatalis.quantity--
-                }
-            }
+            )
         }
 
         composable(Screen.HomeScreen.route){
@@ -284,24 +254,26 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
             HomeScreen(
                 userData = googleAuthUiClient.getSignedInUser(),
                 homeScreenUiState = homeScreenVMUiState,
-                onHomeScreenEvent = homeScreenVM::onEvent,
-                onNavigateToScreen = { navController.navigate(it) }
+                onNavigateToScreen = { navController.navigate(it) },
+                onSelectHotel = { idHotel, geolocationHotel ->
+                    selectedHotelId = idHotel
+                    navAlamatHotelByGeolocation = geolocationHotel
+                }
+
             )
         }
 
         composable(Screen.ScreenDetailPesanan.route) {
             DetailPesanan(
                 selectedDetailKatalis = selectedDetailKatalis,
-                onModifyQuantity = { katalisId, orderAction ->
-
-                },
                 onAddSelectedKatalisList = {
                     selectedKatalis.add(
                         SelectedKatalis(
                             selectedDetailKatalis.id,
                             BEGIN_QUANTITY_KATALIS,
                             namaKatalis = selectedDetailKatalis.namaKatalis,
-                            hargaKatalis = selectedDetailKatalis.hargaJual
+                            hargaKatalis = selectedDetailKatalis.hargaJual,
+                            stokKatalis = selectedDetailKatalis.stok
                         )
                     )
                 },

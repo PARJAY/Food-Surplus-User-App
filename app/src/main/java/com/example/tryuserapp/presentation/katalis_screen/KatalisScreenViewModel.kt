@@ -43,10 +43,10 @@ class KatalisScreenViewModel(
             is KatalisScreenEvent.GetKatalis -> getKatalis()
 
             is KatalisScreenEvent.ModifyOrder -> {
-                modifyOrder(
-                    katalisId = event.katalisId,
-                    action = event.orderAction
-                )
+//                modifyOrder(
+//                    katalisId = event.katalisId,
+//                    action = event.orderAction
+//                )
             }
         }
     }
@@ -78,81 +78,78 @@ class KatalisScreenViewModel(
         // (adjust code) if not exist make a new data class
         // if increment perform ++ action
         // if decrement perform -- action and if quantity == 0, dont add data
-        private fun modifyOrder(katalisId: String, action: OrderAction) {
-            viewModelScope.launch {
-                _state.value = _state.value.copy(isLoading = true) // Update loading state
-
-                val selectedKatalisList = _state.value.selectedKatalisList
-                val existingKatalis = selectedKatalisList.firstOrNull { it.idKatalis == katalisId }
-
-                Log.d("VIEWMODEL", "existingKatalis = $existingKatalis")
-
-                if (action == OrderAction.INCREMENT) {
-                    Log.d("VIEWMODEL", "user action = INCREMENT")
-                    if (existingKatalis == null) {
-                        selectedKatalisList.add(SelectedKatalis(katalisId, 1))
-                        Log.d(
-                            "VIEWMODEL",
-                            "no existingKatalis with id($katalisId) found " +
-                                    "adding SelectedKatalis (${SelectedKatalis(katalisId, 1)})" +
-                                    " to selectedKatalisList (${selectedKatalisList})"
-                        )
-                    } else {
-                        existingKatalis.quantity++
-                        Log.d(
-                            "VIEWMODEL",
-                            "existingKatalis with id($katalisId) found! " +
-                                    "increasing quantity of (${existingKatalis}) " +
-                                    "to (${existingKatalis.quantity})"
-                        )
-                    }
-                }
-
-                if (action == OrderAction.DECREMENT) {
-                    Log.d("VIEWMODEL", "user action = DECREMENT")
-                    if (existingKatalis == null) {
-                        Log.d(
-                            "VIEWMODEL", "no existingKatalis with id($katalisId) found " +
-                                    "no action performed since nothing to decrement"
-                        )
-                        return@launch
-                    }
-                    if (existingKatalis.quantity - 1 == 0) {
-                        Log.d(
-                            "VIEWMODEL", "existingKatalis with id($katalisId) found " +
-                                    "quantity (${existingKatalis}) decreased to 0 that mean " +
-                                    "remove the (${existingKatalis}) from (${selectedKatalisList})"
-                        )
-                        selectedKatalisList.remove(existingKatalis)
-                    } else {
-                        Log.d(
-                            "VIEWMODEL",
-                            "existingKatalis with id($katalisId) found! " +
-                                    "decreasing quantity of (${existingKatalis}) " +
-                                    "to (${existingKatalis.quantity})"
-                        )
-                        existingKatalis.quantity--
-                    }
-
-                }
-
-                // no debug mode
+//    private fun modifyOrder(katalisId: String, action: OrderAction) {
+//        viewModelScope.launch {
+//            _state.value = _state.value.copy(isLoading = true) // Update loading state
+//
+//            val selectedKatalisList = _state.value.selectedKatalisList
+//            val existingKatalis = selectedKatalisList.firstOrNull { it.idKatalis == katalisId }
+//
+//            Log.d("VIEWMODEL", "existingKatalis = $existingKatalis")
+//
 //            if (action == OrderAction.INCREMENT) {
-//                if (existingKatalis == null) selectedKatalisList.add(SelectedKatalis(katalisId, 1))
-//                else existingKatalis.quantity++
+//                Log.d("VIEWMODEL", "user action = INCREMENT")
+//                if (existingKatalis == null) {
+//                    selectedKatalisList.add(SelectedKatalis(katalisId, 1))
+//                    Log.d(
+//                        "VIEWMODEL",
+//                        "no existingKatalis with id($katalisId) found " +
+//                                "adding SelectedKatalis (${SelectedKatalis(katalisId, 1)})" +
+//                                " to selectedKatalisList (${selectedKatalisList})"
+//                    )
+//                } else {
+//                    existingKatalis.quantity++
+//                    Log.d(
+//                        "VIEWMODEL",
+//                        "existingKatalis with id($katalisId) found! " +
+//                                "increasing quantity of (${existingKatalis}) " +
+//                                "to (${existingKatalis.quantity})"
+//                    )
+//                }
 //            }
 //
 //            if (action == OrderAction.DECREMENT) {
-//                if (existingKatalis == null) return@launch
-//                if (existingKatalis.quantity - 1 == 0) selectedKatalisList.remove(existingKatalis)
-//                else existingKatalis.quantity--
+//                Log.d("VIEWMODEL", "user action = DECREMENT")
+//                if (existingKatalis == null) {
+//                    Log.d(
+//                        "VIEWMODEL", "no existingKatalis with id($katalisId) found " +
+//                                "no action performed since nothing to decrement"
+//                    )
+//                    return@launch
+//                }
+//                if (existingKatalis.quantity - 1 == 0) {
+//                    Log.d(
+//                        "VIEWMODEL", "existingKatalis with id($katalisId) found " +
+//                                "quantity (${existingKatalis}) decreased to 0 that mean " +
+//                                "remove the (${existingKatalis}) from (${selectedKatalisList})"
+//                    )
+//                    selectedKatalisList.remove(existingKatalis)
+//                } else {
+//                    Log.d(
+//                        "VIEWMODEL",
+//                        "existingKatalis with id($katalisId) found! " +
+//                                "decreasing quantity of (${existingKatalis}) " +
+//                                "to (${existingKatalis.quantity})"
+//                    )
+//                    existingKatalis.quantity--
+//                }
+//
 //            }
-//            // Update state with modified list
-//            _state.value = _state.value.copy(selectedKatalisList = selectedKatalisList, isLoading = false)
-            }
-        }
-
-        private fun getKatalisById(id: String): KatalisModel? =
-            _state.value.katalisList.find { it.id == id }
-    }
+//
+//            // no debug mode
+////            if (action == OrderAction.INCREMENT) {
+////                if (existingKatalis == null) selectedKatalisList.add(SelectedKatalis(katalisId, 1))
+////                else existingKatalis.quantity++
+////            }
+////
+////            if (action == OrderAction.DECREMENT) {
+////                if (existingKatalis == null) return@launch
+////                if (existingKatalis.quantity - 1 == 0) selectedKatalisList.remove(existingKatalis)
+////                else existingKatalis.quantity--
+////            }
+////            // Update state with modified list
+////            _state.value = _state.value.copy(selectedKatalisList = selectedKatalisList, isLoading = false)
+//        }
+//    }
+}
 
