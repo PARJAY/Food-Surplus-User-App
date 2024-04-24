@@ -28,6 +28,7 @@ import com.example.tryuserapp.common.BEGIN_QUANTITY_KATALIS
 import com.example.tryuserapp.data.model.CustomerModel
 import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.data.repository.KatalisRepositoryImpl
+import com.example.tryuserapp.data.repository.PesananListRepositoryImpl
 import com.example.tryuserapp.logic.OrderAction
 import com.example.tryuserapp.presentation.customer.CustomerViewModel
 import com.example.tryuserapp.presentation.home_screen.HomeScreenViewModel
@@ -35,9 +36,9 @@ import com.example.tryuserapp.presentation.katalis_screen.KatalisScreenViewModel
 import com.example.tryuserapp.presentation.pesanan.PesananRepositoryImpl
 import com.example.tryuserapp.presentation.pesanan.PesananViewModel
 import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
+import com.example.tryuserapp.presentation.pesanan.PesananListViewModel
 import com.example.tryuserapp.presentation.sign_in.GoogleAuthUiClient
 import com.example.tryuserapp.presentation.sign_in.SignInViewModel
-import com.example.tryuserapp.presentation.sign_in.UserData
 import com.example.tryuserapp.presentation.viewModelFactory
 import com.example.tryuserapp.ui.screen.DetailPesanan
 import com.example.tryuserapp.ui.screen.HomeScreen
@@ -180,7 +181,9 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                 factory = viewModelFactory {
                     PesananViewModel(
                         MyApp.appModule.pesananRepositoryImpl,
-                        MyApp.appModule.katalisRepositoryImpl
+                        MyApp.appModule.katalisRepositoryImpl,
+                        MyApp.appModule.pesananListRepositoryImpl,
+
                     )
                 }
             )
@@ -195,7 +198,8 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
             ScreenCheckOut(
                 pesananViewModel = PesananViewModel(
                     PesananRepositoryImpl(db = FirebaseFirestore.getInstance()),
-                    KatalisRepositoryImpl(db = FirebaseFirestore.getInstance())
+                    KatalisRepositoryImpl(db = FirebaseFirestore.getInstance()),
+                    pesananListRepositoryImpl =   PesananListRepositoryImpl(db = FirebaseFirestore.getInstance())
                 ),
                 onNavigateToHome = {
                     navController.popBackStack()
@@ -289,6 +293,22 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
             )
         }
 
+        composable(Screen.ScreenPesananAnda.route) {
+
+            val pesananScreenVM: PesananListViewModel = viewModel(
+                factory = viewModelFactory { PesananListViewModel(
+                    pesananListRepositoryImpl =  MyApp.appModule.pesananListRepositoryImpl)
+                }
+            )
+            val pesananScreenVMUiState = pesananScreenVM.state.collectAsState().value
+
+            PesananAnda(
+                pesananState = pesananScreenVMUiState ,
+                onNavigateToScreen = { navController.navigate(it) },
+                onPesananScreenEvent = pesananScreenVM::onEvent,
+            )
+        }
+
         composable(Screen.ScreenDetailPesanan.route) {
             DetailPesanan(
                 selectedDetailKatalis = selectedDetailKatalis,
@@ -322,11 +342,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
         }
 
 
-        composable(Screen.ScreenPesananAnda.route) {
-            PesananAnda(
-                onNavigateToScreen = { navController.navigate(it) }
-            )
-        }
+
         composable(Screen.MapsScreen.route) {
             MapsScreen(
                 onButtonSelectLocationClick = { alamatByName, alamatByGeolocation ->

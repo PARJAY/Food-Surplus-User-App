@@ -1,11 +1,13 @@
 package com.example.tryuserapp.presentation.pesanan
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tryuserapp.data.model.DaftarKatalis
-import com.example.tryuserapp.data.model.KatalisModel
-import com.example.tryuserapp.data.model.Pesanan
+import com.example.tryuserapp.common.FirebaseResult
+import com.example.tryuserapp.data.model.PesananModel
 import com.example.tryuserapp.data.repository.KatalisRepositoryImpl
+import com.example.tryuserapp.data.repository.PesananListRepositoryImpl
+import com.example.tryuserapp.presentation.home_screen.HomeScreenEvent
 import com.example.tryuserapp.presentation.katalis_screen.KatalisScreenUiState
 import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
 import kotlinx.coroutines.channels.Channel
@@ -19,6 +21,7 @@ import kotlinx.coroutines.launch
 class PesananViewModel(
     private val pesananRepositoryImpl: PesananRepositoryImpl,
     private val katalisRepositoryImpl: KatalisRepositoryImpl,
+    private val pesananListRepositoryImpl: PesananListRepositoryImpl,
 ): ViewModel() {
     private val _state = MutableStateFlow(PesananState())
     private val _katalis_state = MutableStateFlow(KatalisScreenUiState())
@@ -28,9 +31,12 @@ class PesananViewModel(
 
     val state = combine(_state, _transaksi) { state, transaksi ->
         state.copy(
-            transaksiListState = transaksi
+            pesananListState = transaksi
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), PesananState())
+    init {
+        onEvent(PesananListEvent.GetListPesanan)
+    }
 
     private fun setState(newState: PesananState) {
         _state.value = newState
@@ -44,29 +50,25 @@ class PesananViewModel(
         viewModelScope.launch { _effect.send(effectValue) }
     }
 
-    fun onEvent(event: PesananEvent) {
+    fun onEvent(event: PesananListEvent) {
         when (event) {
-//            is PesananEvent.ReadPesanan -> {
-//                viewModelScope.launch {
-//                    transaksiRepository.readTransaksi(event.pesanan)
-//                }
-//            }
-//            is TransaksiEvent.CreateTransaksi -> {
-//                viewModelScope.launch {
-//                    transaksiRepository.insertTransaksi(event.transaksi)
-//                }
-//            }
-            is PesananEvent.CreatePesanan -> createPesanan(event.pesanan)
+            is PesananListEvent.GetListPesanan -> getPesananList()
 
+//            is HomeScreenEvent.ModifyOrder -> {
+//                modifyOrder(
+//                    katalisId = event.katalisId,
+//                    action = event.orderAction
+//                )
+//            }
         }
     }
 
-     fun createPesanan(newPesanan: Pesanan) {
+     fun createPesanan(newPesananModel: PesananModel) {
         viewModelScope.launch {
             setState(_state.value.copy(isLoading = true))
 
             try {
-                pesananRepositoryImpl.insertTransaksi(newPesanan)
+                pesananRepositoryImpl.insertTransaksi(newPesananModel)
                 setState(_state.value.copy(isLoading = false))
                 setEffect { PesananSideEffects.ShowSnackBarMessage(message = "Pesanan added successfully") }
             } catch (e: Exception) {
@@ -111,5 +113,29 @@ class PesananViewModel(
             }
         }
     }
+
+    private fun getPesananList() {
+        viewModelScope.launch {
+            _state.value = _state.value.copy(isLoading = true) // Update loading state
+
+            pesananListRepositoryImpl.getPesananList { firebaseResult ->
+                if (firebaseResult is FirebaseResult.Failure) {
+                    setState(_state.value.copy(isLoading = false))
+                    Log.d("VIEWMODEL: ", "error - ${firebaseResult.exception.message}")
+                    setEffect {
+                        PesananSideEffects.ShowSnackBarMessage(
+                            firebaseResult.exception.message ?: "Error fetching users"
+                        )
+                    }
+                } else if (firebaseResult is FirebaseResult.Success) {
+                    Log.d("VIEWMODEL: ", "sucess - ${firebaseResult.data}")
+                    _state.value =
+                        _state.value.copy(isLoading = false, pesananListState = firebaseResult.data)
+                    setEffect { PesananSideEffects.ShowSnackBarMessage(message = "User list data loaded successfully") }
+                }
+            }
+        }
+    }
+
 
 }
