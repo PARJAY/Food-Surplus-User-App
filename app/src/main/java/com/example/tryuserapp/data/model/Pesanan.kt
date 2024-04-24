@@ -3,11 +3,10 @@ package com.example.tryuserapp.data.model
 import com.example.tryuserapp.logic.StatusPesanan
 
 data class Pesanan(
-    var id_pesanan : Int,
-    var id_customer : Int,
-    var id_hotel : Int,
-    var id_kurir : Int,
-    var list_daftar_katalis : DaftarKatalis,
+    var id_customer : String,
+    var id_hotel : String,
+    var id_kurir : String,
+    var list_id_daftar_katalis : String,
     var total_harga : Float,
     var transfer_proof_image_link : String,
     var status_pesanan : StatusPesanan,

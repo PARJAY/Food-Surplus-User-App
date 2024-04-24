@@ -1,15 +1,13 @@
 package com.example.tryuserapp.presentation.pesanan
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tryuserapp.common.KATALIS_COLLECTION
+import com.example.tryuserapp.data.model.DaftarKatalis
 import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.data.model.Pesanan
 import com.example.tryuserapp.data.repository.KatalisRepositoryImpl
 import com.example.tryuserapp.presentation.katalis_screen.KatalisScreenUiState
 import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
-import com.example.tryuserapp.tools.FirebaseHelper
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -17,7 +15,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 
 class PesananViewModel(
     private val pesananRepositoryImpl: PesananRepositoryImpl,
@@ -71,23 +68,34 @@ class PesananViewModel(
             try {
                 pesananRepositoryImpl.insertTransaksi(newPesanan)
                 setState(_state.value.copy(isLoading = false))
-                setEffect { PesananSideEffects.ShowSnackBarMessage(message = "Transaksi added successfully") }
+                setEffect { PesananSideEffects.ShowSnackBarMessage(message = "Pesanan added successfully") }
             } catch (e: Exception) {
                 setState(_state.value.copy(isLoading = false, errorMessage = e.localizedMessage))
-                setEffect { PesananSideEffects.ShowSnackBarMessage(e.message ?: "Error fetching users") }
+                setEffect { PesananSideEffects.ShowSnackBarMessage(e.message ?: "Error fetching Pesanan") }
             }
         }
     }
-    fun decrementStok(minStokKatalis: SelectedKatalis) {
+    fun createListIdPesanan(newDaftarKatalis: DaftarKatalis) {
         viewModelScope.launch {
             setState(_state.value.copy(isLoading = true))
-            val selectedKatalisId = "RTrok9tDlzWKhaXVMkqQ"
-            val stokAwal = 10f
-            val stokAkhir = 3f
-            val newStok = (stokAwal-stokAkhir)
 
             try {
-                katalisRepositoryImpl.addOrUpdateKatalis(katalisId = selectedKatalisId, KatalisModel(stokKatalis = newStok) )
+                pesananRepositoryImpl.insertDaftarKatalis(newDaftarKatalis)
+                setState(_state.value.copy(isLoading = false))
+                setEffect { PesananSideEffects.ShowSnackBarMessage(message = "Daftar Katalis added successfully") }
+            } catch (e: Exception) {
+                setState(_state.value.copy(isLoading = false, errorMessage = e.localizedMessage))
+                setEffect { PesananSideEffects.ShowSnackBarMessage(e.message ?: "Failed Added Daftar Katalis  ") }
+            }
+        }
+    }
+    fun decrementStok(minStokKatalis: SelectedKatalis, selectedKatalisId : String ) {
+        viewModelScope.launch {
+            setState(_state.value.copy(isLoading = true))
+            val newStok = (12)
+
+            try {
+                katalisRepositoryImpl.updateStokKatalis(katalisId = selectedKatalisId, fieldToUpdate = "stok", newValue =  newStok  )
                 setState(_state.value.copy(isLoading = false))
                 setEffect { PesananSideEffects.ShowSnackBarMessage(message = "Update Stok successfully") }
             } catch (e: Exception) {
