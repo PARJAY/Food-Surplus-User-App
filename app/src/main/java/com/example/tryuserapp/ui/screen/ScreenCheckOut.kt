@@ -1,7 +1,6 @@
 package com.example.tryuserapp.ui.screen
 
 import android.net.Uri
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,10 +29,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.tryuserapp.data.model.DaftarKatalis
-import com.example.tryuserapp.data.model.Pesanan
-import com.example.tryuserapp.logic.StatusPesanan
-import com.example.tryuserapp.presentation.katalis_screen.KatalisScreenUiState
+import com.example.tryuserapp.data.model.PesananModel
 import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
 import com.example.tryuserapp.presentation.pesanan.PesananViewModel
 import com.example.tryuserapp.presentation.sign_in.UserData
@@ -158,14 +154,14 @@ fun ScreenCheckOut(
                                 createdDocumentId = { createdDocumentId = it }
                             )
 
-                            pesananViewModel.createPesanan(newPesanan = Pesanan(
+                            pesananViewModel.createPesanan(newPesananModel = PesananModel(
                                 id_customer =  userData.userId,
                                 id_hotel = selectedKatalis[0].id_hotel,
                                 id_kurir = "",
                                 list_id_daftar_katalis = createdDocumentId,
                                 total_harga = totalHarga,
                                 transfer_proof_image_link = selectedImageUri.toString(),
-                                StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN,
+                                status_pesanan = "MENUNGGU_KONFIRMASI_ADMIN",
                                 Calendar.getInstance().time.toString()
                             ))
 
@@ -173,7 +169,8 @@ fun ScreenCheckOut(
                                 pesananViewModel.decrementStok(
                                     minStokKatalis =  SelectedKatalis(it.idKatalis, it.quantity),
                                     selectedKatalisId = it.idKatalis,
-                                    stok =
+                                    stok = 12,
+                                    quantity = 10
                                 )
                             }
                             onNavigateToHome()
