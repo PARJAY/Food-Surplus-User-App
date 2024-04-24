@@ -202,7 +202,8 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                 onNavigateToScreen = {navController.navigate(it) },
                 alamatByName = navAlamatByName,
                 alamatByGeolocation = navAlamatByGeolocation,
-                selectedKatalis = selectedKatalis
+                selectedKatalis = selectedKatalis,
+
             )
         }
 
