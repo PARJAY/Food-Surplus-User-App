@@ -201,7 +201,8 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                 userData = googleAuthUiClient.getSignedInUser()!!,
                 onNavigateToScreen = {navController.navigate(it) },
                 alamatByName = navAlamatByName,
-                alamatByGeolocation = navAlamatByGeolocation
+                alamatByGeolocation = navAlamatByGeolocation,
+                selectedKatalis = selectedKatalis
             )
         }
 
