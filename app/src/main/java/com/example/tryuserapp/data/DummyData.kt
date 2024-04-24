@@ -1,8 +1,6 @@
 package com.example.tryuserapp.data
 
-import com.example.tryuserapp.logic.StatusPesanan
-import com.example.tryuserapp.data.model.DaftarKatalis
-import com.example.tryuserapp.data.model.Pesanan
+import com.example.tryuserapp.data.model.PesananModel
 import java.util.Calendar
 import com.example.tryuserapp.data.model.CustomerModel
 
@@ -19,17 +17,17 @@ class DummyData {
 
         val dummyCustomerFlow: List<CustomerModel> = listOf(customer1, customer2, customer3)
 
-        val pesanan1 = Pesanan(
+        val pesananModel1 = PesananModel(
             "21",
             "3123",
             "500312",
             "15002132, adasda",
             500f,
             "Gambar",
-            StatusPesanan.SEDANG_DIANTAR,
+            "SEDANG_DIANTAR",
             Calendar.getInstance().time.toString()
         )
-        val pesanan2 = Pesanan(
+        val pesananModel2 = PesananModel(
 
             "21",
             "3123",
@@ -37,10 +35,10 @@ class DummyData {
             "15002132, adasda",
             500f,
             "Gambar",
-            StatusPesanan.SEDANG_DIANTAR,
+            "SEDANG_DIANTAR",
             Calendar.getInstance().time.toString()
         )
-        val pesanan3 = Pesanan(
+        val pesananModel3 = PesananModel(
 
             "21",
             "3123",
@@ -48,10 +46,10 @@ class DummyData {
             "15002132, adasda",
             500f,
             "Gambar",
-            StatusPesanan.SEDANG_DIANTAR,
+            "SEDANG_DIANTAR",
             Calendar.getInstance().time.toString()
         )
-        val dummyPesananFlow: List<Pesanan> = listOf(pesanan1, pesanan2, pesanan3)
+        val dummyPesananFlowModel: List<PesananModel> = listOf(pesananModel1, pesananModel2, pesananModel3)
 
         val dummyCustomerModelFlow: List<CustomerModel> = listOf(customer1, customer2, customer3)
     }

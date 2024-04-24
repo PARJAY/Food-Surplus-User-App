@@ -1,13 +1,14 @@
 package com.example.tryuserapp.tools
 
 import android.net.Uri
-import android.os.StrictMode
 import android.util.Log
 import com.example.tryuserapp.MyApp
 import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.data.model.CustomerModel
 import com.example.tryuserapp.data.model.HotelModel
+import com.example.tryuserapp.data.model.PesananModel
 import com.example.tryuserapp.logic.StatusHotel
+import com.example.tryuserapp.logic.StatusPesanan
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QueryDocumentSnapshot
 
@@ -19,6 +20,28 @@ class FirebaseHelper {
                 address = queryDocumentSnapshot.getString("address") ?: "",
                 phone_number = queryDocumentSnapshot.getString("phone_number") ?: ""
             )
+        }
+        fun fetchSnapshotToPesananModel(queryDocumentSnapshot : DocumentSnapshot) : PesananModel {
+
+            val statusPesananQS = queryDocumentSnapshot.getLong("statusHotel")?.toInt()
+            var statusPesanan : StatusPesanan = StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN
+
+            if (statusPesananQS == 0)  statusPesanan = StatusPesanan.PESANAN_TERKONFIRMASI
+            else if (statusPesananQS == 1 ) statusPesanan = StatusPesanan.SEDANG_DIANTAR
+            else if (statusPesananQS == 2 ) statusPesanan = StatusPesanan.PESANAN_SAMPAI
+            else if (statusPesananQS == 3 ) statusPesanan = StatusPesanan.BATAL
+
+            return PesananModel(
+                id_customer = queryDocumentSnapshot.getString("id_customer") ?: "",
+                id_hotel = queryDocumentSnapshot.getString("id_hotel") ?: "",
+                id_kurir = queryDocumentSnapshot.getString("id_kurir") ?: "",
+                list_id_daftar_katalis = queryDocumentSnapshot.getString("phone_number") ?: "",
+                total_harga = queryDocumentSnapshot.getLong("total_harga")?.toFloat() ?: 0.0f,
+                transfer_proof_image_link = queryDocumentSnapshot.getString("transfer_proof_image_link") ?: "",
+                status_pesanan = queryDocumentSnapshot.getString("status_pesanan") ?: "",
+                waktu_pesanan_dibuat = queryDocumentSnapshot.getString("transfer_proof_image_link") ?: "",
+            )
+
         }
 
         fun fetchSnapshotToKatalisModel(queryDocumentSnapshot: DocumentSnapshot): KatalisModel {

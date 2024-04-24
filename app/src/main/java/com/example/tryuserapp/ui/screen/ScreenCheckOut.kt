@@ -2,6 +2,7 @@ package com.example.tryuserapp.ui.screen
 
 import android.net.Uri
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,9 +33,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tryuserapp.data.model.DaftarKatalis
-import com.example.tryuserapp.data.model.Pesanan
 import com.example.tryuserapp.data.retrofit.RetrofitInstance
 import com.example.tryuserapp.logic.StatusPesanan
+import com.example.tryuserapp.data.model.PesananModel
 import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
 import com.example.tryuserapp.presentation.pesanan.PesananViewModel
 import com.example.tryuserapp.presentation.sign_in.UserData
@@ -107,35 +108,36 @@ fun ScreenCheckOut(
 
     LazyColumn {
         item {
-            Box (
+            Box(
                 Modifier
                     .fillMaxSize()
                     .height(10000.dp),
                 contentAlignment = Alignment.TopCenter
-            ){
+            ) {
                 Column(
                     modifier = Modifier
                         .padding(8.dp)
                         .padding(bottom = 32.dp)
                 ) {
-                    Row (
+                    Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center
-                    ){
+                    ) {
                         Text(
                             text = "Check Out Pesanan",
                             style = TextStyle(
-                                fontSize =25.sp,
+                                fontSize = 25.sp,
                                 fontWeight = FontWeight.Bold
                             )
                         )
                     }
                     Spacer(modifier = Modifier.height(8.dp))
-                    Row (
+                    Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Absolute.Left
                     ) {
-                        Text(text = "Info Pesanan Anda :",
+                        Text(
+                            text = "Info Pesanan Anda :",
                             style = TextStyle(fontWeight = FontWeight.W700)
                         )
                     }
@@ -192,18 +194,17 @@ fun ScreenCheckOut(
                 }
 
                 pesananViewModel.createPesanan(
-                    newPesanan = Pesanan(
+                    newPesananModel = PesananModel(
                         id_customer =  userData.userId,
                         id_hotel = selectedIdHotel,
                         id_kurir = "",
                         list_id_daftar_katalis = "",
                         total_harga = totalHarga,
                         transfer_proof_image_link = selectedImageUri.toString(),
-                        StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN,
+                        StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString(),
                         Calendar.getInstance().time.toString()
                     ),
                     newDaftarKatalis = daftarKatalis,
-
                 )
 
                 selectedKatalis.forEach {

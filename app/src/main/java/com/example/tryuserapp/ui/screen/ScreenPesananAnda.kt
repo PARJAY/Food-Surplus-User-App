@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,20 +24,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tryuserapp.R
+import com.example.tryuserapp.data.model.PesananModel
 import com.example.tryuserapp.logic.StatusPesanan
+import com.example.tryuserapp.presentation.home_screen.HomeScreenEvent
+import com.example.tryuserapp.presentation.pesanan.PesananListEvent
+import com.example.tryuserapp.presentation.pesanan.PesananState
 import com.example.tryuserapp.ui.component.CheckStatusPesanan
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 import com.example.tryuserapp.ui.theme.backGroundScreen
 
 @Composable
-fun PesananAnda(onNavigateToScreen : (String) -> Unit) {
-    Box(
+fun PesananAnda(
+    pesananState: PesananState,
+    onPesananScreenEvent: (PesananListEvent) -> Unit,
+    onNavigateToScreen : (String) -> Unit) {
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .background(backGroundScreen),
-        contentAlignment = Alignment.TopCenter
     ) {
-        Column(modifier = Modifier.padding(8.dp)) {
+        item {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
@@ -49,26 +57,35 @@ fun PesananAnda(onNavigateToScreen : (String) -> Unit) {
                 )
             }
             Spacer(modifier = Modifier.height(20.dp))
+        }
+        items(pesananState.pesananListState){pesanan ->
             Column (
                 modifier = Modifier.padding(horizontal = 8.dp)
             ){
-                CheckStatusPesanan(R.drawable.otw, StatusPesanan.SEDANG_DIANTAR)
+                CheckStatusPesanan(
+                    StatusPhoto = R.drawable.otw,
+                    statusPesanan =StatusPesanan.SEDANG_DIANTAR,
+                    pesananModel = pesanan,
+                    onPesananScreenEvent = onPesananScreenEvent
+                    )
                 Spacer(modifier = Modifier.height(8.dp))
-                CheckStatusPesanan(R.drawable.sedang_dipesan, StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN)
-                Spacer(modifier = Modifier.height(8.dp))
-                CheckStatusPesanan(R.drawable.sudah_sampai, StatusPesanan.PESANAN_SAMPAI)
             }
         }
     }
 }
 
-@Preview(showBackground = true)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
-@Composable
-fun ScreenPesananAndaPreview() {
-    TryUserAppTheme {
-        Surface {
-            PesananAnda(onNavigateToScreen = {})
-        }
-    }
-}
+
+//@Preview(showBackground = true)
+//@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+//@Composable
+//fun ScreenPesananAndaPreview() {
+//    TryUserAppTheme {
+//        Surface {
+//            PesananAnda(
+//                pesananState = PesananState(),
+//                onNavigateToScreen = {},
+//                onHomeScreenEvent = HomeScreenEvent
+//            )
+//        }
+//    }
+//}
