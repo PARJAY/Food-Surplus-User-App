@@ -3,7 +3,6 @@ package com.example.tryuserapp.presentation.pesanan
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tryuserapp.data.model.DaftarKatalis
-import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.data.model.Pesanan
 import com.example.tryuserapp.data.repository.KatalisRepositoryImpl
 import com.example.tryuserapp.presentation.katalis_screen.KatalisScreenUiState
@@ -75,12 +74,19 @@ class PesananViewModel(
             }
         }
     }
-    fun createListIdPesanan(newDaftarKatalis: DaftarKatalis) {
+    fun createDaftarKatalisPesanan(
+        newDaftarKatalis: Map<String, Int>,
+        createdDocumentId : (String) -> Unit
+    ) {
         viewModelScope.launch {
             setState(_state.value.copy(isLoading = true))
 
             try {
-                pesananRepositoryImpl.insertDaftarKatalis(newDaftarKatalis)
+                pesananRepositoryImpl.insertDaftarKatalis(
+                    newDaftarKatalis,
+                    createdDocumentId
+                )
+
                 setState(_state.value.copy(isLoading = false))
                 setEffect { PesananSideEffects.ShowSnackBarMessage(message = "Daftar Katalis added successfully") }
             } catch (e: Exception) {

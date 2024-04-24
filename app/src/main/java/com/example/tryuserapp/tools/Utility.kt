@@ -21,7 +21,7 @@ class Utility {
             onGetCurrentLocationSuccess: (Pair<Double, Double>) -> Unit,
             onGetCurrentLocationFailed: (Exception) -> Unit,
             priority: Boolean = true,
-            activity : Activity
+            activity: Activity
         ) {
             // Determine the accuracy priority based on the 'priority' parameter
             val accuracy = if (priority) Priority.PRIORITY_HIGH_ACCURACY
@@ -46,7 +46,7 @@ class Utility {
             }
         }
 
-        private fun areLocationPermissionsGranted(activity : Activity): Boolean {
+        private fun areLocationPermissionsGranted(activity: Activity): Boolean {
             return (ActivityCompat.checkSelfPermission(
                 activity, Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED &&
@@ -55,16 +55,15 @@ class Utility {
                     ) == PackageManager.PERMISSION_GRANTED)
         }
 
-        fun showToast(context : Context, text : String) {
+        fun showToast(context: Context, text: String) {
             Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
         }
-    }
 
 
         fun modifyOrder(
             selectedKatalisList: ArrayList<SelectedKatalis>,
             katalisId: String,
-            action : OrderAction,
+            action: OrderAction,
         ) {
             val existingKatalis = selectedKatalisList.firstOrNull { it.idKatalis == katalisId }
 
@@ -81,3 +80,4 @@ class Utility {
 
         }
     }
+}
