@@ -14,6 +14,7 @@ interface DirectionsService {
     ) : DirectionsResponse
 }
 
+// response harus ngikutin "[]" dan "{}" sumber nya ternyata
 data class DirectionsResponse (
     @SerializedName("routes" ) var routes : ArrayList<Routes> = arrayListOf(),
     @SerializedName("status") var status : String? = null,

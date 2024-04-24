@@ -79,6 +79,12 @@ fun Katalis(
                 fontSize = 16.sp,
                 modifier = Modifier.padding(start = 16.dp)
             )
+
+            Text(
+                text = "Stok : ${katalisModel.stokKatalis}",
+                fontSize = 16.sp,
+                modifier = Modifier.padding(start = 16.dp)
+            )
         }
 
         Row(
@@ -88,6 +94,7 @@ fun Katalis(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Absolute.Right
         ) {
+            // TODO : (add logic) quantity counter cant be surpass the stok katalis
             QuantityCounter(
                 selectedQuantityKatalis,
                 onAddSelectedKatalisList,

@@ -52,15 +52,14 @@ fun QuantityCounter(
         )
         .height(20.dp)
         .width(20.dp)
-        .padding(start = 5.dp, end = 5.dp)
+//        .padding(start = 5.dp, end = 5.dp)
 
     Row(
         modifier = Modifier
             .border(
                 BorderStroke(1.dp, Color.Black),
                 shape = RoundedCornerShape(0.dp))
-            .height(20.dp)
-            .background(Color.Gray),
+            .height(20.dp),
         verticalAlignment = CenterVertically,
 
     ) {
@@ -68,13 +67,12 @@ fun QuantityCounter(
         Icon(
             painterResource(R.drawable.vector__2_),
             contentDescription = "",
-            modifier = operatorIconModifier.clickable {
-                if (itemCounter - 1 == 0) return@clickable
-                itemCounter --
-                if (itemCounter <= 0) onRemoveSelectedKatalisListById()
-
-//                Log.d("Component", "Quality Counter minus icon Clicked")
-//                onQuantityModified(OrderAction.DECREMENT)
+            modifier = operatorIconModifier
+                .padding(start = 5.dp, end = 5.dp)
+                .clickable {
+                    if (itemCounter - 1 == 0) return@clickable
+                    itemCounter --
+                    if (itemCounter <= 0) onRemoveSelectedKatalisListById()
             }
         )
 
@@ -97,9 +95,6 @@ fun QuantityCounter(
                     itemCounter++
                     onModifySelectedKatalisList(itemCounter)
                 }
-
-//                Log.d("Component", "Quality Counter plus icon Clicked")
-//                onQuantityModified(OrderAction.INCREMENT)
             }
         )
     }
