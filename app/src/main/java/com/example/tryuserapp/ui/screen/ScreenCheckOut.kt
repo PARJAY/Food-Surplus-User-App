@@ -13,10 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -65,7 +62,7 @@ fun ScreenCheckOut(
         mutableStateOf<Uri?>(Uri.EMPTY)
     }
 LazyColumn {
-    item {
+    item() {
         Box (
             Modifier
                 .fillMaxSize()
@@ -121,7 +118,6 @@ LazyColumn {
 
             }
             Column(
-                modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Bottom
             ){
                 Button(
@@ -139,7 +135,7 @@ LazyColumn {
                         }
                         else {
                             uploadImageToFirebaseStorage(
-                                "User ${userData.userId}",
+                                "User_${userData.userId}",
                                 selectedImageUri!!,
                                 onSuccess = {
                                     Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
@@ -150,22 +146,31 @@ LazyColumn {
                             )
                         }
 
+                        selectedKatalis.forEach {
+                            pesananViewModel.createListIdPesanan(newDaftarKatalis = DaftarKatalis(
+                                id_katalis = it.idKatalis,
+                                quantity = it.quantity
+                            ))
+                        }
+
                         pesananViewModel.createPesanan(newPesanan = Pesanan(
-                            2231,
-                            3112323,
-                            50031211,
-                            1500213452,
-                            DaftarKatalis(12123,323132,"1123232",12312232,),
-                            50000f,
-                            "Gambar",
+                            id_customer =  userData.userId,
+                            id_hotel =  "it.id_hotel",
+                            id_kurir = "it.id_hotel",
+                            list_id_daftar_katalis = "D60ExMtN67d8hiRePl9X , RgV4GzXJnNZ1DBXHy5qd",
+                            total_harga = 50000f,
+                            transfer_proof_image_link = selectedImageUri.toString(),
                             StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN,
                             Calendar.getInstance().time.toString()
                         ))
 
-                        pesananViewModel.decrementStok(SelectedKatalis(
-                            "RTrok9tDlzWKhaXVMkqQ", 1
-                        ))
 
+                        selectedKatalis.forEach {
+                            pesananViewModel.decrementStok(
+                                minStokKatalis =  SelectedKatalis(it.idKatalis, it.quantity),
+                                selectedKatalisId = it.idKatalis
+                            )
+                        }
                         onNavigateToHome()
                     }
                 ) {

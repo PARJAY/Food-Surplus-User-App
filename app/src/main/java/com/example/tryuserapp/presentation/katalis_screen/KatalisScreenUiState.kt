@@ -11,7 +11,8 @@ data class KatalisScreenUiState(
 
 data class SelectedKatalis(
     val idKatalis: String,
-    var quantity: Int,
+    var quantity: Int ,
     var namaKatalis : String = "",
-    var hargaKatalis : Float = 0F
+    var hargaKatalis : Float = 0F,
+    var id_hotel : String = ""
 )

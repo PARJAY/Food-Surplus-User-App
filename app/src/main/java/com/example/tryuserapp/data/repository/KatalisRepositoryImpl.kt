@@ -56,6 +56,9 @@ class KatalisRepositoryImpl(private val db : FirebaseFirestore) : KatalisReposit
     suspend fun addOrUpdateKatalis(katalisId: String, newStok: KatalisModel) {
         db.collection(KATALIS_COLLECTION).document(katalisId).set(newStok).await()
     }
+    suspend fun updateStokKatalis(katalisId: String,fieldToUpdate: String, newValue: Int) {
+        db.collection(KATALIS_COLLECTION).document(katalisId).update(fieldToUpdate, newValue)
+    }
 
 
     // dipake kalau nggak pengen nerima data realtime lagi

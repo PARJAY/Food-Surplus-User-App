@@ -5,7 +5,7 @@ data class KatalisModel(
     val idHotel: String = "",
     val namaKatalis: String = "",
     val imageLink: String = "",
-    val stokKatalis: Float = 0f,
+    val stokKatalis: Int = 0,
     val komposisi: List<String> = listOf(),
     val hargaAwal: Float = 0f,
     val hargaJual: Float = 0f,
