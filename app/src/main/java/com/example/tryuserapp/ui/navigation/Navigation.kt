@@ -83,6 +83,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
     var navAlamatByGeolocation by remember { mutableStateOf(LatLng(0.0, 0.0)) }
     var navAlamatHotelByGeolocation by remember { mutableStateOf("") }
 
+
     NavHost(navController, startDestination = Screen.ScreenLogin.route) {
         composable(Screen.ScreenLogin.route) {
             val viewModel = viewModel<SignInViewModel>()

@@ -129,7 +129,7 @@ class PesananViewModel(
             val newStok = (stok - quantity)
 
             try {
-                katalisRepositoryImpl.updateStokKatalis(katalisId = selectedKatalisId, fieldToUpdate = "stok", newValue =  newStok  )
+                katalisRepositoryImpl.updateStokKatalis(katalisId = selectedKatalisId, fieldToUpdate = "stok", newValue =newStok  )
                 setState(_state.value.copy(isLoading = false))
                 setEffect { PesananSideEffects.ShowSnackBarMessage(message = "Update Stok successfully") }
             } catch (e: Exception) {

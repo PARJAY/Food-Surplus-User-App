@@ -2,7 +2,6 @@ package com.example.tryuserapp.ui.screen
 
 import android.net.Uri
 import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -45,7 +44,6 @@ import com.example.tryuserapp.ui.component.DiantarAtauAmbil
 import com.example.tryuserapp.ui.component.Pembayaran
 import com.example.tryuserapp.ui.component.RingkasanPesanan
 import com.example.tryuserapp.ui.theme.Brown
-import com.example.tryuserapp.ui.theme.backGroundScreen
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -68,60 +66,51 @@ fun ScreenCheckOut(
 
     var selectedImageUri by remember { mutableStateOf<Uri?>(Uri.EMPTY) }
 
-    var createdDocumentId by remember { mutableStateOf("") }
-
     var hotelToUserDistance by remember { mutableFloatStateOf(0f) }
 
     val daftarKatalis by remember { mutableStateOf(DaftarKatalis()) }
 
-    daftarKatalis.daftarKatalis += Pair("dummyID", 2)
-    Log.d("ScreenCheckOut", "initial add daftarKatalis : ${daftarKatalis.daftarKatalis}")
-
     var totalHarga = 0F
 
-    if (
-        alamatByGeolocation != LatLng(0.0,0.0) && alamatHotelByGeolocation != ""
-    )
-    LaunchedEffect(key1 = hotelToUserDistance != 0f) {
-        val geolocationPart = alamatHotelByGeolocation.split(",")
+    if (alamatByGeolocation != LatLng(0.0,0.0) && alamatHotelByGeolocation != "")
+        LaunchedEffect(key1 = hotelToUserDistance != 0f) {
+            val geolocationPart = alamatHotelByGeolocation.split(",")
 
-        Log.d("ScreenCheckOut", "Launched Effect Status -> Running")
-        val apiService = RetrofitInstance.api
-        CoroutineScope(Dispatchers.IO).launch {
-            val response = apiService.getDirections(
-                "${alamatByGeolocation?.latitude},${alamatByGeolocation?.longitude}",
-                "${geolocationPart[0].toFloat()},${geolocationPart[1].toFloat()}"
-            )
+            Log.d("ScreenCheckOut", "Launched Effect Status -> Running")
+            val apiService = RetrofitInstance.api
+            CoroutineScope(Dispatchers.IO).launch {
+                val response = apiService.getDirections(
+                    "${alamatByGeolocation?.latitude},${alamatByGeolocation?.longitude}",
+                    "${geolocationPart[0].toFloat()},${geolocationPart[1].toFloat()}"
+                )
 
-            Log.d("ScreenCheckOut", "response : $response")
-            Log.d("ScreenCheckOut", "direction : ${response.routes[0].legs[0].distance?.text}")
+                Log.d("ScreenCheckOut", "response : $response")
+                Log.d("ScreenCheckOut", "direction : ${response.routes[0].legs[0].distance?.text}")
 
-            val parts = response.routes[0].legs[0].distance?.text?.split(" ")
-            if (parts?.size != 2) return@launch
+                val parts = response.routes[0].legs[0].distance?.text?.split(" ")
+                if (parts?.size != 2) return@launch
 
-            val value = parts[0].toFloatOrNull() ?: return@launch
-            val unit = parts[1]
+                val value = parts[0].toFloatOrNull() ?: return@launch
+                val unit = parts[1]
 
-            hotelToUserDistance = when (unit) {
-                "m" -> value
-                "km" -> value * 1000f
-                else -> {
-                    Log.d("ScreenCheckOut", "distance type not found : $unit")
-                    0f
+                hotelToUserDistance = when (unit) {
+                    "m" -> value
+                    "km" -> value * 1000f
+                    else -> {
+                        Log.d("ScreenCheckOut", "distance type not found : $unit")
+                        0f
+                    }
                 }
+
             }
-
         }
-    }
-
 
     LazyColumn {
         item {
             Box (
                 Modifier
                     .fillMaxSize()
-                    .height(10000.dp)
-                    .background(backGroundScreen),
+                    .height(10000.dp),
                 contentAlignment = Alignment.TopCenter
             ){
                 Column(
@@ -207,7 +196,7 @@ fun ScreenCheckOut(
                         id_customer =  userData.userId,
                         id_hotel = selectedIdHotel,
                         id_kurir = "",
-                        list_id_daftar_katalis = createdDocumentId,
+                        list_id_daftar_katalis = "",
                         total_harga = totalHarga,
                         transfer_proof_image_link = selectedImageUri.toString(),
                         StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN,
@@ -225,7 +214,6 @@ fun ScreenCheckOut(
                     )
                 }
                 onNavigateToHome()
-                Log.d("ScreenCheckOut", "created document Id :$createdDocumentId")
             }
         ) {
             Text(text = "Buat Pesanan")
