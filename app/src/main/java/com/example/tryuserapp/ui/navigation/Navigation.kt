@@ -73,6 +73,9 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
 
     val selectedKatalis = remember { mutableStateListOf<SelectedKatalis>() }
 
+    val selectedHotelId by remember {
+        mutableStateOf("")
+    }
     var selectedDetailKatalis by remember {
         mutableStateOf(KatalisModel())
     }

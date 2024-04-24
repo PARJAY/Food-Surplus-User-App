@@ -67,6 +67,8 @@ fun ScreenCheckOut(
         mutableStateOf("")
     }
 
+
+
     LazyColumn {
         item {
             Box (
@@ -170,7 +172,8 @@ fun ScreenCheckOut(
                             selectedKatalis.forEach {
                                 pesananViewModel.decrementStok(
                                     minStokKatalis =  SelectedKatalis(it.idKatalis, it.quantity),
-                                    selectedKatalisId = it.idKatalis
+                                    selectedKatalisId = it.idKatalis,
+                                    stok =
                                 )
                             }
                             onNavigateToHome()

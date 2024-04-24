@@ -3,6 +3,7 @@ package com.example.tryuserapp.presentation.pesanan
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tryuserapp.data.model.DaftarKatalis
+import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.data.model.Pesanan
 import com.example.tryuserapp.data.repository.KatalisRepositoryImpl
 import com.example.tryuserapp.presentation.katalis_screen.KatalisScreenUiState
@@ -17,7 +18,7 @@ import kotlinx.coroutines.launch
 
 class PesananViewModel(
     private val pesananRepositoryImpl: PesananRepositoryImpl,
-    private val katalisRepositoryImpl: KatalisRepositoryImpl
+    private val katalisRepositoryImpl: KatalisRepositoryImpl,
 ): ViewModel() {
     private val _state = MutableStateFlow(PesananState())
     private val _katalis_state = MutableStateFlow(KatalisScreenUiState())
@@ -95,10 +96,10 @@ class PesananViewModel(
             }
         }
     }
-    fun decrementStok(minStokKatalis: SelectedKatalis, selectedKatalisId : String ) {
+    fun decrementStok(minStokKatalis: SelectedKatalis, selectedKatalisId : String, stok : Int, quantity: Int ) {
         viewModelScope.launch {
             setState(_state.value.copy(isLoading = true))
-            val newStok = (12)
+            val newStok = (stok - quantity)
 
             try {
                 katalisRepositoryImpl.updateStokKatalis(katalisId = selectedKatalisId, fieldToUpdate = "stok", newValue =  newStok  )
