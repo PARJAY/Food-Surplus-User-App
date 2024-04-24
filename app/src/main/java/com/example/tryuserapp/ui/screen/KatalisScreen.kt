@@ -149,7 +149,7 @@ fun KatalisScreen(
                         loopedKatalis.idKatalis == katalis.id
                     }?.quantity = modifiedQuantityKatalis
 
-                    Log.d("Katalis Screen", "Modified Katalis with id ${katalis.id}. quantity to ${modifiedQuantityKatalis}")
+                    Log.d("Katalis Screen", "Modified Katalis with id ${katalis.id}. quantity to $modifiedQuantityKatalis")
                 },
                 onRemoveSelectedKatalisListById = {
                     selectedKatalisList.removeAll { it.idKatalis == katalis.id }

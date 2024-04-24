@@ -275,7 +275,6 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                 factory = viewModelFactory { HomeScreenViewModel(MyApp.appModule.hotelRepositoryImpl) }
             )
             val homeScreenVMUiState = homeScreenVM.state.collectAsState().value
-            val homeScreenVMEffectFlow = homeScreenVM.effect
 
             HomeScreen(
                 userData = googleAuthUiClient.getSignedInUser(),
