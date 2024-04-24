@@ -31,6 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tryuserapp.R
+import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.logic.OrderAction
 import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
@@ -41,7 +42,8 @@ fun QuantityCounter(
     onAddSelectedKatalisList : () -> Unit,
     onModifySelectedKatalisList : (Int) -> Unit,
     onRemoveSelectedKatalisListById : () -> Unit,
-    onQuantityModified: (OrderAction) -> Unit
+    onQuantityModified: (OrderAction) -> Unit,
+    katalisModel: KatalisModel
 ){
     var itemCounter by remember { mutableIntStateOf(selectedQuantityKatalis ?: 0) }
 
@@ -70,9 +72,9 @@ fun QuantityCounter(
             modifier = operatorIconModifier
                 .padding(start = 5.dp, end = 5.dp)
                 .clickable {
-                    if (itemCounter - 1 == 0) return@clickable
+                    if (itemCounter - 1 == 0) onRemoveSelectedKatalisListById()
+                    if (itemCounter <= 0) return@clickable
                     itemCounter --
-                    if (itemCounter <= 0) onRemoveSelectedKatalisListById()
             }
         )
 
@@ -87,14 +89,18 @@ fun QuantityCounter(
             Icons.Default.Add,
             contentDescription = "",
             modifier = operatorIconModifier.clickable {
+                Log.d("Stok", "${katalisModel.stok}")
+                if (itemCounter == katalisModel.stok) return@clickable
+
                 if (itemCounter == 0) {
                     onAddSelectedKatalisList()
                     itemCounter++
-                }
-                else {
+                } else {
                     itemCounter++
                     onModifySelectedKatalisList(itemCounter)
                 }
+
+
             }
         )
     }
@@ -120,6 +126,7 @@ fun TambahKurangPreview(){
                 onRemoveSelectedKatalisListById = {
 
                 },
+                katalisModel = KatalisModel()
             )
         }
     }

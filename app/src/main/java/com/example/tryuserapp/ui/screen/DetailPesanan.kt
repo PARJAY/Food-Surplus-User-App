@@ -113,7 +113,7 @@ fun DetailPesanan(
             )
 
             Text(
-                text = "Stok : ${selectedDetailKatalis.stokKatalis}",
+                text = "Stok : ${selectedDetailKatalis.stok}",
                 style = TextStyle(fontSize = 20.sp,  fontWeight = FontWeight.Bold)
             )
 
@@ -140,7 +140,8 @@ fun DetailPesanan(
                 onModifySelectedKatalisList = onModifySelectedKatalisList,
                 onRemoveSelectedKatalisListById = {
                     onRemoveSelectedKatalisListById(selectedDetailKatalis.id)
-                }
+                },
+                katalisModel = KatalisModel()
             )
         }
     }

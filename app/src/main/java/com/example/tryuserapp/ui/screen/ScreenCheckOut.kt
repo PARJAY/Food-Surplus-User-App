@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import com.example.tryuserapp.data.model.DaftarKatalis
 import com.example.tryuserapp.data.model.Pesanan
 import com.example.tryuserapp.logic.StatusPesanan
+import com.example.tryuserapp.presentation.katalis_screen.KatalisScreenUiState
 import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
 import com.example.tryuserapp.presentation.pesanan.PesananViewModel
 import com.example.tryuserapp.presentation.sign_in.UserData
@@ -53,8 +54,8 @@ fun ScreenCheckOut(
     userData :UserData,
     alamatByName : String,
     alamatByGeolocation : LatLng,
-    selectedKatalis: SnapshotStateList<SelectedKatalis>
-){
+    selectedKatalis: SnapshotStateList<SelectedKatalis>,
+    ){
     val context = LocalContext.current
 
 
@@ -145,11 +146,10 @@ LazyColumn {
                                 }
                             )
                         }
-
                         selectedKatalis.forEach {
                             pesananViewModel.createListIdPesanan(newDaftarKatalis = DaftarKatalis(
                                 id_katalis = it.idKatalis,
-                                quantity = it.quantity
+                                quantity =  (it.quantity)
                             ))
                         }
 

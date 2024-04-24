@@ -1,6 +1,7 @@
 package com.example.tryuserapp.ui.component
 
 import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -73,6 +74,7 @@ fun Katalis(
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
                 modifier = Modifier.padding(start = 16.dp, top = 5.dp)
+                    .clickable { Log.d("stok","$katalisModel.stok") }
             )
             Text(
                 text = "${katalisModel.hargaJual}/${katalisModel.porsiJual}",
@@ -81,7 +83,7 @@ fun Katalis(
             )
 
             Text(
-                text = "Stok : ${katalisModel.stokKatalis}",
+                text = "Stok : ${katalisModel.stok}",
                 fontSize = 16.sp,
                 modifier = Modifier.padding(start = 16.dp)
             )
@@ -102,7 +104,8 @@ fun Katalis(
                 onRemoveSelectedKatalisListById,
                 onQuantityModified = { orderAction ->
                     onModifyQuantity(katalisModel.id, orderAction)
-                }
+                },
+                katalisModel = katalisModel
             )
         }
     }
