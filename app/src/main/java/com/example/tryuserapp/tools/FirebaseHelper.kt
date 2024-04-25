@@ -30,6 +30,7 @@ class FirebaseHelper {
                 transfer_proof_image_link = queryDocumentSnapshot.getString("transfer_proof_image_link") ?: "",
                 status_pesanan = queryDocumentSnapshot.getString("status_pesanan") ?: "",
                 waktu_pesanan_dibuat = queryDocumentSnapshot.getString("waktu_pesanan_dibuat") ?: "",
+                jarak_user_dan_hotel = queryDocumentSnapshot.getLong("jarak_user_dan_hotel")?.toFloat() ?: 0f,
                 id_pesanan = queryDocumentSnapshot.id
             )
 

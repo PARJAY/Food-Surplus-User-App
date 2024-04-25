@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -89,6 +90,9 @@ fun RingkasanPesanan(
                     Text(text = "Biaya transportasi")
                     Text(text = "Rp. ${ongkirPrice!! + bensinPrice!!}")
                 }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -97,7 +101,9 @@ fun RingkasanPesanan(
                     Text(text = "Rp. ${totalHarga + ongkirPrice!! + bensinPrice!!}")
                 }
             }
-            else
+            else {
+                Spacer(modifier = Modifier.height(16.dp))
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -105,8 +111,9 @@ fun RingkasanPesanan(
                     Text(text = "Total Harga")
                     Text(text = "Rp. $totalHarga")
                 }
-        }
+            }
 
+        }
     }
 }
 
