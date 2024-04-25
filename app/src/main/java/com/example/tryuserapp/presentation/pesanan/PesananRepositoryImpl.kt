@@ -1,10 +1,14 @@
 package com.example.tryuserapp.presentation.pesanan
 
+import android.util.Log
+import com.example.tryuserapp.common.CUSTOMER_COLLECTION
 import com.example.tryuserapp.common.LIST_PESANAN_KATALIS
 import com.example.tryuserapp.common.PESANAN_COLLECTION
 import com.example.tryuserapp.data.DummyData
+import com.example.tryuserapp.data.model.CustomerModel
 import com.example.tryuserapp.data.model.DaftarKatalis
 import com.example.tryuserapp.data.model.PesananModel
+import com.example.tryuserapp.tools.FirebaseHelper
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -26,6 +30,12 @@ class PesananRepositoryImpl(private val db : FirebaseFirestore) {
         createdDocumentId : (String) -> Unit
     ) {
         createdDocumentId(db.collection(LIST_PESANAN_KATALIS).add(daftarKatalis).await().id)
+    }
+
+    suspend fun getListPesananKatalisById(listPesananKatalisId: String): DaftarKatalis {
+        val documentSnapshot = db.collection(LIST_PESANAN_KATALIS).document(listPesananKatalisId).get().await()
+
+        return FirebaseHelper.fetchSnapshotToDaftarKatalisModel(documentSnapshot)
     }
 
 }

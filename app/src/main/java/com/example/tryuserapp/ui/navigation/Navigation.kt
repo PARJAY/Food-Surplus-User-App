@@ -27,21 +27,21 @@ import com.example.tryuserapp.MyApp
 import com.example.tryuserapp.common.BEGIN_QUANTITY_KATALIS
 import com.example.tryuserapp.data.model.CustomerModel
 import com.example.tryuserapp.data.model.KatalisModel
+import com.example.tryuserapp.data.model.PesananModel
 import com.example.tryuserapp.data.repository.KatalisRepositoryImpl
 import com.example.tryuserapp.data.repository.PesananListRepositoryImpl
-import com.example.tryuserapp.logic.OrderAction
+import com.example.tryuserapp.logic.StatusPesanan
 import com.example.tryuserapp.presentation.customer.CustomerViewModel
 import com.example.tryuserapp.presentation.home_screen.HomeScreenViewModel
 import com.example.tryuserapp.presentation.katalis_screen.KatalisScreenViewModel
 import com.example.tryuserapp.presentation.pesanan.PesananRepositoryImpl
 import com.example.tryuserapp.presentation.pesanan.PesananViewModel
 import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
-import com.example.tryuserapp.presentation.pesanan.PesananListEvent
 import com.example.tryuserapp.presentation.pesanan.PesananListViewModel
 import com.example.tryuserapp.presentation.sign_in.GoogleAuthUiClient
 import com.example.tryuserapp.presentation.sign_in.SignInViewModel
 import com.example.tryuserapp.presentation.viewModelFactory
-import com.example.tryuserapp.ui.screen.DetailPesanan
+import com.example.tryuserapp.ui.screen.DetailKatalis
 import com.example.tryuserapp.ui.screen.HomeScreen
 import com.example.tryuserapp.ui.screen.KatalisScreen
 import com.example.tryuserapp.ui.screen.LocationGpsScreen
@@ -49,6 +49,7 @@ import com.example.tryuserapp.ui.screen.MapsScreen
 import com.example.tryuserapp.ui.screen.PesananAnda
 import com.example.tryuserapp.ui.screen.ProfileScreen
 import com.example.tryuserapp.ui.screen.ScreenCheckOut
+import com.example.tryuserapp.ui.screen.ScreenDetailPesananAnda
 import com.example.tryuserapp.ui.screen.ScreenLengkapiData
 import com.example.tryuserapp.ui.screen.ScreenLogin
 import com.example.tryuserapp.ui.screen.TrackUserLocationScreen
@@ -79,6 +80,20 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
     var selectedHotelId by remember { mutableStateOf("") }
 
     var selectedDetailKatalis by remember { mutableStateOf(KatalisModel()) }
+
+    var selectedDetailPesananModel by remember { mutableStateOf(
+        PesananModel(
+            id_customer = "",
+            id_kurir = "",
+            id_hotel = "",
+            list_id_daftar_katalis = "",
+            total_harga = 0f,
+            transfer_proof_image_link = "",
+            waktu_pesanan_dibuat = "",
+            jarak_user_dan_hotel = 0f,
+            status_pesanan = StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString()
+        )
+    )}
 
     var navAlamatByName by remember { mutableStateOf("") }
 
@@ -282,7 +297,10 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
 
             PesananAnda(
                 pesananState = pesananScreenVMUiState,
-                onNavigateToScreen = { navController.navigate(it) },
+                onNavigateToDetailPesananScreen = { pesananModel, desiredScreen ->
+                    selectedDetailPesananModel = pesananModel
+                    navController.navigate(desiredScreen)
+                },
                 pesananListViewModel = PesananListViewModel(
                     MyApp.appModule.pesananListRepositoryImpl,
                     idCustomer = googleAuthUiClient.getSignedInUser()!!.userId
@@ -290,8 +308,15 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
             )
         }
 
+        composable(Screen.ScreenDetailPesananAnda.route) {
+            ScreenDetailPesananAnda(
+                selectedDetailPesananModel,
+
+            )
+        }
+
         composable(Screen.ScreenDetailPesanan.route) {
-            DetailPesanan(
+            DetailKatalis(
                 selectedDetailKatalis = selectedDetailKatalis,
                 onAddSelectedKatalisList = {
                     selectedKatalis.add(

@@ -5,10 +5,9 @@ import android.util.Log
 import com.example.tryuserapp.MyApp
 import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.data.model.CustomerModel
+import com.example.tryuserapp.data.model.DaftarKatalis
 import com.example.tryuserapp.data.model.HotelModel
 import com.example.tryuserapp.data.model.PesananModel
-import com.example.tryuserapp.logic.StatusHotel
-import com.example.tryuserapp.logic.StatusPesanan
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QueryDocumentSnapshot
 
@@ -26,7 +25,7 @@ class FirebaseHelper {
                 id_customer = queryDocumentSnapshot.getString("id_customer") ?: "",
                 id_hotel = queryDocumentSnapshot.getString("id_hotel") ?: "",
                 id_kurir = queryDocumentSnapshot.getString("id_kurir") ?: "",
-                list_id_daftar_katalis = queryDocumentSnapshot.getString("phone_number") ?: "",
+                list_id_daftar_katalis = queryDocumentSnapshot.getString("list_id_daftar_katalis") ?: "",
                 total_harga = queryDocumentSnapshot.getLong("total_harga")?.toFloat() ?: 0.0f,
                 transfer_proof_image_link = queryDocumentSnapshot.getString("transfer_proof_image_link") ?: "",
                 status_pesanan = queryDocumentSnapshot.getString("status_pesanan") ?: "",
@@ -63,6 +62,21 @@ class FirebaseHelper {
                 listIdKatalis = queryDocumentSnapshot.getString("katalis")?.split(",") ?: emptyList(),
                 statusHotel = queryDocumentSnapshot.getString("statusHotel")?: "",
             )
+
+        fun fetchSnapshotToDaftarKatalisModel(documentSnapshot : DocumentSnapshot) : DaftarKatalis {
+            Log.d("ListPesananKatalis Repo", "${documentSnapshot.data}")
+
+            val daftarKatalis = DaftarKatalis()
+            val innerMap = documentSnapshot.data?.get("daftarKatalis") as? Map<*, *>
+            innerMap?.forEach { (key, value) ->
+                Log.d("ListPesananKatalis Repo", "key : $key, value : $value")
+                daftarKatalis.daftarKatalis += Pair(key.toString(), value.toString().toInt())
+            }
+
+            Log.d("ListPesananKatalis Repo", "map : $daftarKatalis")
+            return daftarKatalis
+        }
+
 
         fun getFileFromFirebaseStorage (
             fileReference : String,

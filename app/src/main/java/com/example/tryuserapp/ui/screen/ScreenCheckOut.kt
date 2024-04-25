@@ -79,7 +79,7 @@ fun ScreenCheckOut(
             val apiService = RetrofitInstance.api
             CoroutineScope(Dispatchers.IO).launch {
                 val response = apiService.getDirections(
-                    "${alamatByGeolocation?.latitude},${alamatByGeolocation?.longitude}",
+                    "${alamatByGeolocation.latitude},${alamatByGeolocation.longitude}",
                     alamatHotelByName
                 )
 
@@ -158,9 +158,7 @@ fun ScreenCheckOut(
                             onSelectImageUri = { selectedImageUri = it }
                         )
                         Spacer(modifier = Modifier.height(32.dp))
-
                     }
-
                 }
             }
         }
