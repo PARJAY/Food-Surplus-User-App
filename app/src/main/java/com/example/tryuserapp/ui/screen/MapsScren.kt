@@ -77,7 +77,8 @@ fun MapsScreen(
 
     val locationPermissionState = rememberMultiplePermissionsState(
         listOf(
-            Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
         )
     )
 
@@ -111,9 +112,7 @@ fun MapsScreen(
                 }
             }
 
-            is LocationState.LocationLoading -> {
-                Text("Loading Map")
-            }
+            is LocationState.LocationLoading -> Text("Loading Map")
 
             is LocationState.Error -> {
                 Column {
@@ -198,6 +197,7 @@ fun MapsScreen(
                                 }
                                 Spacer(modifier = Modifier.height(16.dp))
                             }
+
                             OutlinedTextField(
                                 value = viewModel.text,
                                 onValueChange = {
@@ -207,6 +207,7 @@ fun MapsScreen(
                                     .fillMaxWidth()
                                     .padding(8.dp)
                             )
+
                             Button (
                                 modifier = Modifier.fillMaxWidth(),
                                 onClick = {
@@ -217,6 +218,7 @@ fun MapsScreen(
                             ) {
                                 Text(text = "Pilih Lokasi")
                             }
+
                         }
                     }
                 }
@@ -237,9 +239,8 @@ private fun requestLocationEnable(viewModel: LocationViewModel, activity : Activ
         val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
         LocationServices.getSettingsClient(it).checkLocationSettings(builder.build())
             .addOnSuccessListener {
-                if (it.locationSettingsStates?.isLocationPresent == true) {
+                if (it.locationSettingsStates?.isLocationPresent == true)
                     viewModel.getCurrentLocation()
-                }
             }.addOnFailureListener {
                 if (it is ResolvableApiException) {
                     try {

@@ -127,9 +127,9 @@ fun HomeScreen(
                         )
                     }
                 )
+                Text(text = hotel.statusHotel)
                 Spacer(modifier = Modifier.height(5.dp))
             }
-
         }
     }
 }
@@ -152,7 +152,7 @@ fun HomeScreenPreview() {
                         email = "dfamksfas",
                         alamat = "asdad",
                         listIdKatalis = listOf(""),
-                        statusHotel = StatusHotel.SUDAH_DI_ACC
+                        statusHotel = StatusHotel.SUDAH_DI_ACC.toString()
                     ),
                     HotelModel(
                         idHotel = "asdasd",
@@ -161,7 +161,7 @@ fun HomeScreenPreview() {
                         email = "dfamksfas",
                         alamat = "asdad",
                         listIdKatalis = listOf(""),
-                        statusHotel = StatusHotel.SUDAH_DI_ACC
+                        statusHotel = StatusHotel.SUDAH_DI_ACC.toString()
                     ),
                     HotelModel(
                         idHotel = "asdasd",
@@ -170,7 +170,7 @@ fun HomeScreenPreview() {
                         email = "dfamksfas",
                         alamat = "asdad",
                         listIdKatalis = listOf(""),
-                        statusHotel = StatusHotel.SUDAH_DI_ACC
+                        statusHotel = StatusHotel.SUDAH_DI_ACC.toString()
                     ),
                 )
             ),

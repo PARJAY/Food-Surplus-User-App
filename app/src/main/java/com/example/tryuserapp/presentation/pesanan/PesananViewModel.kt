@@ -35,6 +35,7 @@ class PesananViewModel(
             pesananListState = transaksi
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), PesananState())
+
     init {
         onEvent(PesananListEvent.GetListPesanan)
     }

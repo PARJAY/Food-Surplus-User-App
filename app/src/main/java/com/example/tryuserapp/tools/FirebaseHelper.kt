@@ -65,12 +65,7 @@ class FirebaseHelper {
         }
         fun fetchSnapshotToHotelModel(queryDocumentSnapshot: QueryDocumentSnapshot): HotelModel {
 
-            val statusHotelQS = queryDocumentSnapshot.getLong("statusHotel")?.toInt()
-            var statusHotel : StatusHotel = StatusHotel.DECLINED
 
-            if (statusHotelQS == 0)  statusHotel = StatusHotel.WAITING
-            else if (statusHotelQS == 1 ) statusHotel = StatusHotel.SUDAH_DI_ACC
-            else if (statusHotelQS == 2 ) statusHotel = StatusHotel.DECLINED
 
             return HotelModel(
                 idHotel = queryDocumentSnapshot.id,
@@ -78,8 +73,8 @@ class FirebaseHelper {
                 phoneNumber = queryDocumentSnapshot.getString("phoneNumber") ?: "",
                 email = queryDocumentSnapshot.getString("email")?: "",
                 alamat = queryDocumentSnapshot.getString("alamat")?: "" ,
-                listIdKatalis = queryDocumentSnapshot.getString("katalis")?.split(",") ?: emptyList(),
-                statusHotel = statusHotel
+//                listIdKatalis = queryDocumentSnapshot.getString("katalis")?.split(",") ?: emptyList(),
+                statusHotel = queryDocumentSnapshot.getString("statusHotel") ?: ""
             )
         }
 

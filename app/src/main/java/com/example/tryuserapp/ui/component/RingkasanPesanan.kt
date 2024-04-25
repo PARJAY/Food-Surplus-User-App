@@ -1,6 +1,7 @@
 package com.example.tryuserapp.ui.component
 
 import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -35,19 +36,16 @@ import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 @Composable
 fun RingkasanPesanan(
-    selectedKatalis: SnapshotStateList<SelectedKatalis>
+    selectedKatalis: SnapshotStateList<SelectedKatalis>,
+    hotelToUserDistance : Float
 ) {
-
     var totalHarga = 0F
 
-    selectedKatalis.forEach {
-        totalHarga += (it.hargaKatalis * it.quantity)
-    }
-
-
+    selectedKatalis.forEach { totalHarga += (it.hargaKatalis * it.quantity) }
 
     LazyColumn(
         modifier = Modifier
+            .fillMaxWidth()
             .border(
                 BorderStroke(1.dp, Color.Black),
                 shape = RoundedCornerShape(16.dp)
@@ -55,36 +53,39 @@ fun RingkasanPesanan(
             .padding(16.dp)
     ) {
         item {
-            Column() {
-                Text(
-                    text = "Ringkasan Pesanan",
-                    style = TextStyle(
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-
+            Text(
+                text = "Ringkasan Pesanan",
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
                 )
-                Spacer(modifier = Modifier.size(width = 0.dp, height = 8.dp))
 
-            }
+            )
+            Spacer(modifier = Modifier.size(width = 0.dp, height = 8.dp))
         }
 
 
         items(selectedKatalis) {
-            Column {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(text = it.namaKatalis + " x " +  it.quantity )
-                    Text(text = "Rp." + (it.hargaKatalis* it.quantity ))
-                }
-
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(text = it.namaKatalis + " x " +  it.quantity )
+                Text(text = "Rp." + (it.hargaKatalis* it.quantity ))
             }
-
         }
+
         item {
-            Text(text = "Total Harga $totalHarga")
+            val ongkirPrice : Float?
+            val bensinPrice : Float?
+
+            if (hotelToUserDistance != 0f) {
+                ongkirPrice = hotelToUserDistance.div(10)
+                bensinPrice = hotelToUserDistance.times(1.5f)
+                Text(text = "Biaya transportasi = Rp. $ongkirPrice + $bensinPrice")
+                Text(text = "Total Harga = ${totalHarga + ongkirPrice + bensinPrice}")
+            }
+            else Text(text = "Total Harga = $totalHarga")
 
         }
 
