@@ -60,7 +60,7 @@ fun ScreenCheckOut(
     selectedIdHotel : String,
     alamatByName : String,
     alamatByGeolocation : LatLng?,
-    alamatHotelByGeolocation : String,
+    alamatHotelByName : String,
     selectedKatalis: SnapshotStateList<SelectedKatalis>,
 ) {
     val context = LocalContext.current
@@ -73,16 +73,15 @@ fun ScreenCheckOut(
 
     var totalHarga = 0F
 
-    if (alamatByGeolocation != LatLng(0.0,0.0) && alamatHotelByGeolocation != "")
+    if (alamatByGeolocation != LatLng(0.0,0.0) && alamatHotelByName != "")
         LaunchedEffect(key1 = hotelToUserDistance != 0f) {
-            val geolocationPart = alamatHotelByGeolocation.split(",")
 
             Log.d("ScreenCheckOut", "Launched Effect Status -> Running")
             val apiService = RetrofitInstance.api
             CoroutineScope(Dispatchers.IO).launch {
                 val response = apiService.getDirections(
                     "${alamatByGeolocation?.latitude},${alamatByGeolocation?.longitude}",
-                    "${geolocationPart[0].toFloat()},${geolocationPart[1].toFloat()}"
+                    alamatHotelByName
                 )
 
                 Log.d("ScreenCheckOut", "response : $response")
@@ -102,6 +101,10 @@ fun ScreenCheckOut(
                         0f
                     }
                 }
+
+                Log.d("ScreenCheckOut", "distance : $hotelToUserDistance")
+                Log.d("ScreenCheckOut", "estimated ongkir price (Rp 100 / 1 Km ) : Rp. ${hotelToUserDistance / 10}")
+                Log.d("ScreenCheckOut", "estimated bensin price (Rp 1500 / 1 km ) : Rp. ${hotelToUserDistance * 1.5}")
 
             }
         }
@@ -149,7 +152,7 @@ fun ScreenCheckOut(
                             alamatByName = alamatByName
                         )
                         Spacer(modifier = Modifier.height(10.dp))
-                        RingkasanPesanan(selectedKatalis)
+                        RingkasanPesanan(selectedKatalis, hotelToUserDistance)
                         Spacer(modifier = Modifier.height(10.dp))
                         Pembayaran(
                             selectedImageUri,

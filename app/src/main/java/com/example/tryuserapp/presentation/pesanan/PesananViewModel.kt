@@ -36,6 +36,10 @@ class PesananViewModel(
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), PesananState())
 
+    init {
+        onEvent(PesananListEvent.GetListPesanan)
+    }
+
     private fun setState(newState: PesananState) {
         _state.value = newState
     }
@@ -53,7 +57,7 @@ class PesananViewModel(
 //            is PesananEvent.CreatePesanan -> {
 //                createPesanan(event.pesanan)
 //            }
-            is PesananListEvent.GetListPesanan -> getPesananList(event.idCustomer)
+            is PesananListEvent.GetUserListPesanan -> getPesananList(event.idCustomer)
 
 //            is HomeScreenEvent.ModifyOrder -> {
 //                modifyOrder(
@@ -61,6 +65,9 @@ class PesananViewModel(
 //                    action = event.orderAction
 //                )
 //            }
+            PesananListEvent.GetListPesanan -> {
+                TODO()
+            }
         }
     }
 

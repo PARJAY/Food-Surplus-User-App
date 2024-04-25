@@ -25,7 +25,7 @@ class PesananListViewModel(
     val effect = _effect.receiveAsFlow()
 
     init {
-        PesananListEvent.GetListPesanan(idCustomer)
+        PesananListEvent.GetUserListPesanan (idCustomer)
     }
 
     private fun setEffect(builder: () -> PesananSideEffects) {
@@ -39,7 +39,9 @@ class PesananListViewModel(
 
     fun onEvent(event: PesananListEvent) {
         when (event) {
-            is PesananListEvent.GetListPesanan -> getPesananList(event.idCustomer)
+            is PesananListEvent.GetListPesanan -> {
+
+            }
 
 //            is HomeScreenEvent.ModifyOrder -> {
 //                modifyOrder(
@@ -47,6 +49,8 @@ class PesananListViewModel(
 //                    action = event.orderAction
 //                )
 //            }
+
+            is PesananListEvent.GetUserListPesanan -> getPesananList(event.idCustomer)
         }
     }
 

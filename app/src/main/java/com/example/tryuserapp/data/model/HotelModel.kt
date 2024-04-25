@@ -1,7 +1,5 @@
 package com.example.tryuserapp.data.model
 
-import com.example.tryuserapp.logic.StatusHotel
-
 data class HotelModel(
     var idHotel : String = "",
     var name : String = "",

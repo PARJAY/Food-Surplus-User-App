@@ -85,6 +85,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
     var navAlamatByGeolocation by remember { mutableStateOf(LatLng(0.0, 0.0)) }
     var navAlamatHotelByGeolocation by remember { mutableStateOf("") }
 
+    var changeScreen by remember { mutableStateOf(false) }
 
     NavHost(navController, startDestination = Screen.ScreenLogin.route) {
         composable(Screen.ScreenLogin.route) {
@@ -173,16 +174,16 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
         }
 
         composable(Screen.ScreenCheckOut.route) {
-            val pesananViewModel: PesananViewModel = viewModel(
-                factory = viewModelFactory {
-                    PesananViewModel(
-                        MyApp.appModule.pesananRepositoryImpl,
-                        MyApp.appModule.katalisRepositoryImpl,
-                        MyApp.appModule.pesananListRepositoryImpl,
-
-                    )
-                }
-            )
+//            val pesananViewModel: PesananViewModel = viewModel(
+//                factory = viewModelFactory {
+//                    PesananViewModel(
+//                        MyApp.appModule.pesananRepositoryImpl,
+//                        MyApp.appModule.katalisRepositoryImpl,
+//                        MyApp.appModule.pesananListRepositoryImpl,
+//
+//                    )
+//                }
+//            )
 
             Log.d("Screen Checkout", "Passed here")
 
@@ -194,7 +195,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                 pesananViewModel = PesananViewModel(
                     PesananRepositoryImpl(db = FirebaseFirestore.getInstance()),
                     KatalisRepositoryImpl(db = FirebaseFirestore.getInstance()),
-                    pesananListRepositoryImpl =   PesananListRepositoryImpl(db = FirebaseFirestore.getInstance())
+                    pesananListRepositoryImpl = PesananListRepositoryImpl(db = FirebaseFirestore.getInstance())
                 ),
                 onNavigateToHome = {
                     navController.popBackStack()
@@ -206,7 +207,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                 alamatByGeolocation = navAlamatByGeolocation,
                 selectedKatalis = selectedKatalis,
                 selectedIdHotel = selectedHotelId,
-                alamatHotelByGeolocation = navAlamatHotelByGeolocation
+                alamatHotelByName = navAlamatHotelByGeolocation
             )
         }
 
@@ -328,7 +329,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                 onButtonSelectLocationClick = { alamatByName, alamatByGeolocation ->
                     navAlamatByName = alamatByName
                     navAlamatByGeolocation = alamatByGeolocation
-                    navController.popBackStack()
+                    changeScreen = true
                 }
             )
         }
@@ -344,6 +345,11 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
         composable(Screen.LocationGpsScreen.route) {
             LocationGpsScreen()
         }
+    }
 
+    if (changeScreen) {
+        Log.d("MapsScreen", "How many you been executed?")
+        navController.popBackStack()
+        !changeScreen
     }
 }
