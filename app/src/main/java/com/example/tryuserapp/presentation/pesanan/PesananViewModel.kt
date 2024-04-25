@@ -65,9 +65,7 @@ class PesananViewModel(
 //                    action = event.orderAction
 //                )
 //            }
-            PesananListEvent.GetListPesanan -> {
-                TODO()
-            }
+            PesananListEvent.GetListPesanan -> { }
         }
     }
 
@@ -97,6 +95,8 @@ class PesananViewModel(
                         newPesananModel.transfer_proof_image_link,
                         newPesananModel.status_pesanan,
                         newPesananModel.waktu_pesanan_dibuat,
+                        newPesananModel.lokasiUser,
+                        newPesananModel.jarak_user_dan_hotel
                     )
                 )
 
@@ -150,28 +150,28 @@ class PesananViewModel(
     }
 
     private fun getPesananList(idCustomer : String) {
-//        viewModelScope.launch {
-//            _state.value = _state.value.copy(isLoading = true) // Update loading state
-//
-//            pesananListRepositoryImpl.getPesananList(
-//                callback =  { firebaseResult ->
-//                    if (firebaseResult is FirebaseResult.Failure) {
-//                        setState(_state.value.copy(isLoading = false))
-//                        Log.d("VIEWMODEL: ", "error - ${firebaseResult.exception.message}")
-//                        setEffect {
-//                            PesananSideEffects.ShowSnackBarMessage(
-//                                firebaseResult.exception.message ?: "Error fetching users"
-//                            )
-//                        }
-//                    } else if (firebaseResult is FirebaseResult.Success) {
-//                        Log.d("VIEWMODEL: ", "sucess - ${firebaseResult.data}")
-//                        _state.value =
-//                            _state.value.copy(isLoading = false, pesananListState = firebaseResult.data)
-//                        setEffect { PesananSideEffects.ShowSnackBarMessage(message = "User list data loaded successfully") }
-//                    }
-//                },
-//                idCustomer = idCustomer
-//            )
-//        }
+        viewModelScope.launch {
+            _state.value = _state.value.copy(isLoading = true) // Update loading state
+
+            pesananListRepositoryImpl.getPesananList(
+                callback =  { firebaseResult ->
+                    if (firebaseResult is FirebaseResult.Failure) {
+                        setState(_state.value.copy(isLoading = false))
+                        Log.d("VIEWMODEL: ", "error - ${firebaseResult.exception.message}")
+                        setEffect {
+                            PesananSideEffects.ShowSnackBarMessage(
+                                firebaseResult.exception.message ?: "Error fetching users"
+                            )
+                        }
+                    } else if (firebaseResult is FirebaseResult.Success) {
+                        Log.d("VIEWMODEL: ", "sucess - ${firebaseResult.data}")
+                        _state.value =
+                            _state.value.copy(isLoading = false, pesananListState = firebaseResult.data)
+                        setEffect { PesananSideEffects.ShowSnackBarMessage(message = "User list data loaded successfully") }
+                    }
+                },
+                idCustomer = idCustomer
+            )
+        }
     }
 }

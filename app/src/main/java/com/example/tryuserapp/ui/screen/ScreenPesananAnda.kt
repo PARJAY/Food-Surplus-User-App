@@ -1,11 +1,7 @@
 package com.example.tryuserapp.ui.screen
 
-import android.service.autofill.UserData
-import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,11 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tryuserapp.R
 import com.example.tryuserapp.logic.StatusPesanan
-import com.example.tryuserapp.presentation.pesanan.PesananListEvent
 import com.example.tryuserapp.presentation.pesanan.PesananListViewModel
 import com.example.tryuserapp.presentation.pesanan.PesananState
 import com.example.tryuserapp.ui.component.CheckStatusPesanan
@@ -32,39 +28,33 @@ import com.example.tryuserapp.ui.theme.backGroundScreen
 fun PesananAnda(
     pesananState: PesananState,
     pesananListViewModel: PesananListViewModel,
-    onPesananScreenEvent: (PesananListEvent) -> Unit,
-    onNavigateToScreen : (String) -> Unit) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(backGroundScreen),
-    ) {
+    onNavigateToScreen : (String) -> Unit
+) {
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
         item {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = "Pesanan Anda",
-                    style = TextStyle(
-                        fontSize = 25.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+            Text(
+                text = "Pesanan Anda",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp, bottom = 20.dp),
+                style = TextStyle(
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
                 )
-            }
-            Spacer(modifier = Modifier.height(20.dp))
+            )
         }
-        items(pesananState.pesananListState){pesanan ->
-            Column (
-                modifier = Modifier.padding(horizontal = 8.dp)
-            ){
+
+        items(pesananState.pesananListState) { pesanan ->
+            Column(
+                Modifier.padding(horizontal = 8.dp)
+            ) {
                 CheckStatusPesanan(
-                    StatusPhoto = R.drawable.otw,
-                    statusPesanan = StatusPesanan.SEDANG_DIANTAR,
+                    statusPhoto = R.drawable.otw,
                     pesananModel = pesanan,
-                    onPesananScreenEvent = onPesananScreenEvent,
                     pesananListViewModel = pesananListViewModel
-                    )
+                )
+
                 Spacer(modifier = Modifier.height(8.dp))
             }
         }

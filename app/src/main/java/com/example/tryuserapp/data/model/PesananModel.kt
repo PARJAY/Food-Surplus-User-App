@@ -9,15 +9,7 @@ data class PesananModel(
     var transfer_proof_image_link : String,
     var status_pesanan : String,
     var waktu_pesanan_dibuat : String,
-    var id_pesanan : String? = ""
-){
-    fun getUserById(){
-
-    }
-    fun getKurirById(){
-
-    }
-    fun getHotelById(){
-
-    }
-}
+    var lokasiUser : String = "",
+    var jarak_user_dan_hotel : Float = 0f,
+    var id_pesanan : String? = null
+)

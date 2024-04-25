@@ -2,8 +2,8 @@ package com.example.tryuserapp.logic
 
 enum class StatusPesanan {
     MENUNGGU_KONFIRMASI_ADMIN,
-    PESANAN_TERKONFIRMASI,
+    PESANAN_TERKONFIRMASI_ADMIN,
     SEDANG_DIANTAR,
-    PESANAN_SAMPAI,
+    PESANAN_TERKIRIM,
     BATAL
 }

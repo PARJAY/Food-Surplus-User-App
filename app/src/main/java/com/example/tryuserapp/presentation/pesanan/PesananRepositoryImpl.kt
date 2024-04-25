@@ -17,6 +17,10 @@ class PesananRepositoryImpl(private val db : FirebaseFirestore) {
         db.collection(PESANAN_COLLECTION).add(pesananModel).await()
     }
 
+    suspend fun addOrUpdatePesanan(newPesanan: PesananModel) {
+        db.collection(PESANAN_COLLECTION).document("Pesanan_${newPesanan.id_hotel}").set(newPesanan).await()
+    }
+
     suspend fun insertDaftarKatalis(
         daftarKatalis: DaftarKatalis,
         createdDocumentId : (String) -> Unit

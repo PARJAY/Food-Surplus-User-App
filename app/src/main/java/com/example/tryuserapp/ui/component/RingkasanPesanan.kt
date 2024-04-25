@@ -42,6 +42,8 @@ fun RingkasanPesanan(
     var totalHarga = 0F
 
     selectedKatalis.forEach { totalHarga += (it.hargaKatalis * it.quantity) }
+    var ongkirPrice : Float?
+    var bensinPrice : Float?
 
     LazyColumn(
         modifier = Modifier
@@ -76,17 +78,33 @@ fun RingkasanPesanan(
         }
 
         item {
-            val ongkirPrice : Float?
-            val bensinPrice : Float?
-
             if (hotelToUserDistance != 0f) {
                 ongkirPrice = hotelToUserDistance.div(10)
                 bensinPrice = hotelToUserDistance.times(1.5f)
-                Text(text = "Biaya transportasi = Rp. $ongkirPrice + $bensinPrice")
-                Text(text = "Total Harga = ${totalHarga + ongkirPrice + bensinPrice}")
-            }
-            else Text(text = "Total Harga = $totalHarga")
 
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(text = "Biaya transportasi")
+                    Text(text = "Rp. ${ongkirPrice!! + bensinPrice!!}")
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(text = "Total Harga")
+                    Text(text = "Rp. ${totalHarga + ongkirPrice!! + bensinPrice!!}")
+                }
+            }
+            else
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(text = "Total Harga")
+                    Text(text = "Rp. $totalHarga")
+                }
         }
 
     }

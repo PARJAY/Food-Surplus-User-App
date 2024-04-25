@@ -2,7 +2,6 @@ package com.example.tryuserapp.ui.screen
 
 import android.net.Uri
 import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -59,23 +59,22 @@ fun ScreenCheckOut(
     userData :UserData,
     selectedIdHotel : String,
     alamatByName : String,
-    alamatByGeolocation : LatLng?,
+    alamatByGeolocation : LatLng,
     alamatHotelByName : String,
     selectedKatalis: SnapshotStateList<SelectedKatalis>,
 ) {
     val context = LocalContext.current
 
-    var selectedImageUri by remember { mutableStateOf<Uri?>(Uri.EMPTY) }
+    var selectedImageUri by remember { mutableStateOf<Uri>(Uri.EMPTY) }
 
-    var hotelToUserDistance by remember { mutableFloatStateOf(0f) }
+    var hotelToUserDistanceInMeter by remember { mutableFloatStateOf(0f) }
 
     val daftarKatalis by remember { mutableStateOf(DaftarKatalis()) }
 
     var totalHarga = 0F
 
     if (alamatByGeolocation != LatLng(0.0,0.0) && alamatHotelByName != "")
-        LaunchedEffect(key1 = hotelToUserDistance != 0f) {
-
+        LaunchedEffect(key1 = hotelToUserDistanceInMeter != 0f) {
             Log.d("ScreenCheckOut", "Launched Effect Status -> Running")
             val apiService = RetrofitInstance.api
             CoroutineScope(Dispatchers.IO).launch {
@@ -93,7 +92,7 @@ fun ScreenCheckOut(
                 val value = parts[0].toFloatOrNull() ?: return@launch
                 val unit = parts[1]
 
-                hotelToUserDistance = when (unit) {
+                hotelToUserDistanceInMeter = when (unit) {
                     "m" -> value
                     "km" -> value * 1000f
                     else -> {
@@ -102,9 +101,9 @@ fun ScreenCheckOut(
                     }
                 }
 
-                Log.d("ScreenCheckOut", "distance : $hotelToUserDistance")
-                Log.d("ScreenCheckOut", "estimated ongkir price (Rp 100 / 1 Km ) : Rp. ${hotelToUserDistance / 10}")
-                Log.d("ScreenCheckOut", "estimated bensin price (Rp 1500 / 1 km ) : Rp. ${hotelToUserDistance * 1.5}")
+                Log.d("ScreenCheckOut", "distance : $hotelToUserDistanceInMeter")
+                Log.d("ScreenCheckOut", "estimated ongkir price (Rp 100 / 1 Km ) : Rp. ${hotelToUserDistanceInMeter / 10}")
+                Log.d("ScreenCheckOut", "estimated bensin price (Rp 1500 / 1 km ) : Rp. ${hotelToUserDistanceInMeter * 1.5}")
 
             }
         }
@@ -152,7 +151,7 @@ fun ScreenCheckOut(
                             alamatByName = alamatByName
                         )
                         Spacer(modifier = Modifier.height(10.dp))
-                        RingkasanPesanan(selectedKatalis, hotelToUserDistance)
+                        RingkasanPesanan(selectedKatalis, hotelToUserDistanceInMeter)
                         Spacer(modifier = Modifier.height(10.dp))
                         Pembayaran(
                             selectedImageUri,
@@ -172,23 +171,13 @@ fun ScreenCheckOut(
         contentAlignment = Alignment.BottomCenter
     ) {
         Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            shape = RoundedCornerShape(0.dp),
+            modifier = Modifier.fillMaxWidth(),
+            shape = RectangleShape,
             colors = ButtonDefaults.buttonColors(
                 contentColor = androidx.compose.ui.graphics.Color.White,
                 containerColor = Brown
             ),
             onClick = {
-                if (selectedImageUri?.path!!.isEmpty()) showToast(context, "Select an Image")
-                else uploadImageToFirebaseStorage(
-                    userIdForFileReference = "User_${userData.userId}",
-                    file = selectedImageUri!!,
-                    onSuccess = { showToast(context, it) },
-                    onError = { showToast(context, "$it") }
-                )
-
                 Log.d("ScreenCheckOut", "selected katalis : $selectedKatalis")
                 selectedKatalis.forEach {
                     daftarKatalis.daftarKatalis += Pair(it.idKatalis, it.quantity)
@@ -196,35 +185,50 @@ fun ScreenCheckOut(
                     Log.d("ScreenCheckOut", "daftarKatalis : ${daftarKatalis.daftarKatalis}")
                 }
 
-                pesananViewModel.createPesanan(
-                    newPesananModel = PesananModel(
-                        id_customer =  userData.userId,
-                        id_hotel = selectedIdHotel,
-                        id_kurir = "",
-                        list_id_daftar_katalis = "",
-                        total_harga = totalHarga,
-                        transfer_proof_image_link = selectedImageUri.toString(),
-                        StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString(),
-                        Calendar.getInstance().time.toString()
-                    ),
-                    newDaftarKatalis = daftarKatalis,
-                )
-
-                selectedKatalis.forEach {
-                    pesananViewModel.decrementStok(
-                        selectedKatalisId = it.idKatalis,
-                        stok = it.stokKatalis,
-                        quantity = it.quantity
-                    )
+                if (alamatByGeolocation == LatLng(0.0,0.0) || alamatHotelByName == "") {
+                    Log.d("ScreenCheckOut", "You should stop here")
+                    showToast(context, "Masukkan Alamat Anda")
                 }
-                onNavigateToHome()
+                else if (selectedImageUri == Uri.EMPTY) showToast(context, "Masukkan Bukti Pembayaran")
+                else {
+                    uploadImageToFirebaseStorage(
+                        userIdForFileReference = "User_${userData.userId}",
+                        file = selectedImageUri,
+                        onSuccess = { showToast(context, it) },
+                        onError = { showToast(context, "$it") }
+                    )
+
+                    pesananViewModel.createPesanan(
+                        newPesananModel = PesananModel(
+                            id_customer =  userData.userId,
+                            id_hotel = selectedIdHotel,
+                            id_kurir = "",
+                            list_id_daftar_katalis = "",
+                            total_harga = totalHarga,
+                            transfer_proof_image_link = selectedImageUri.lastPathSegment.toString(),
+                            StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString(),
+                            Calendar.getInstance().time.toString(),
+                            lokasiUser = "${alamatByGeolocation.latitude},${alamatByGeolocation.longitude}",
+                            hotelToUserDistanceInMeter
+                        ),
+                        newDaftarKatalis = daftarKatalis,
+                    )
+
+                    selectedKatalis.forEach {
+                        pesananViewModel.decrementStok(
+                            selectedKatalisId = it.idKatalis,
+                            stok = it.stokKatalis,
+                            quantity = it.quantity
+                        )
+                    }
+                    onNavigateToHome()
+                }
             }
         ) {
             Text(text = "Buat Pesanan")
         }
     }
 }
-
 
 //@Preview(showBackground = true)
 //@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)

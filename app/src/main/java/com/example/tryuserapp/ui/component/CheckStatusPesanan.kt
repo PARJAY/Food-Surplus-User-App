@@ -2,7 +2,6 @@ package com.example.tryuserapp.ui.component
 
 import android.content.res.Configuration
 import android.util.Log
-import com.example.tryuserapp.presentation.sign_in.UserData
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -10,7 +9,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,44 +22,43 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.tryuserapp.MyApp
 import com.example.tryuserapp.R
 import com.example.tryuserapp.data.model.PesananModel
 import com.example.tryuserapp.logic.StatusPesanan
-import com.example.tryuserapp.presentation.home_screen.HomeScreenEvent
-import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
-import com.example.tryuserapp.presentation.pesanan.PesananListEvent
 import com.example.tryuserapp.presentation.pesanan.PesananListViewModel
-import com.example.tryuserapp.presentation.pesanan.PesananState
 import com.example.tryuserapp.ui.theme.Brown
 import com.example.tryuserapp.ui.theme.Orange
+import com.example.tryuserapp.ui.theme.PurpleGrey80
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 @Composable
 fun CheckStatusPesanan(
     pesananModel: PesananModel,
     pesananListViewModel: PesananListViewModel,
-    StatusPhoto : Int,
-    onPesananScreenEvent: (PesananListEvent) -> Unit,
-    statusPesanan: StatusPesanan
-){
+    statusPhoto : Int
+) {
+    val waktuPesananDibuat = pesananModel.waktu_pesanan_dibuat.split(" ")
 
-    var isEnabled = false
+    val buttonDisabledColor = ButtonDefaults.buttonColors(
+        containerColor = PurpleGrey80,
+        contentColor = Color.White
+    )
 
-    if (pesananModel.status_pesanan == "DIANTAR"){
-        isEnabled = true
-    }
+    val buttonClickableColor = ButtonDefaults.buttonColors(
+        containerColor = Brown,
+        contentColor = Color.White
+    )
 
     Row(
         modifier = Modifier
@@ -68,119 +66,117 @@ fun CheckStatusPesanan(
                 BorderStroke(1.dp, Color.Black),
                 shape = RoundedCornerShape(16.dp)
             )
-            .width(380.dp)
-            .wrapContentHeight()
             .background(Orange)
+            .wrapContentHeight()
             .padding(start = 16.dp, top = 4.dp)
     ) {
         Column (
-                verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxHeight(),
+            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(16.dp))
-            Image(painter = painterResource(id = StatusPhoto), contentDescription = "Dalam Perjalanan" ,
-                modifier = Modifier.size(40.dp))
 
+            Image(
+                painter = painterResource(id = statusPhoto),
+                contentDescription = "Dalam Perjalanan",
+                modifier = Modifier
+                    .padding(5.dp)
+                    .size(40.dp),
+                alignment = Alignment.Center,
+                contentScale = ContentScale.Fit
+            )
         }
+
         Column(
             modifier = Modifier
-                .padding(end = 0.dp)
-                .width(150.dp)
+                .fillMaxHeight()
+                .width(150.dp),
+            verticalArrangement = Arrangement.SpaceEvenly,
         ) {
             Text(
-                text = pesananModel.id_customer,
+                text =
+                when (pesananModel.status_pesanan) {
+                    StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString() -> "Menunggu Konfirmasi"
+                    StatusPesanan.PESANAN_TERKONFIRMASI_ADMIN.toString(), StatusPesanan.SEDANG_DIANTAR.toString() -> "Diantar"
+                    StatusPesanan.PESANAN_TERKIRIM.toString() -> "Pesanan Terkirim"
+                    else -> "Status Pesanan Error"
+                },
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
-                    color = Color.Black
-                ),
-                modifier = Modifier.padding( start = 16.dp)
-            )
-            Text(
-                text = pesananModel.id_hotel,
-                style = TextStyle(
                     fontSize = 16.sp,
                     color = Color.Black
                 ),
                 modifier = Modifier.padding( start = 16.dp)
             )
+
             Text(
-                text = pesananModel.status_pesanan,
-//                when (statusPesanan) {
-//                    StatusPesanan.SEDANG_DIANTAR-> "Sedang Diantarkan"
-//                    StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN -> "Sedang Memesan"
-//                    StatusPesanan.PESANAN_TERKONFIRMASI -> "Sedang Memesan"
-//                    StatusPesanan.PESANAN_SAMPAI -> "Sedang Memesan"
-//                    else -> "Unknown Error"
-//                },
+                text = "${waktuPesananDibuat[3]} ${waktuPesananDibuat[2]} ${waktuPesananDibuat[1]} ",
                 style = TextStyle(
-                    fontSize = 16.sp,
+                    fontSize = 14.sp,
                     color = Color.Black
                 ),
                 modifier = Modifier.padding( start = 16.dp)
             )
         }
-        Spacer(modifier = Modifier.width(0.dp))
+
         Column (
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(end = 16.dp),
-            horizontalAlignment = Alignment.End
+            horizontalAlignment = Alignment.End,
+            verticalArrangement = Arrangement.Center
         ){
-            Spacer(modifier = Modifier.height(10.dp))
             Button(
                 modifier = Modifier
                     .height(50.dp)
-                    .padding(top = 10.dp, bottom = 5.dp),
+                    .padding(top = 5.dp, bottom = 5.dp),
                 shape = RoundedCornerShape(4.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Brown,
-                    contentColor = Color.White
-                ),
-                onClick = {
-                            Log.d("Id Pesanan", "${pesananModel.id_pesanan}")
-
-                        pesananListViewModel.updateStatusPesnaan(
-                            pesananModel.id_pesanan!!
-                        )
+                colors = when (pesananModel.status_pesanan) {
+                    StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString(),
+                    StatusPesanan.PESANAN_TERKONFIRMASI_ADMIN.toString(),
+                    StatusPesanan.PESANAN_TERKIRIM.toString() -> buttonDisabledColor
+                    StatusPesanan.SEDANG_DIANTAR.toString() -> buttonClickableColor
+                    else -> buttonDisabledColor
                 },
-                enabled = isEnabled
+                onClick = {
+                    Log.d("Id Pesanan", "${pesananModel.id_pesanan}")
+
+                    pesananListViewModel.updateStatusPesanan(pesananModel.id_pesanan!!)
+                },
+//                enabled = isEnabled
             ) {
                 Text(text = "CONFIRM")
             }
         }
     }
 }
-//
-//@Preview(showBackground = true)
-//@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
-//@Composable
-//fun StatusPesananPreview(){
-//    TryUserAppTheme {
-//        Surface {
-//            CheckStatusPesanan(R.drawable.otw, StatusPesanan.SEDANG_DIANTAR)
-//        }
-//    }
-//}
-//
-//@Preview(showBackground = true)
-//@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
-//@Composable
-//fun StatusPesananPreview2(){
-//    TryUserAppTheme {
-//        Surface {
-//            CheckStatusPesanan(R.drawable.sedang_dipesan, StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN)
-//        }
-//    }
-//}
-//
-//@Preview(showBackground = true)
-//@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
-//@Composable
-//fun StatusPesananPreview3(){
-//    TryUserAppTheme {
-//        Surface {
-//            CheckStatusPesanan(R.drawable.sudah_sampai, StatusPesanan.PESANAN_SAMPAI)
-//        }
-//    }
-//}
+
+
+@Preview(showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+fun StatusPesananPreview(){
+    TryUserAppTheme {
+        Surface {
+            CheckStatusPesanan(
+                PesananModel(
+                    id_customer = "",
+                    id_hotel = "",
+                    id_kurir = "",
+                    list_id_daftar_katalis = "",
+                    transfer_proof_image_link = "",
+                    total_harga = 0f,
+                    status_pesanan = StatusPesanan.SEDANG_DIANTAR.toString(),
+                    waktu_pesanan_dibuat = "",
+
+                ),
+                PesananListViewModel(
+                    MyApp.appModule.pesananListRepositoryImpl,
+                    idCustomer = ""
+                ),
+                statusPhoto = R.drawable.sedang_dipesan
+            )
+        }
+    }
+}
+

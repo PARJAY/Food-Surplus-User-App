@@ -211,7 +211,6 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
             )
         }
 
-
         composable(Screen.ScreenProfile.route) {
             val customerVM: CustomerViewModel = viewModel(
                 factory = viewModelFactory {
@@ -271,12 +270,12 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
         }
 
         composable(Screen.ScreenPesananAnda.route) {
-
+//            Log.d("Nav > Pesanan Screen", googleAuthUiClient.getSignedInUser()!!.userId)
             val pesananScreenVM: PesananListViewModel = viewModel(
                 factory = viewModelFactory { PesananListViewModel(
                     pesananListRepositoryImpl =  MyApp.appModule.pesananListRepositoryImpl,
                     idCustomer = googleAuthUiClient.getSignedInUser()!!.userId
-                )}
+                ) }
             )
 
             val pesananScreenVMUiState = pesananScreenVM.state.collectAsState().value
@@ -284,7 +283,6 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
             PesananAnda(
                 pesananState = pesananScreenVMUiState,
                 onNavigateToScreen = { navController.navigate(it) },
-                onPesananScreenEvent = pesananScreenVM::onEvent,
                 pesananListViewModel = PesananListViewModel(
                     MyApp.appModule.pesananListRepositoryImpl,
                     idCustomer = googleAuthUiClient.getSignedInUser()!!.userId
@@ -321,8 +319,6 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                 }
             )
         }
-
-
 
         composable(Screen.MapsScreen.route) {
             MapsScreen(

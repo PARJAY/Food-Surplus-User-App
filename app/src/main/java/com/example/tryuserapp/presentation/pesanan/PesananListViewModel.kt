@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tryuserapp.common.FirebaseResult
 import com.example.tryuserapp.data.repository.PesananListRepositoryImpl
+import com.example.tryuserapp.logic.StatusPesanan
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,7 +26,7 @@ class PesananListViewModel(
     val effect = _effect.receiveAsFlow()
 
     init {
-        PesananListEvent.GetUserListPesanan (idCustomer)
+        onEvent(PesananListEvent.GetUserListPesanan(idCustomer))
     }
 
     private fun setEffect(builder: () -> PesananSideEffects) {
@@ -84,12 +85,11 @@ class PesananListViewModel(
     }
 
 
-    fun updateStatusPesnaan(selectedPesananId : String ) {
+    fun updateStatusPesanan(selectedPesananId : String ) {
         viewModelScope.launch {
             setState(_state.value.copy(isLoading = true))
-
             try {
-                pesananListRepositoryImpl.updateStatusPesanan(pesananId = selectedPesananId, fieldToUpdate = "status_pesanan", newValue = "SUDAH_SAMPAI"   )
+                pesananListRepositoryImpl.updateStatusPesanan(pesananId = selectedPesananId, fieldToUpdate = "status_pesanan", newValue = StatusPesanan.PESANAN_TERKIRIM.toString()    )
                 setState(_state.value.copy(isLoading = false))
                 setEffect { PesananSideEffects.ShowSnackBarMessage(message = "Update Stok successfully") }
             } catch (e: Exception) {
@@ -98,6 +98,4 @@ class PesananListViewModel(
             }
         }
     }
-
-
 }

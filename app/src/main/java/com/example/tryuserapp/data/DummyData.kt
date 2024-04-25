@@ -25,7 +25,9 @@ class DummyData {
             500f,
             "Gambar",
             "SEDANG_DIANTAR",
-            Calendar.getInstance().time.toString()
+            Calendar.getInstance().time.toString(),
+            "Dummy Lokasi User",
+            0f,
         )
         val pesananModel2 = PesananModel(
 
@@ -36,7 +38,9 @@ class DummyData {
             500f,
             "Gambar",
             "SEDANG_DIANTAR",
-            Calendar.getInstance().time.toString()
+            Calendar.getInstance().time.toString(),
+            "Dummy Lokasi User",
+            0f,
         )
         val pesananModel3 = PesananModel(
 
@@ -47,7 +51,9 @@ class DummyData {
             500f,
             "Gambar",
             "SEDANG_DIANTAR",
-            Calendar.getInstance().time.toString()
+            Calendar.getInstance().time.toString(),
+            "Dummy Lokasi User",
+            0f,
         )
         val dummyPesananFlowModel: List<PesananModel> = listOf(pesananModel1, pesananModel2, pesananModel3)
 
