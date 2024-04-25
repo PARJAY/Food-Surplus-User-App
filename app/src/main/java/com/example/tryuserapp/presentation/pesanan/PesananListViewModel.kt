@@ -4,11 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tryuserapp.common.FirebaseResult
-import com.example.tryuserapp.data.repository.HotelRepositoryImpl
 import com.example.tryuserapp.data.repository.PesananListRepositoryImpl
-import com.example.tryuserapp.presentation.home_screen.HomeScreenEvent
-import com.example.tryuserapp.presentation.home_screen.HomeScreenSideEffect
-import com.example.tryuserapp.presentation.home_screen.HomeScreenUiState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +13,8 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class PesananListViewModel(
-    private val pesananListRepositoryImpl: PesananListRepositoryImpl
+    private val pesananListRepositoryImpl: PesananListRepositoryImpl,
+    idCustomer : String
 ) : ViewModel() {
 
     private val _state: MutableStateFlow<PesananState> =
@@ -28,7 +25,7 @@ class PesananListViewModel(
     val effect = _effect.receiveAsFlow()
 
     init {
-        onEvent(PesananListEvent.GetListPesanan)
+        PesananListEvent.GetListPesanan(idCustomer)
     }
 
     private fun setEffect(builder: () -> PesananSideEffects) {
@@ -42,7 +39,7 @@ class PesananListViewModel(
 
     fun onEvent(event: PesananListEvent) {
         when (event) {
-            is PesananListEvent.GetListPesanan -> getPesananList()
+            is PesananListEvent.GetListPesanan -> getPesananList(event.idCustomer)
 
 //            is HomeScreenEvent.ModifyOrder -> {
 //                modifyOrder(
@@ -54,25 +51,46 @@ class PesananListViewModel(
     }
 
 
-    private fun getPesananList() {
+    private fun getPesananList(idCustomer : String) {
+        Log.d("VIEWMODEL ID CUSTOMER: ", "idCustomer - $idCustomer")
+
         viewModelScope.launch {
             _state.value = _state.value.copy(isLoading = true) // Update loading state
 
-            pesananListRepositoryImpl.getPesananList { firebaseResult ->
-                if (firebaseResult is FirebaseResult.Failure) {
-                    setState(_state.value.copy(isLoading = false))
-                    Log.d("VIEWMODEL: ", "error - ${firebaseResult.exception.message}")
-                    setEffect {
-                        PesananSideEffects.ShowSnackBarMessage(
-                            firebaseResult.exception.message ?: "Error fetching users"
-                        )
+            pesananListRepositoryImpl.getPesananList(
+                callback =  { firebaseResult ->
+                    if (firebaseResult is FirebaseResult.Failure) {
+                        setState(_state.value.copy(isLoading = false))
+                        Log.d("VIEWMODEL: ", "error - ${firebaseResult.exception.message}")
+                        setEffect {
+                            PesananSideEffects.ShowSnackBarMessage(
+                                firebaseResult.exception.message ?: "Error fetching users"
+                            )
+                        }
+                    } else if (firebaseResult is FirebaseResult.Success) {
+                        Log.d("VIEWMODEL: ", "sucess - ${firebaseResult.data}")
+                        _state.value =
+                            _state.value.copy(isLoading = false, pesananListState = firebaseResult.data)
+                        setEffect { PesananSideEffects.ShowSnackBarMessage(message = "User list data loaded successfully") }
                     }
-                } else if (firebaseResult is FirebaseResult.Success) {
-                    Log.d("VIEWMODEL: ", "sucess - ${firebaseResult.data}")
-                    _state.value =
-                        _state.value.copy(isLoading = false, pesananListState = firebaseResult.data)
-                    setEffect { PesananSideEffects.ShowSnackBarMessage(message = "User list data loaded successfully") }
-                }
+                },
+                idCustomer = idCustomer
+            )
+        }
+    }
+
+
+    fun updateStatusPesnaan(selectedPesananId : String ) {
+        viewModelScope.launch {
+            setState(_state.value.copy(isLoading = true))
+
+            try {
+                pesananListRepositoryImpl.updateStatusPesanan(pesananId = selectedPesananId, fieldToUpdate = "status_pesanan", newValue = "SUDAH_SAMPAI"   )
+                setState(_state.value.copy(isLoading = false))
+                setEffect { PesananSideEffects.ShowSnackBarMessage(message = "Update Stok successfully") }
+            } catch (e: Exception) {
+                setState(_state.value.copy(isLoading = false, errorMessage = e.localizedMessage))
+                setEffect { PesananSideEffects.ShowSnackBarMessage(e.message ?: "Error Stok ") }
             }
         }
     }

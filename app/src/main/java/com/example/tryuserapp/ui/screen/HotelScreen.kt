@@ -152,7 +152,7 @@ fun HomeScreenPreview() {
                         email = "dfamksfas",
                         alamat = "asdad",
                         listIdKatalis = listOf(""),
-                        statusHotel = StatusHotel.SUDAH_DI_ACC
+                        statusHotel = "SUDAH_DI_ACC"
                     ),
                     HotelModel(
                         idHotel = "asdasd",
@@ -161,7 +161,7 @@ fun HomeScreenPreview() {
                         email = "dfamksfas",
                         alamat = "asdad",
                         listIdKatalis = listOf(""),
-                        statusHotel = StatusHotel.SUDAH_DI_ACC
+                        statusHotel = "SUDAH_DI_ACC"
                     ),
                     HotelModel(
                         idHotel = "asdasd",
@@ -170,7 +170,7 @@ fun HomeScreenPreview() {
                         email = "dfamksfas",
                         alamat = "asdad",
                         listIdKatalis = listOf(""),
-                        statusHotel = StatusHotel.SUDAH_DI_ACC
+                        statusHotel = "SUDAH_DI_ACC"
                     ),
                 )
             ),

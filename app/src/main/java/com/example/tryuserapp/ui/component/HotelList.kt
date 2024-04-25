@@ -88,7 +88,7 @@ fun HotelListPreview(){
                     phoneNumber = "1231132",
                     email = "hotelgilang@gmail.com",
                     listIdKatalis = listOf(""),
-                    statusHotel = StatusHotel.SUDAH_DI_ACC
+                    statusHotel = "SUDAH_DI_ACC"
                 ),
               onNavigateToScreen = {}
             )

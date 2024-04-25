@@ -10,5 +10,5 @@ data class HotelModel(
     var alamat : String = "",
     var geolocation : String = "",
     var listIdKatalis : List<String> = listOf(),
-    var statusHotel : StatusHotel
+    var statusHotel : String = ""
 )

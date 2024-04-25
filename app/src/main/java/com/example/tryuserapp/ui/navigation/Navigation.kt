@@ -36,6 +36,7 @@ import com.example.tryuserapp.presentation.katalis_screen.KatalisScreenViewModel
 import com.example.tryuserapp.presentation.pesanan.PesananRepositoryImpl
 import com.example.tryuserapp.presentation.pesanan.PesananViewModel
 import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
+import com.example.tryuserapp.presentation.pesanan.PesananListEvent
 import com.example.tryuserapp.presentation.pesanan.PesananListViewModel
 import com.example.tryuserapp.presentation.sign_in.GoogleAuthUiClient
 import com.example.tryuserapp.presentation.sign_in.SignInViewModel
@@ -272,15 +273,21 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
 
             val pesananScreenVM: PesananListViewModel = viewModel(
                 factory = viewModelFactory { PesananListViewModel(
-                    pesananListRepositoryImpl =  MyApp.appModule.pesananListRepositoryImpl)
-                }
+                    pesananListRepositoryImpl =  MyApp.appModule.pesananListRepositoryImpl,
+                    idCustomer = googleAuthUiClient.getSignedInUser()!!.userId
+                )}
             )
+
             val pesananScreenVMUiState = pesananScreenVM.state.collectAsState().value
 
             PesananAnda(
-                pesananState = pesananScreenVMUiState ,
+                pesananState = pesananScreenVMUiState,
                 onNavigateToScreen = { navController.navigate(it) },
                 onPesananScreenEvent = pesananScreenVM::onEvent,
+                pesananListViewModel = PesananListViewModel(
+                    MyApp.appModule.pesananListRepositoryImpl,
+                    idCustomer = googleAuthUiClient.getSignedInUser()!!.userId
+                )
             )
         }
 

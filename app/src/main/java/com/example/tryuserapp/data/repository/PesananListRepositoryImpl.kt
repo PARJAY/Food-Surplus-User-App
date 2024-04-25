@@ -13,7 +13,7 @@
     class PesananListRepositoryImpl (private val db : FirebaseFirestore) : PesananListRepository{
         private var listenerRegistration : ListenerRegistration? = null
 
-        override suspend fun getPesananList(callback: (FirebaseResult<List<PesananModel>>) -> Unit) {
+        override suspend fun getPesananList(callback: (FirebaseResult<List<PesananModel>>) -> Unit, idCustomer : String) {
             val pesananModelSnapshots = mutableListOf<PesananModel>()
 
             listenerRegistration = db.collection(PESANAN_COLLECTION).addSnapshotListener { snapshot, exception ->
@@ -24,20 +24,26 @@
 
                 snapshot!!.documentChanges.forEach { change ->
                     val pesananModel = FirebaseHelper.fetchSnapshotToPesananModel(change.document)
-                    when (change.type) {
-                        DocumentChange.Type.ADDED -> pesananModelSnapshots.add(pesananModel)
-                        DocumentChange.Type.MODIFIED -> {
-                            val index = pesananModelSnapshots.indexOfFirst { it.id_customer == change.document.id }
-                            if (index != -1) pesananModelSnapshots[index] = pesananModel
-                        }
 
-                        DocumentChange.Type.REMOVED -> pesananModelSnapshots.removeAll { it.id_customer == change.document.id }
-                    }
+                    if (pesananModel.id_pesanan == idCustomer)
+                        when (change.type) {
+                            DocumentChange.Type.ADDED -> pesananModelSnapshots.add(pesananModel)
+                            DocumentChange.Type.MODIFIED -> {
+                                val index = pesananModelSnapshots.indexOfFirst { it.id_customer == change.document.id }
+                                if (index != -1) pesananModelSnapshots[index] = pesananModel
+                            }
+
+                            DocumentChange.Type.REMOVED -> pesananModelSnapshots.removeAll { it.id_customer == change.document.id }
+                        }
                     Log.d("REPOSITORY: ", "Data In -> ${change.type} - ${change.document}")
                 }
 
                 callback(FirebaseResult.Success(pesananModelSnapshots))
             }
+        }
+
+        suspend fun updateStatusPesanan(pesananId: String, fieldToUpdate: String, newValue: String) {
+            db.collection(PESANAN_COLLECTION).document(pesananId).update(fieldToUpdate, newValue)
         }
 
         // dipake kalau nggak pengen nerima data realtime lagi

@@ -8,7 +8,8 @@ data class PesananModel(
     var total_harga : Float,
     var transfer_proof_image_link : String,
     var status_pesanan : String,
-    var waktu_pesanan_dibuat : String
+    var waktu_pesanan_dibuat : String,
+    var id_pesanan : String? = ""
 ){
     fun getUserById(){
 

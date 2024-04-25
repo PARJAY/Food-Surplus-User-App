@@ -1,6 +1,7 @@
 package com.example.tryuserapp.ui.component
 
 import android.content.res.Configuration
+import android.util.Log
 import com.example.tryuserapp.presentation.sign_in.UserData
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -15,12 +16,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,7 +39,9 @@ import com.example.tryuserapp.R
 import com.example.tryuserapp.data.model.PesananModel
 import com.example.tryuserapp.logic.StatusPesanan
 import com.example.tryuserapp.presentation.home_screen.HomeScreenEvent
+import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
 import com.example.tryuserapp.presentation.pesanan.PesananListEvent
+import com.example.tryuserapp.presentation.pesanan.PesananListViewModel
 import com.example.tryuserapp.presentation.pesanan.PesananState
 import com.example.tryuserapp.ui.theme.Brown
 import com.example.tryuserapp.ui.theme.Orange
@@ -43,25 +50,33 @@ import com.example.tryuserapp.ui.theme.TryUserAppTheme
 @Composable
 fun CheckStatusPesanan(
     pesananModel: PesananModel,
+    pesananListViewModel: PesananListViewModel,
     StatusPhoto : Int,
     onPesananScreenEvent: (PesananListEvent) -> Unit,
     statusPesanan: StatusPesanan
 ){
+
+    var isEnabled = false
+
+    if (pesananModel.status_pesanan == "DIANTAR"){
+        isEnabled = true
+    }
+
     Row(
         modifier = Modifier
             .border(
                 BorderStroke(1.dp, Color.Black),
                 shape = RoundedCornerShape(16.dp)
             )
-            .height(80.dp)
             .width(380.dp)
+            .wrapContentHeight()
             .background(Orange)
-            .padding(start = 16.dp, top = 4.dp),
+            .padding(start = 16.dp, top = 4.dp)
     ) {
         Column (
                 verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
-        ){
+        ) {
             Spacer(modifier = Modifier.height(16.dp))
             Image(painter = painterResource(id = StatusPhoto), contentDescription = "Dalam Perjalanan" ,
                 modifier = Modifier.size(40.dp))
@@ -70,6 +85,7 @@ fun CheckStatusPesanan(
         Column(
             modifier = Modifier
                 .padding(end = 0.dp)
+                .width(150.dp)
         ) {
             Text(
                 text = pesananModel.id_customer,
@@ -121,9 +137,16 @@ fun CheckStatusPesanan(
                     containerColor = Brown,
                     contentColor = Color.White
                 ),
-                onClick = { /*TODO*/ }
+                onClick = {
+                            Log.d("Id Pesanan", "${pesananModel.id_pesanan}")
+
+                        pesananListViewModel.updateStatusPesnaan(
+                            pesananModel.id_pesanan!!
+                        )
+                },
+                enabled = isEnabled
             ) {
-                Text(text = "Konfirmasi")
+                Text(text = "CONFIRM")
             }
         }
     }

@@ -40,6 +40,7 @@ class FirebaseHelper {
                 transfer_proof_image_link = queryDocumentSnapshot.getString("transfer_proof_image_link") ?: "",
                 status_pesanan = queryDocumentSnapshot.getString("status_pesanan") ?: "",
                 waktu_pesanan_dibuat = queryDocumentSnapshot.getString("transfer_proof_image_link") ?: "",
+                id_pesanan = queryDocumentSnapshot.id
             )
 
         }
@@ -65,12 +66,12 @@ class FirebaseHelper {
         }
         fun fetchSnapshotToHotelModel(queryDocumentSnapshot: QueryDocumentSnapshot): HotelModel {
 
-            val statusHotelQS = queryDocumentSnapshot.getLong("statusHotel")?.toInt()
-            var statusHotel : StatusHotel = StatusHotel.DECLINED
-
-            if (statusHotelQS == 0)  statusHotel = StatusHotel.WAITING
-            else if (statusHotelQS == 1 ) statusHotel = StatusHotel.SUDAH_DI_ACC
-            else if (statusHotelQS == 2 ) statusHotel = StatusHotel.DECLINED
+//            val statusHotelQS = queryDocumentSnapshot.getLong("statusHotel")?.toInt()
+//            var statusHotel : StatusHotel = StatusHotel.DECLINED
+//
+//            if (statusHotelQS == 0)  statusHotel = StatusHotel.WAITING
+//            else if (statusHotelQS == 1 ) statusHotel = StatusHotel.SUDAH_DI_ACC
+//            else if (statusHotelQS == 2 ) statusHotel = StatusHotel.DECLINED
 
             return HotelModel(
                 idHotel = queryDocumentSnapshot.id,
@@ -79,7 +80,7 @@ class FirebaseHelper {
                 email = queryDocumentSnapshot.getString("email")?: "",
                 alamat = queryDocumentSnapshot.getString("alamat")?: "" ,
                 listIdKatalis = queryDocumentSnapshot.getString("katalis")?.split(",") ?: emptyList(),
-                statusHotel = statusHotel
+                statusHotel = queryDocumentSnapshot.getString("statusHotel")?: ""
             )
         }
 
