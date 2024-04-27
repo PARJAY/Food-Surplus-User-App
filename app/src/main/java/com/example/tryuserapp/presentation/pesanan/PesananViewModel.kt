@@ -8,9 +8,7 @@ import com.example.tryuserapp.common.FirebaseResult
 import com.example.tryuserapp.data.model.PesananModel
 import com.example.tryuserapp.data.repository.KatalisRepositoryImpl
 import com.example.tryuserapp.data.repository.PesananListRepositoryImpl
-import com.example.tryuserapp.presentation.home_screen.HomeScreenEvent
 import com.example.tryuserapp.presentation.katalis_screen.KatalisScreenUiState
-import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -69,34 +67,24 @@ class PesananViewModel(
         }
     }
 
-     fun createPesanan(
-         newPesananModel: PesananModel,
-         newDaftarKatalis: DaftarKatalis
-     ) {
+     fun createPesanan(newPesananModel: PesananModel) {
         viewModelScope.launch {
             setState(_state.value.copy(isLoading = true))
 
             try {
-                var createdDocumentId = ""
-                pesananRepositoryImpl.insertDaftarKatalis(
-                    newDaftarKatalis,
-                    createdDocumentId = {
-                        createdDocumentId = it
-                    }
-                )
-
                 pesananRepositoryImpl.insertPesanan(
                     PesananModel(
                         newPesananModel.id_customer,
                         newPesananModel.id_hotel,
                         newPesananModel.id_kurir,
-                        createdDocumentId,
+                        newPesananModel.daftarKatalis,
                         newPesananModel.total_harga,
                         newPesananModel.transfer_proof_image_link,
                         newPesananModel.status_pesanan,
                         newPesananModel.waktu_pesanan_dibuat,
                         newPesananModel.lokasiUser,
-                        newPesananModel.jarak_user_dan_hotel
+                         newPesananModel.jarak_user_dan_hotel,
+                        ongkir =  newPesananModel.ongkir,
                     )
                 )
 

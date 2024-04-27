@@ -26,8 +26,8 @@ fun ScreenDetailPesananAnda(
     val selectedKatalisList = remember { mutableStateListOf<SelectedKatalis>() }
 
     LaunchedEffect(Unit) {
-        Log.d("SDPA Screen", "list_id_daftar_katalis : ${selectedDetailPesananModel.list_id_daftar_katalis}")
-        daftarKatalis = MyApp.appModule.pesananRepositoryImpl.getListPesananKatalisById(selectedDetailPesananModel.list_id_daftar_katalis)
+        Log.d("SDPA Screen", "list_id_daftar_katalis : ${selectedDetailPesananModel.daftarKatalis}")
+        daftarKatalis = MyApp.appModule.pesananRepositoryImpl.getListPesananKatalisById(selectedDetailPesananModel.daftarKatalis)
         Log.d("SDPA Screen", "list_id_daftar_katalis : $daftarKatalis")
 
         daftarKatalis.daftarKatalis.forEach {

@@ -28,7 +28,7 @@ class PesananListRepositoryImpl (private val db : FirebaseFirestore) : PesananLi
             snapshot!!.documentChanges.forEach { change ->
                 val pesananModel = FirebaseHelper.fetchSnapshotToPesananModel(change.document)
 
-                if (pesananModel.id_customer == idCustomer) {
+                if (pesananModel.id_pesanan == idCustomer) {
                     Log.d("REPOSITORY: ", "pesananModel passed -> $pesananModel")
                     when (change.type) {
                         DocumentChange.Type.ADDED -> pesananModelSnapshots.add(pesananModel)

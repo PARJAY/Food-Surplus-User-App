@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tryuserapp.MyApp
 import com.example.tryuserapp.R
+import com.example.tryuserapp.data.model.DaftarKatalis
 import com.example.tryuserapp.data.model.PesananModel
 import com.example.tryuserapp.logic.StatusPesanan
 import com.example.tryuserapp.presentation.pesanan.PesananListViewModel
@@ -41,6 +42,7 @@ import com.example.tryuserapp.ui.theme.Brown
 import com.example.tryuserapp.ui.theme.Orange
 import com.example.tryuserapp.ui.theme.PurpleGrey80
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
+import com.google.firebase.Timestamp
 
 @Composable
 fun CheckStatusPesanan(
@@ -48,7 +50,7 @@ fun CheckStatusPesanan(
     pesananListViewModel: PesananListViewModel,
     statusPhoto : Int
 ) {
-    val waktuPesananDibuat = pesananModel.waktu_pesanan_dibuat.split(" ")
+    val waktuPesananDibuat = pesananModel.waktu_pesanan_dibuat
 
     val buttonDisabledColor = ButtonDefaults.buttonColors(
         containerColor = PurpleGrey80,
@@ -110,7 +112,7 @@ fun CheckStatusPesanan(
             )
 
             Text(
-                text = "${waktuPesananDibuat[3]} ${waktuPesananDibuat[2]} ${waktuPesananDibuat[1]} ",
+                text = "${waktuPesananDibuat}",
                 style = TextStyle(
                     fontSize = 14.sp,
                     color = Color.Black
@@ -163,11 +165,11 @@ fun StatusPesananPreview(){
                     id_customer = "",
                     id_hotel = "",
                     id_kurir = "",
-                    list_id_daftar_katalis = "",
+                    daftarKatalis = emptyMap(),
                     transfer_proof_image_link = "",
                     total_harga = 0f,
                     status_pesanan = StatusPesanan.SEDANG_DIANTAR.toString(),
-                    waktu_pesanan_dibuat = "",
+                    waktu_pesanan_dibuat = Timestamp.now(),
 
                 ),
                 PesananListViewModel(

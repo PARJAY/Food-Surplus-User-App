@@ -8,6 +8,7 @@ import com.example.tryuserapp.data.model.CustomerModel
 import com.example.tryuserapp.data.model.DaftarKatalis
 import com.example.tryuserapp.data.model.HotelModel
 import com.example.tryuserapp.data.model.PesananModel
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QueryDocumentSnapshot
 
@@ -20,19 +21,27 @@ class FirebaseHelper {
                 phone_number = queryDocumentSnapshot.getString("phone_number") ?: ""
             )
         }
-        fun fetchSnapshotToPesananModel(queryDocumentSnapshot : DocumentSnapshot) =
-            PesananModel(
+        fun fetchSnapshotToPesananModel(queryDocumentSnapshot : DocumentSnapshot) : PesananModel {
+            val daftarKatalis = DaftarKatalis().daftarKatalis.toMutableMap()
+
+            (queryDocumentSnapshot.data?.get("daftarKatalis") as? Map<*, *>)?.forEach { (key, value) ->
+                Log.d("ListPesananKatalis Repo", "key : $key, value : $value")
+                daftarKatalis += Pair(key.toString(), value.toString().toInt())
+            }
+
+            return PesananModel(
                 id_customer = queryDocumentSnapshot.getString("id_customer") ?: "",
                 id_hotel = queryDocumentSnapshot.getString("id_hotel") ?: "",
                 id_kurir = queryDocumentSnapshot.getString("id_kurir") ?: "",
-                list_id_daftar_katalis = queryDocumentSnapshot.getString("list_id_daftar_katalis") ?: "",
+                daftarKatalis = daftarKatalis,
                 total_harga = queryDocumentSnapshot.getLong("total_harga")?.toFloat() ?: 0.0f,
                 transfer_proof_image_link = queryDocumentSnapshot.getString("transfer_proof_image_link") ?: "",
                 status_pesanan = queryDocumentSnapshot.getString("status_pesanan") ?: "",
-                waktu_pesanan_dibuat = queryDocumentSnapshot.getString("waktu_pesanan_dibuat") ?: "",
+                waktu_pesanan_dibuat = queryDocumentSnapshot.getTimestamp("waktu_pesanan_dibuat") ?: Timestamp.now(),            // TODO : WARNING - potential logical error (!!)
                 jarak_user_dan_hotel = queryDocumentSnapshot.getLong("jarak_user_dan_hotel")?.toFloat() ?: 0f,
                 id_pesanan = queryDocumentSnapshot.id
             )
+        }
 
         fun fetchSnapshotToKatalisModel(queryDocumentSnapshot: DocumentSnapshot): KatalisModel {
             val komposisi = queryDocumentSnapshot.getString("idHotel") ?: ""
