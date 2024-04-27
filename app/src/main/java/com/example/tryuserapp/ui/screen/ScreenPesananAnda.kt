@@ -1,6 +1,7 @@
 package com.example.tryuserapp.ui.screen
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,15 +11,19 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.tryuserapp.MyApp
 import com.example.tryuserapp.R
 import com.example.tryuserapp.data.model.PesananModel
 import com.example.tryuserapp.presentation.pesanan.PesananListViewModel
@@ -32,6 +37,33 @@ fun PesananAnda(
     pesananListViewModel: PesananListViewModel,
     onNavigateToDetailPesananScreen : (pesananModel : PesananModel, desiredScreen : String) -> Unit
 ) {
+    val contex = LocalContext.current
+
+    val listPesananAnda = remember { mutableStateListOf<PesananModel>() }
+
+    LaunchedEffect (Unit) {
+        MyApp.appModule.pesananListRepositoryImpl.getPesananList (
+            errorCallback = {
+                Toast.makeText(contex, "error : $it", Toast.LENGTH_LONG).show()
+                Log.d("PesananMasukScreen", "error : $it")
+            },
+            addDataCallback = {
+                listPesananAnda.add(it)
+                Log.d("PesananMasukScreen", "added to screen : $it")
+            },
+            updateDataCallback = { updatedData ->
+                val index = listPesananAnda.indexOfFirst { it.id_pesanan == updatedData.id_pesanan }
+                if (index != -1) listPesananAnda[index] = updatedData
+                Log.d("PesananMasukScreen", "updated to screen : $updatedData")
+            },
+            deleteDataCallback = { documentId: String ->
+                listPesananAnda.removeAll { it.id_pesanan == documentId }
+                Log.d("PesananMasukScreen", "deleted from screen : id = $documentId")
+            }
+            )
+        }
+
+
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         item {
             Text(
@@ -47,7 +79,7 @@ fun PesananAnda(
             )
         }
 
-        items(pesananState.pesananListState) { pesanan ->
+        items(listPesananAnda) { pesanan ->
             Column(
                 Modifier
                     .padding(horizontal = 8.dp)
