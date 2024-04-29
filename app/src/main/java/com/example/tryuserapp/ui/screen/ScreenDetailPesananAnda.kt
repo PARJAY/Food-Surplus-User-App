@@ -23,31 +23,27 @@ fun ScreenDetailPesananAnda(
     Log.d("SDPA Screen", "selectedDetailPesananModel : $selectedDetailPesananModel")
 
     // for each List_Pesanan_Katalis id
-//    var daftarKatalis by remember { mutableStateOf(DaftarKatalis()) }
     val selectedKatalisList = remember { mutableStateListOf<SelectedKatalis>() }
 
-//    LaunchedEffect(Unit) {
-//        Log.d("SDPA Screen", "list_id_daftar_katalis : ${selectedDetailPesananModel.daftarKatalis}")
-//        daftarKatalis = MyApp.appModule.pesananRepositoryImpl.getListPesananKatalisById(selectedDetailPesananModel.daftarKatalis)
-//        Log.d("SDPA Screen", "list_id_daftar_katalis : $daftarKatalis")
-//
-//        daftarKatalis.daftarKatalis.forEach {
-//            Log.d("SDPA Screen", "daftarKatalis key : ${it.key}")
-//            val katalisModel = MyApp.appModule.katalisRepositoryImpl.getKatalisById(it.key)
-//
-//            Log.d("SDPA Screen", "katalisModel : $katalisModel")
-//
-//            selectedKatalisList.add(
-//                SelectedKatalis(
-//                    idKatalis = it.key,
-//                    quantity = it.value,
-//                    namaKatalis = katalisModel.namaKatalis,
-//                    hargaKatalis = katalisModel.hargaJual,
-//                    stokKatalis = 0
-//                )
-//            )
-//        }
-//    }
+    LaunchedEffect(Unit) {
+        Log.d("SDPA Screen", "list_id_daftar_katalis : ${selectedDetailPesananModel.daftarKatalis}")
+
+        selectedDetailPesananModel.daftarKatalis.forEach { (key, value) ->
+            val katalisModel = MyApp.appModule.katalisRepositoryImpl.getKatalisById(key)
+            selectedKatalisList.add(
+                SelectedKatalis(
+                    idKatalis = katalisModel.id,
+                    quantity = value,
+                    stokKatalis = katalisModel.stok,
+                    namaKatalis = katalisModel.namaKatalis,
+                    hargaKatalis = katalisModel.hargaJual
+                )
+            )
+            Log.d("SDPA Screen", "added katalisModel : $katalisModel")
+        }
+
+        Log.d("SDPA Screen", "selectedKatalisList final: $selectedKatalisList")
+    }
 
     RingkasanPesanan(selectedKatalis = selectedKatalisList, hotelToUserDistance = selectedDetailPesananModel.jarak_user_dan_hotel)
 }
