@@ -99,28 +99,6 @@ class PesananViewModel(
         }
     }
 
-    fun createDaftarKatalisPesanan(
-        newDaftarKatalis: DaftarKatalis,
-        createdDocumentId : (String) -> Unit
-    ) {
-        viewModelScope.launch {
-            setState(_state.value.copy(isLoading = true))
-
-            try {
-                pesananRepositoryImpl.insertDaftarKatalis(
-                    newDaftarKatalis,
-                    createdDocumentId
-                )
-
-                setState(_state.value.copy(isLoading = false))
-                setEffect { PesananSideEffects.ShowSnackBarMessage(message = "Daftar Katalis added successfully") }
-            } catch (e: Exception) {
-                setState(_state.value.copy(isLoading = false, errorMessage = e.localizedMessage))
-                setEffect { PesananSideEffects.ShowSnackBarMessage(e.message ?: "Failed Added Daftar Katalis  ") }
-            }
-        }
-    }
-
     fun decrementStok(selectedKatalisId : String, stok : Int, quantity: Int ) {
         viewModelScope.launch {
             setState(_state.value.copy(isLoading = true))
