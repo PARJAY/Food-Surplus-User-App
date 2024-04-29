@@ -15,5 +15,4 @@ data class SelectedKatalis(
     var namaKatalis : String = "",
     var hargaKatalis : Float = 0F,
     var stokKatalis : Int,
-
 )

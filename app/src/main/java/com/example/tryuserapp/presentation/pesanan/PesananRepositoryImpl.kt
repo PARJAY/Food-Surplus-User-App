@@ -29,10 +29,4 @@ class PesananRepositoryImpl(private val db : FirebaseFirestore) {
         createdDocumentId(db.collection(LIST_PESANAN_KATALIS).add(daftarKatalis).await().id)
     }
 
-    suspend fun getListPesananKatalisById(listPesananKatalisId: Map<String, Int>): DaftarKatalis {
-        val documentSnapshot = db.collection(LIST_PESANAN_KATALIS).document(listPesananKatalisId.toString()).get().await()
-
-        return FirebaseHelper.fetchSnapshotToDaftarKatalisModel(documentSnapshot)
-    }
-
 }

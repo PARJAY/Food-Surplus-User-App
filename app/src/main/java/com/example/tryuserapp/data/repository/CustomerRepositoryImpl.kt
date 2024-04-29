@@ -20,6 +20,7 @@ class CustomerRepositoryImpl(private val db : FirebaseFirestore) {
     suspend fun addOrUpdateCustomer(customerId: String, newCustomer: CustomerModel) {
         db.collection(CUSTOMER_COLLECTION).document(customerId).set(newCustomer).await()
     }
+
     suspend fun updateCustomer(customerId: String, newCustomer: EditedCustomerModel) {
         db.collection(CUSTOMER_COLLECTION).document(customerId).set(newCustomer).await()
     }
