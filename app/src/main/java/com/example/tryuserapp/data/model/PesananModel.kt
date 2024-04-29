@@ -4,7 +4,7 @@ data class PesananModel(
     var id_customer : String,
     var id_hotel : String,
     var id_kurir : String,
-    var list_id_daftar_katalis : String,
+    var daftarKatalisPesanan : DaftarKatalis,
     var total_harga : Float,
     var transfer_proof_image_link : String,
     var status_pesanan : String,

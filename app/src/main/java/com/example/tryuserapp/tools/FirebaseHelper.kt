@@ -68,8 +68,8 @@ class FirebaseHelper {
             Log.d("ListPesananKatalis Repo", "${documentSnapshot.data}")
 
             val daftarKatalis = DaftarKatalis()
-            val innerMap = documentSnapshot.data?.get("daftarKatalis") as? Map<*, *>
-            innerMap?.forEach { (key, value) ->
+
+            (documentSnapshot.data?.get("daftarKatalis") as? Map<*, *>)?.forEach { (key, value) ->
                 Log.d("ListPesananKatalis Repo", "key : $key, value : $value")
                 daftarKatalis.daftarKatalis += Pair(key.toString(), value.toString().toInt())
             }
