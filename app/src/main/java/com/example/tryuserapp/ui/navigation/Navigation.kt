@@ -26,6 +26,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.tryuserapp.MyApp
 import com.example.tryuserapp.common.BEGIN_QUANTITY_KATALIS
 import com.example.tryuserapp.data.model.CustomerModel
+import com.example.tryuserapp.data.model.DaftarKatalis
 import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.data.model.PesananModel
 import com.example.tryuserapp.data.repository.KatalisRepositoryImpl
@@ -55,6 +56,7 @@ import com.example.tryuserapp.ui.screen.ScreenLogin
 import com.example.tryuserapp.ui.screen.TrackUserLocationScreen
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 
@@ -86,10 +88,10 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
             id_customer = "",
             id_kurir = "",
             id_hotel = "",
-            list_id_daftar_katalis = "",
+            daftarKatalis = DaftarKatalis().daftarKatalis,
             total_harga = 0f,
             transfer_proof_image_link = "",
-            waktu_pesanan_dibuat = "",
+            waktu_pesanan_dibuat = Timestamp.now(),
             jarak_user_dan_hotel = 0f,
             status_pesanan = StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString()
         )

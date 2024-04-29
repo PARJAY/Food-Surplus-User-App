@@ -23,31 +23,31 @@ fun ScreenDetailPesananAnda(
     Log.d("SDPA Screen", "selectedDetailPesananModel : $selectedDetailPesananModel")
 
     // for each List_Pesanan_Katalis id
-    var daftarKatalis by remember { mutableStateOf(DaftarKatalis()) }
+//    var daftarKatalis by remember { mutableStateOf(DaftarKatalis()) }
     val selectedKatalisList = remember { mutableStateListOf<SelectedKatalis>() }
 
-    LaunchedEffect(Unit) {
-        Log.d("SDPA Screen", "list_id_daftar_katalis : ${selectedDetailPesananModel.daftarKatalisPesanan}")
-        daftarKatalis = MyApp.appModule.pesananRepositoryImpl.getListPesananKatalisById(selectedDetailPesananModel.list_id_daftar_katalis)
-        Log.d("SDPA Screen", "list_id_daftar_katalis : $daftarKatalis")
-
-        daftarKatalis.daftarKatalis.forEach {
-            Log.d("SDPA Screen", "daftarKatalis key : ${it.key}")
-            val katalisModel = MyApp.appModule.katalisRepositoryImpl.getKatalisById(it.key)
-
-            Log.d("SDPA Screen", "katalisModel : $katalisModel")
-
-            selectedKatalisList.add(
-                SelectedKatalis(
-                    idKatalis = it.key,
-                    quantity = it.value,
-                    namaKatalis = katalisModel.namaKatalis,
-                    hargaKatalis = katalisModel.hargaJual,
-                    stokKatalis = 0
-                )
-            )
-        }
-    }
+//    LaunchedEffect(Unit) {
+//        Log.d("SDPA Screen", "list_id_daftar_katalis : ${selectedDetailPesananModel.daftarKatalis}")
+//        daftarKatalis = MyApp.appModule.pesananRepositoryImpl.getListPesananKatalisById(selectedDetailPesananModel.daftarKatalis)
+//        Log.d("SDPA Screen", "list_id_daftar_katalis : $daftarKatalis")
+//
+//        daftarKatalis.daftarKatalis.forEach {
+//            Log.d("SDPA Screen", "daftarKatalis key : ${it.key}")
+//            val katalisModel = MyApp.appModule.katalisRepositoryImpl.getKatalisById(it.key)
+//
+//            Log.d("SDPA Screen", "katalisModel : $katalisModel")
+//
+//            selectedKatalisList.add(
+//                SelectedKatalis(
+//                    idKatalis = it.key,
+//                    quantity = it.value,
+//                    namaKatalis = katalisModel.namaKatalis,
+//                    hargaKatalis = katalisModel.hargaJual,
+//                    stokKatalis = 0
+//                )
+//            )
+//        }
+//    }
 
     RingkasanPesanan(selectedKatalis = selectedKatalisList, hotelToUserDistance = selectedDetailPesananModel.jarak_user_dan_hotel)
 }

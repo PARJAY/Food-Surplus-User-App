@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -33,9 +32,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tryuserapp.data.model.DaftarKatalis
+import com.example.tryuserapp.data.model.PesananModel
 import com.example.tryuserapp.data.retrofit.RetrofitInstance
 import com.example.tryuserapp.logic.StatusPesanan
-import com.example.tryuserapp.data.model.PesananModel
 import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
 import com.example.tryuserapp.presentation.pesanan.PesananViewModel
 import com.example.tryuserapp.presentation.sign_in.UserData
@@ -46,10 +45,10 @@ import com.example.tryuserapp.ui.component.Pembayaran
 import com.example.tryuserapp.ui.component.RingkasanPesanan
 import com.example.tryuserapp.ui.theme.Brown
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.Timestamp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.Calendar
 
 @Composable
 fun ScreenCheckOut(
@@ -71,6 +70,7 @@ fun ScreenCheckOut(
 
     val daftarKatalis by remember { mutableStateOf(DaftarKatalis()) }
 
+    var ongkirPrice = 0F
     var totalHarga = 0F
 
     if (alamatByGeolocation != LatLng(0.0,0.0) && alamatHotelByName != "")
@@ -102,8 +102,7 @@ fun ScreenCheckOut(
                 }
 
                 Log.d("ScreenCheckOut", "distance : $hotelToUserDistanceInMeter")
-                Log.d("ScreenCheckOut", "estimated ongkir price (Rp 100 / 1 Km ) : Rp. ${hotelToUserDistanceInMeter / 10}")
-                Log.d("ScreenCheckOut", "estimated bensin price (Rp 1500 / 1 km ) : Rp. ${hotelToUserDistanceInMeter * 1.5}")
+                Log.d("ScreenCheckOut", "ongkir price (Rp 1500 / 1 km ) : Rp. ${hotelToUserDistanceInMeter * 1.5}")
 
             }
         }
@@ -196,20 +195,22 @@ fun ScreenCheckOut(
                         onError = { showToast(context, "$it") }
                     )
 
+                    ongkirPrice = hotelToUserDistanceInMeter * 1.5F
+
                     pesananViewModel.createPesanan(
                         newPesananModel = PesananModel(
                             id_customer =  userData.userId,
                             id_hotel = selectedIdHotel,
                             id_kurir = "",
-                            list_id_daftar_katalis = "",
-                            total_harga = totalHarga,
+                            daftarKatalis = daftarKatalis.daftarKatalis,
+                            total_harga = totalHarga + ongkirPrice,
                             transfer_proof_image_link = selectedImageUri.lastPathSegment.toString(),
                             StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString(),
-                            Calendar.getInstance().time.toString(),
+                            Timestamp.now(),
                             lokasiUser = "${alamatByGeolocation.latitude},${alamatByGeolocation.longitude}",
-                            hotelToUserDistanceInMeter
-                        ),
-                        newDaftarKatalis = daftarKatalis,
+                            hotelToUserDistanceInMeter,
+                            ongkir = ongkirPrice,
+                        )
                     )
 
                     selectedKatalis.forEach {

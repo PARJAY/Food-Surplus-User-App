@@ -3,6 +3,8 @@ package com.example.tryuserapp.data
 import com.example.tryuserapp.data.model.PesananModel
 import java.util.Calendar
 import com.example.tryuserapp.data.model.CustomerModel
+import com.example.tryuserapp.data.model.DaftarKatalis
+import com.google.firebase.Timestamp
 
 
 class DummyData {
@@ -21,11 +23,11 @@ class DummyData {
             "21",
             "3123",
             "500312",
-            "15002132, adasda",
+            emptyMap(),
             500f,
             "Gambar",
             "SEDANG_DIANTAR",
-            Calendar.getInstance().time.toString(),
+            Timestamp.now(),
             "Dummy Lokasi User",
             0f,
         )
@@ -34,11 +36,11 @@ class DummyData {
             "21",
             "3123",
             "500312",
-            "15002132, adasda",
+            emptyMap(),
             500f,
             "Gambar",
             "SEDANG_DIANTAR",
-            Calendar.getInstance().time.toString(),
+            Timestamp.now(),
             "Dummy Lokasi User",
             0f,
         )
@@ -47,11 +49,11 @@ class DummyData {
             "21",
             "3123",
             "500312",
-            "15002132, adasda",
+            emptyMap(),
             500f,
             "Gambar",
             "SEDANG_DIANTAR",
-            Calendar.getInstance().time.toString(),
+            Timestamp.now(),
             "Dummy Lokasi User",
             0f,
         )

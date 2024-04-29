@@ -38,7 +38,7 @@ import com.example.tryuserapp.ui.theme.TryUserAppTheme
 @Composable
 fun RingkasanPesanan(
     selectedKatalis: SnapshotStateList<SelectedKatalis>,
-    hotelToUserDistance : Float
+    hotelToUserDistance : Float,
 ) {
     var totalHarga = 0F
 
