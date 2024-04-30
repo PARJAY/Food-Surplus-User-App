@@ -1,10 +1,7 @@
 package com.example.tryuserapp.presentation.pesanan
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tryuserapp.data.model.DaftarKatalis
-import com.example.tryuserapp.common.FirebaseResult
 import com.example.tryuserapp.data.model.PesananModel
 import com.example.tryuserapp.data.repository.KatalisRepositoryImpl
 import com.example.tryuserapp.data.repository.PesananListRepositoryImpl
@@ -72,21 +69,7 @@ class PesananViewModel(
             setState(_state.value.copy(isLoading = true))
 
             try {
-                pesananRepositoryImpl.insertPesanan(
-                    PesananModel(
-                        newPesananModel.id_customer,
-                        newPesananModel.id_hotel,
-                        newPesananModel.id_kurir,
-                        newPesananModel.daftarKatalis,
-                        newPesananModel.total_harga,
-                        newPesananModel.transfer_proof_image_link,
-                        newPesananModel.status_pesanan,
-                        newPesananModel.waktu_pesanan_dibuat,
-                        newPesananModel.lokasiUser,
-                         newPesananModel.jarak_user_dan_hotel,
-                        ongkir =  newPesananModel.ongkir,
-                    )
-                )
+                pesananRepositoryImpl.insertPesanan(newPesananModel)
 
                 setState(_state.value.copy(isLoading = false))
                 setEffect { PesananSideEffects.ShowSnackBarMessage(message = "Pesanan added successfully") }

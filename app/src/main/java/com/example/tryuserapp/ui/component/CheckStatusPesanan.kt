@@ -112,7 +112,7 @@ fun CheckStatusPesanan(
             )
 
             Text(
-                text = "${waktuPesananDibuat}",
+                text = "${waktuPesananDibuat.toDate()}",
                 style = TextStyle(
                     fontSize = 14.sp,
                     color = Color.Black

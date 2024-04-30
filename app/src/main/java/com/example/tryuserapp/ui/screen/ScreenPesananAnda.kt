@@ -28,6 +28,7 @@ import com.example.tryuserapp.R
 import com.example.tryuserapp.data.model.PesananModel
 import com.example.tryuserapp.presentation.pesanan.PesananListViewModel
 import com.example.tryuserapp.presentation.pesanan.PesananState
+import com.example.tryuserapp.tools.Utility
 import com.example.tryuserapp.ui.component.CheckStatusPesanan
 import com.example.tryuserapp.ui.navigation.Screen
 
@@ -44,24 +45,27 @@ fun PesananAnda(
     LaunchedEffect (Unit) {
         MyApp.appModule.pesananListRepositoryImpl.getPesananList (
             errorCallback = {
-                Toast.makeText(contex, "error : $it", Toast.LENGTH_LONG).show()
+                Utility.showToast(contex, "error : $it")
                 Log.d("PesananMasukScreen", "error : $it")
             },
             addDataCallback = {
                 listPesananAnda.add(it)
+                listPesananAnda.sortedBy { it -> it.waktu_pesanan_dibuat }
                 Log.d("PesananMasukScreen", "added to screen : $it")
             },
             updateDataCallback = { updatedData ->
                 val index = listPesananAnda.indexOfFirst { it.id_pesanan == updatedData.id_pesanan }
                 if (index != -1) listPesananAnda[index] = updatedData
+                listPesananAnda.sortedBy { it.waktu_pesanan_dibuat }
                 Log.d("PesananMasukScreen", "updated to screen : $updatedData")
             },
             deleteDataCallback = { documentId: String ->
                 listPesananAnda.removeAll { it.id_pesanan == documentId }
+                listPesananAnda.sortedBy { it.waktu_pesanan_dibuat }
                 Log.d("PesananMasukScreen", "deleted from screen : id = $documentId")
             }
-            )
-        }
+        )
+    }
 
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {

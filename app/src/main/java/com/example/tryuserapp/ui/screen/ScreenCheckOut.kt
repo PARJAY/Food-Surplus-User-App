@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -43,6 +44,7 @@ import com.example.tryuserapp.tools.Utility.Companion.showToast
 import com.example.tryuserapp.ui.component.DiantarAtauAmbil
 import com.example.tryuserapp.ui.component.Pembayaran
 import com.example.tryuserapp.ui.component.RingkasanPesanan
+import com.example.tryuserapp.ui.component.Toggleableinfo
 import com.example.tryuserapp.ui.theme.Brown
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.Timestamp
@@ -70,7 +72,30 @@ fun ScreenCheckOut(
 
     val daftarKatalis by remember { mutableStateOf(DaftarKatalis()) }
 
-    var ongkirPrice = 0F
+    val radioButtons = remember{
+        mutableStateListOf(
+            Toggleableinfo(
+                isChecked = true,
+                text = "Ambil Sendiri",
+                textview = false,
+                extretextview = false
+            ),
+            Toggleableinfo(
+                isChecked = false,
+                text = "Diantar",
+                textview = true,
+                extretextview = false
+            ),
+            Toggleableinfo(
+                isChecked = false,
+                text = "Donasi",
+                textview = true,
+                extretextview = true
+            ),
+        )
+    }
+
+    var ongkirPrice: Float
     var totalHarga = 0F
 
     if (alamatByGeolocation != LatLng(0.0,0.0) && alamatHotelByName != "")
@@ -133,6 +158,7 @@ fun ScreenCheckOut(
                         )
                     }
                     Spacer(modifier = Modifier.height(8.dp))
+
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Absolute.Left
@@ -147,7 +173,8 @@ fun ScreenCheckOut(
                         Spacer(modifier = Modifier.height(10.dp))
                         DiantarAtauAmbil(
                             onNavigateToScreen,
-                            alamatByName = alamatByName
+                            alamatByName = alamatByName,
+                            radioButtons
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                         RingkasanPesanan(selectedKatalis, hotelToUserDistanceInMeter)
@@ -207,7 +234,8 @@ fun ScreenCheckOut(
                             transfer_proof_image_link = selectedImageUri.lastPathSegment.toString(),
                             StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString(),
                             Timestamp.now(),
-                            lokasiUser = "${alamatByGeolocation.latitude},${alamatByGeolocation.longitude}",
+                            geolokasiTujuan = "${alamatByGeolocation.latitude},${alamatByGeolocation.longitude}",
+                            alamatTujuan = alamatByName,
                             hotelToUserDistanceInMeter,
                             ongkir = ongkirPrice,
                         )

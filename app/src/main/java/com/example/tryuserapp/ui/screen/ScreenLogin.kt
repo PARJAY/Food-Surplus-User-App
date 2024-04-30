@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -49,11 +50,12 @@ fun ScreenLogin(
         }
     }
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(Brown),
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Brown),
         contentAlignment = Alignment.Center
-    ){
+    ) {
         Column (
             modifier = Modifier
                 .height(470.dp)
@@ -69,11 +71,14 @@ fun ScreenLogin(
                     fontWeight = FontWeight.Bold
                 )
             )
+
             Spacer(modifier = Modifier.height(50.dp))
+
             Text(
-                text = "Selamat datang silahkan  Login dengan akun user anda",
+                text = "Selamat datang, silahkan Login dengan akun Google anda",
                 textAlign = TextAlign.Center
             )
+
             Box(modifier = Modifier
                 .fillMaxSize()
                 .padding(bottom = 50.dp),

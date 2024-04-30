@@ -42,6 +42,7 @@ import com.example.tryuserapp.presentation.pesanan.PesananListViewModel
 import com.example.tryuserapp.presentation.sign_in.GoogleAuthUiClient
 import com.example.tryuserapp.presentation.sign_in.SignInViewModel
 import com.example.tryuserapp.presentation.viewModelFactory
+import com.example.tryuserapp.ui.component.Toggleableinfo
 import com.example.tryuserapp.ui.screen.DetailKatalis
 import com.example.tryuserapp.ui.screen.HomeScreen
 import com.example.tryuserapp.ui.screen.KatalisScreen

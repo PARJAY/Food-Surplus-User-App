@@ -40,19 +40,16 @@ fun ScreenLengkapiData(
     customerViewModel: CustomerViewModel,
     onNavigateToScreen : (String) -> Unit,
     customerModel: CustomerModel
-){
-    var alamat by remember {
-        mutableStateOf("")
-    }
-    var noTelp by remember {
-        mutableStateOf("")
-    }
+) {
+    var alamat by remember { mutableStateOf("") }
+
+    var noTelp by remember { mutableStateOf("") }
 
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Brown),
         contentAlignment = Alignment.Center
-    ){
+    ) {
         Column (
             modifier = Modifier
                 .height(470.dp)
@@ -101,34 +98,34 @@ fun ScreenLengkapiData(
                 }
             )
 
-        Box (
-            Modifier.fillMaxSize(),
-            contentAlignment = Alignment.BottomCenter
-        ){
-            Button(modifier = Modifier
-                .fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Brown,
-                    contentColor = Color.White
-                ),
-                shape = RoundedCornerShape(4.dp),
-                onClick = {
-                    customerViewModel.tambahDataCustomer(
-                        idCustomer = userData!!.userId,
-                        alamat = alamat,
-                        phoneNumber = noTelp,
-                        name = userData.username!!
-                    )
-                    onNavigateToScreen(Screen.HomeScreen.route)
+            Box (
+                Modifier.fillMaxSize(),
+                contentAlignment = Alignment.BottomCenter
+            ){
+                Button(modifier = Modifier
+                    .fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Brown,
+                        contentColor = Color.White
+                    ),
+                    shape = RoundedCornerShape(4.dp),
+                    onClick = {
+                        customerViewModel.tambahDataCustomer(
+                            idCustomer = userData!!.userId,
+                            alamat = alamat,
+                            phoneNumber = noTelp,
+                            name = userData.username!!
+                        )
+                        onNavigateToScreen(Screen.HomeScreen.route)
+                    }
+                ) {
+                    Text(text = "Submit")
                 }
-            ) {
-                Text(text = "Submit")
             }
         }
     }
-        }
+}
 
-        }
 //
 //@Preview(showBackground = true)
 //@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)

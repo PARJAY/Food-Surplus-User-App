@@ -25,6 +25,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,33 +44,9 @@ data class Toggleableinfo(
 @Composable
 fun DiantarAtauAmbil(
     onNavigateToScreen : (String) -> Unit,
-    alamatByName : String
-){
-    var Alamat by remember {
-        mutableStateOf("")
-    }
-    val radioButtons = remember{
-        mutableStateListOf(
-            Toggleableinfo(
-                isChecked = true,
-                text = "Ambil Sendiri",
-                textview = false,
-                extretextview = false
-            ),
-            Toggleableinfo(
-                isChecked = false,
-                text = "Diantar",
-                textview = true,
-                extretextview = false
-            ),
-            Toggleableinfo(
-                isChecked = false,
-                text = "Donasi",
-                textview = true,
-                extretextview = true
-            ),
-        )
-    }
+    alamatByName : String,
+    radioButtons : SnapshotStateList<Toggleableinfo>
+) {
     Box (
         modifier = Modifier
             .wrapContentSize()
@@ -86,9 +63,7 @@ fun DiantarAtauAmbil(
                         .fillMaxWidth()
                         .clickable {
                             radioButtons.replaceAll {
-                                it.copy(
-                                    isChecked = it.text == info.text
-                                )
+                                it.copy(isChecked = it.text == info.text)
                             }
                         }
                         .padding(end = 16.dp),
@@ -100,21 +75,14 @@ fun DiantarAtauAmbil(
                         selected = info.isChecked,
                         onClick = {
                             radioButtons.replaceAll {
-                                it.copy(
-                                    isChecked = it.text == info.text
-                                )
+                                it.copy(isChecked = it.text == info.text)
                             }
                         }
                     )
-
-
                 }
             }
-            if (radioButtons[2].isChecked == true){
-//        display yayasna terdaftar menu dropdown
-                DropDownYayasan()
-            }
-            if (!radioButtons[0].isChecked == true){
+            if (radioButtons[2].isChecked) DropDownYayasan()
+            if (!radioButtons[0].isChecked) {
 
                 Button(onClick = { onNavigateToScreen(Screen.MapsScreen.route) }) {
                     Text(text = "Pilih Lokasi")
@@ -147,8 +115,33 @@ fun DiantarAtauAmbil(
 fun RadioButtonsPreview(){
     TryUserAppTheme {
         Surface {
-            DiantarAtauAmbil(onNavigateToScreen = {},
-                alamatByName = String()
+            val radioButtons = remember{
+                mutableStateListOf(
+                    Toggleableinfo(
+                        isChecked = true,
+                        text = "Ambil Sendiri",
+                        textview = false,
+                        extretextview = false
+                    ),
+                    Toggleableinfo(
+                        isChecked = false,
+                        text = "Diantar",
+                        textview = true,
+                        extretextview = false
+                    ),
+                    Toggleableinfo(
+                        isChecked = false,
+                        text = "Donasi",
+                        textview = true,
+                        extretextview = true
+                    ),
+                )
+            }
+
+            DiantarAtauAmbil(
+                onNavigateToScreen = {},
+                alamatByName = String(),
+                radioButtons = radioButtons
             )
         }
     }
