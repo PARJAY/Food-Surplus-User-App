@@ -58,7 +58,7 @@ class FirebaseHelper {
                 stok = queryDocumentSnapshot.getLong("stok")?.toInt() ?: 0 ,
                 komposisi = queryDocumentSnapshot.getString("komposisi")?.split(",") ?: emptyList(),
                 hargaAwal = queryDocumentSnapshot.getLong("hargaAwal")?.toFloat() ?: 0.0f,
-                hargaJual = queryDocumentSnapshot.getLong("hargaJual")?.toFloat() ?: 0.0f,
+                hargaJual = queryDocumentSnapshot.getLong("hargaPerPorsi")?.toFloat() ?: 0.0f,
                 porsiJual = queryDocumentSnapshot.getString("porsiJual") ?: "",
             )
         }
