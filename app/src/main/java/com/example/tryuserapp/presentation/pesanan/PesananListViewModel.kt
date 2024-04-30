@@ -3,7 +3,6 @@ package com.example.tryuserapp.presentation.pesanan
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tryuserapp.common.FirebaseResult
 import com.example.tryuserapp.data.repository.PesananListRepositoryImpl
 import com.example.tryuserapp.logic.StatusPesanan
 import kotlinx.coroutines.channels.Channel
@@ -89,7 +88,7 @@ class PesananListViewModel(
         viewModelScope.launch {
             setState(_state.value.copy(isLoading = true))
             try {
-                pesananListRepositoryImpl.updateStatusPesanan(pesananId = selectedPesananId, fieldToUpdate = "status_pesanan", newValue = StatusPesanan.PESANAN_TERKIRIM.toString()    )
+                pesananListRepositoryImpl.updateStatusPesanan(pesananId = selectedPesananId, fieldToUpdate = "status_pesanan", newValue = StatusPesanan.SAMPAI.toString()    )
                 setState(_state.value.copy(isLoading = false))
                 setEffect { PesananSideEffects.ShowSnackBarMessage(message = "Update Stok successfully") }
             } catch (e: Exception) {

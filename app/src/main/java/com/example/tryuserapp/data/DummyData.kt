@@ -29,6 +29,7 @@ class DummyData {
             "SEDANG_DIANTAR",
             Timestamp.now(),
             "Dummy Lokasi User",
+            alamatTujuan = "",
             0f,
         )
         val pesananModel2 = PesananModel(
@@ -42,6 +43,7 @@ class DummyData {
             "SEDANG_DIANTAR",
             Timestamp.now(),
             "Dummy Lokasi User",
+            alamatTujuan = "",
             0f,
         )
         val pesananModel3 = PesananModel(
@@ -55,6 +57,7 @@ class DummyData {
             "SEDANG_DIANTAR",
             Timestamp.now(),
             "Dummy Lokasi User",
+            alamatTujuan = "",
             0f,
         )
         val dummyPesananFlowModel: List<PesananModel> = listOf(pesananModel1, pesananModel2, pesananModel3)

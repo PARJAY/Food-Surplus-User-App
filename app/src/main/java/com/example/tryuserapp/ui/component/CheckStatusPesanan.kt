@@ -34,7 +34,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tryuserapp.MyApp
 import com.example.tryuserapp.R
-import com.example.tryuserapp.data.model.DaftarKatalis
 import com.example.tryuserapp.data.model.PesananModel
 import com.example.tryuserapp.logic.StatusPesanan
 import com.example.tryuserapp.presentation.pesanan.PesananListViewModel
@@ -99,8 +98,8 @@ fun CheckStatusPesanan(
                 text =
                 when (pesananModel.status_pesanan) {
                     StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString() -> "Menunggu Konfirmasi"
-                    StatusPesanan.PESANAN_TERKONFIRMASI_ADMIN.toString(), StatusPesanan.SEDANG_DIANTAR.toString() -> "Diantar"
-                    StatusPesanan.PESANAN_TERKIRIM.toString() -> "Pesanan Terkirim"
+                    StatusPesanan.TERKONFIRMASI_ADMIN.toString(), StatusPesanan.DIANTAR.toString() -> "Diantar"
+                    StatusPesanan.SAMPAI.toString() -> "Pesanan Terkirim"
                     else -> "Status Pesanan Error"
                 },
                 style = TextStyle(
@@ -135,9 +134,10 @@ fun CheckStatusPesanan(
                 shape = RoundedCornerShape(4.dp),
                 colors = when (pesananModel.status_pesanan) {
                     StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString(),
-                    StatusPesanan.PESANAN_TERKONFIRMASI_ADMIN.toString(),
-                    StatusPesanan.PESANAN_TERKIRIM.toString() -> buttonDisabledColor
-                    StatusPesanan.SEDANG_DIANTAR.toString() -> buttonClickableColor
+                    StatusPesanan.TERKONFIRMASI_ADMIN.toString(),
+                    StatusPesanan.DIANTAR.toString(),
+                    StatusPesanan.SELESAI.toString() -> buttonDisabledColor
+                    StatusPesanan.SAMPAI.toString() -> buttonClickableColor
                     else -> buttonDisabledColor
                 },
                 onClick = {
@@ -145,7 +145,14 @@ fun CheckStatusPesanan(
 
                     pesananListViewModel.updateStatusPesanan(pesananModel.id_pesanan!!)
                 },
-//                enabled = isEnabled
+                enabled = when (pesananModel.status_pesanan) {
+                    StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString(),
+                    StatusPesanan.TERKONFIRMASI_ADMIN.toString(),
+                    StatusPesanan.DIANTAR.toString(),
+                    StatusPesanan.SELESAI.toString() -> false
+                    StatusPesanan.SAMPAI.toString() -> true
+                    else -> false
+                }
             ) {
                 Text(text = "CONFIRM")
             }
@@ -168,7 +175,7 @@ fun StatusPesananPreview(){
                     daftarKatalis = emptyMap(),
                     transfer_proof_image_link = "",
                     total_harga = 0f,
-                    status_pesanan = StatusPesanan.SEDANG_DIANTAR.toString(),
+                    status_pesanan = StatusPesanan.DIANTAR.toString(),
                     waktu_pesanan_dibuat = Timestamp.now(),
 
                 ),

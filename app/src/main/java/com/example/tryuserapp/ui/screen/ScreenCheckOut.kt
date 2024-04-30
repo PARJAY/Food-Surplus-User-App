@@ -19,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -63,6 +62,7 @@ fun ScreenCheckOut(
     alamatByGeolocation : LatLng,
     alamatHotelByName : String,
     selectedKatalis: SnapshotStateList<SelectedKatalis>,
+    radioButtons : SnapshotStateList<Toggleableinfo>
 ) {
     val context = LocalContext.current
 
@@ -71,29 +71,6 @@ fun ScreenCheckOut(
     var hotelToUserDistanceInMeter by remember { mutableFloatStateOf(0f) }
 
     val daftarKatalis by remember { mutableStateOf(DaftarKatalis()) }
-
-    val radioButtons = remember{
-        mutableStateListOf(
-            Toggleableinfo(
-                isChecked = true,
-                text = "Ambil Sendiri",
-                textview = false,
-                extretextview = false
-            ),
-            Toggleableinfo(
-                isChecked = false,
-                text = "Diantar",
-                textview = true,
-                extretextview = false
-            ),
-            Toggleableinfo(
-                isChecked = false,
-                text = "Donasi",
-                textview = true,
-                extretextview = true
-            ),
-        )
-    }
 
     var ongkirPrice: Float
     var totalHarga = 0F
@@ -158,7 +135,6 @@ fun ScreenCheckOut(
                         )
                     }
                     Spacer(modifier = Modifier.height(8.dp))
-
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Absolute.Left

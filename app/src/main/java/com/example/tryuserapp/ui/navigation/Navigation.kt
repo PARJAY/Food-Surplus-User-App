@@ -105,6 +105,30 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
 
     var changeScreen by remember { mutableStateOf(false) }
 
+
+        val radioButtons = remember{
+            mutableStateListOf(
+                Toggleableinfo(
+                    isChecked = true,
+                    text = "Ambil Sendiri",
+                    textview = false,
+                    extretextview = false
+                ),
+                Toggleableinfo(
+                    isChecked = false,
+                    text = "Diantar",
+                    textview = true,
+                    extretextview = false
+                ),
+                Toggleableinfo(
+                    isChecked = false,
+                    text = "Donasi",
+                    textview = true,
+                    extretextview = true
+                ),
+            )
+        }
+
     NavHost(navController, startDestination = Screen.ScreenLogin.route) {
         composable(Screen.ScreenLogin.route) {
             val viewModel = viewModel<SignInViewModel>()
@@ -225,7 +249,8 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                 alamatByGeolocation = navAlamatByGeolocation,
                 selectedKatalis = selectedKatalis,
                 selectedIdHotel = selectedHotelId,
-                alamatHotelByName = navAlamatHotelByGeolocation
+                alamatHotelByName = navAlamatHotelByGeolocation,
+                radioButtons = radioButtons
             )
         }
 
