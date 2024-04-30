@@ -20,6 +20,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -103,31 +104,31 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
     var navAlamatByGeolocation by remember { mutableStateOf(LatLng(0.0, 0.0)) }
     var navAlamatHotelByGeolocation by remember { mutableStateOf("") }
 
-    var changeScreen by remember { mutableStateOf(false) }
+    var radioButtons = remember{
+        mutableStateListOf(
+            Toggleableinfo(
+                isChecked = true,
+                text = "Ambil Sendiri",
+                textview = false,
+                extretextview = false
+            ),
+            Toggleableinfo(
+                isChecked = false,
+                text = "Diantar",
+                textview = true,
+                extretextview = false
+            ),
+            Toggleableinfo(
+                isChecked = false,
+                text = "Donasi",
+                textview = true,
+                extretextview = true
+            ),
+        )
+    }
 
-
-        val radioButtons = remember{
-            mutableStateListOf(
-                Toggleableinfo(
-                    isChecked = true,
-                    text = "Ambil Sendiri",
-                    textview = false,
-                    extretextview = false
-                ),
-                Toggleableinfo(
-                    isChecked = false,
-                    text = "Diantar",
-                    textview = true,
-                    extretextview = false
-                ),
-                Toggleableinfo(
-                    isChecked = false,
-                    text = "Donasi",
-                    textview = true,
-                    extretextview = true
-                ),
-            )
-        }
+    val changeScreen = remember { mutableStateOf(false) }
+    val normalizeScreen = remember { mutableStateOf(false) }
 
     NavHost(navController, startDestination = Screen.ScreenLogin.route) {
         composable(Screen.ScreenLogin.route) {
@@ -285,6 +286,29 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
             )
             val katalisScreenVMUiState = katalisScreenVM.state.collectAsState().value
 
+            radioButtons = remember {
+                    mutableStateListOf(
+                        Toggleableinfo(
+                            isChecked = true,
+                            text = "Ambil Sendiri",
+                            textview = false,
+                            extretextview = false
+                        ),
+                        Toggleableinfo(
+                            isChecked = false,
+                            text = "Diantar",
+                            textview = true,
+                            extretextview = false
+                        ),
+                        Toggleableinfo(
+                            isChecked = false,
+                            text = "Donasi",
+                            textview = true,
+                            extretextview = true
+                        ),
+                    )
+                }
+
             KatalisScreen(
                 userData = googleAuthUiClient.getSignedInUser(),
                 katalisScreenVMUiState,
@@ -339,7 +363,6 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
         composable(Screen.ScreenDetailPesananAnda.route) {
             ScreenDetailPesananAnda(
                 selectedDetailPesananModel,
-
             )
         }
 
@@ -378,9 +401,17 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                 onButtonSelectLocationClick = { alamatByName, alamatByGeolocation ->
                     navAlamatByName = alamatByName
                     navAlamatByGeolocation = alamatByGeolocation
-                    changeScreen = true
+                    changeScreen.value = true
+                    Log.d("MapsScreen", "changeScreen.value = ${changeScreen.value}")
                 }
             )
+
+            if (changeScreen.value) {
+                Log.d("MapsScreen", "How many you been executed?")
+                navController.popBackStack()
+                changeScreen.value = false
+                normalizeScreen.value = true
+            }
         }
 
         composable(Screen.TrackUserLocationScreen.route) {
@@ -394,11 +425,5 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
         composable(Screen.LocationGpsScreen.route) {
             LocationGpsScreen()
         }
-    }
-
-    if (changeScreen) {
-        Log.d("MapsScreen", "How many you been executed?")
-        navController.popBackStack()
-        !changeScreen
     }
 }

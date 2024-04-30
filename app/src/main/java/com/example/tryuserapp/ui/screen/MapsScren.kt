@@ -65,7 +65,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun MapsScreen(
     viewModel: LocationViewModel = LocationViewModel(),
-    onButtonSelectLocationClick : (alamatByName : String, alamatByGeolocation : LatLng) -> Unit
+    onButtonSelectLocationClick : (alamatByName : String, alamatByGeolocation : LatLng) -> Unit,
 ) {
     val context = LocalContext.current
     val activity = LocalContext.current as Activity
