@@ -215,6 +215,7 @@ fun ScreenCheckOut(
                             alamatTujuan = alamatByName,
                             hotelToUserDistanceInMeter,
                             ongkir = ongkirPrice,
+                            catatan = ""
                         )
                     )
 
