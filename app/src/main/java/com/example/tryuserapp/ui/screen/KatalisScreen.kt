@@ -41,6 +41,7 @@ import com.example.tryuserapp.ui.component.SearchBar
 import com.example.tryuserapp.ui.component.TopBar
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 import com.example.tryuserapp.ui.theme.backGroundScreen
+import com.google.firebase.Timestamp
 
 @SuppressLint("MutableCollectionMutableState")
 @Composable
@@ -119,7 +120,7 @@ fun KatalisScreen(
 
         items(katalisScreenUiState.katalisList) { katalis ->
             // TODO : katalis yang sudah kadaluarsa nggak tampil
-            if (katalis.idHotel == selectedHotelId || katalis.stok <= 0) {
+            if (katalis.kadaluarsa >= Timestamp.now() && katalis.idHotel == selectedHotelId && katalis.stok != 0) {
                 Katalis(
                     katalisModel = katalis,
 
@@ -148,7 +149,10 @@ fun KatalisScreen(
                             loopedKatalis.idKatalis == katalis.id
                         }?.quantity = modifiedQuantityKatalis
 
-                        Log.d("Katalis Screen", "Modified Katalis with id ${katalis.id}. quantity to $modifiedQuantityKatalis")
+                        Log.d(
+                            "Katalis Screen",
+                            "Modified Katalis with id ${katalis.id}. quantity to $modifiedQuantityKatalis"
+                        )
                     },
                     onRemoveSelectedKatalisListById = {
                         selectedKatalisList.removeAll { it.idKatalis == katalis.id }

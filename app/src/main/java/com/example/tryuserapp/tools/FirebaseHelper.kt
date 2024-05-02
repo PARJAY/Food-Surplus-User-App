@@ -68,6 +68,7 @@ class FirebaseHelper {
                 hargaAwal = queryDocumentSnapshot.getLong("hargaAwal")?.toFloat() ?: 0.0f,
                 hargaJual = queryDocumentSnapshot.getLong("hargaPerPorsi")?.toFloat() ?: 0.0f,
                 porsiJual = queryDocumentSnapshot.getString("porsiJual") ?: "",
+                kadaluarsa = queryDocumentSnapshot.getTimestamp("kadaluarsa")?: Timestamp.now()
             )
         }
         fun fetchSnapshotToHotelModel(queryDocumentSnapshot: QueryDocumentSnapshot) =

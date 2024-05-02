@@ -1,5 +1,7 @@
 package com.example.tryuserapp.data.model
 
+import com.google.firebase.Timestamp
+
 data class KatalisModel(
     val id: String = "",
     val idHotel: String = "",
@@ -10,4 +12,5 @@ data class KatalisModel(
     val hargaAwal: Float = 0f,
     val hargaJual: Float = 0f,
     val porsiJual: String = "",
+    val kadaluarsa: Timestamp = Timestamp.now(),
 )
