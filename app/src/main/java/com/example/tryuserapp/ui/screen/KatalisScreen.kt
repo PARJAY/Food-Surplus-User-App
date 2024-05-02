@@ -4,6 +4,7 @@ package com.example.tryuserapp.ui.screen
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
+import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,6 +21,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,6 +44,7 @@ import com.example.tryuserapp.presentation.katalis_screen.KatalisScreenEvent
 import com.example.tryuserapp.presentation.katalis_screen.KatalisScreenUiState
 import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
 import com.example.tryuserapp.presentation.sign_in.UserData
+import com.example.tryuserapp.tools.FirebaseHelper.Companion.getFileFromFirebaseStorage
 import com.example.tryuserapp.ui.component.ButtonKeranjangSmall
 import com.example.tryuserapp.ui.component.ButtonPesananAnda
 import com.example.tryuserapp.ui.component.Katalis
@@ -57,6 +63,15 @@ fun KatalisScreen(
     onSetSelectedDetailKatalis: (KatalisModel) -> Unit,
     selectedKatalisList: SnapshotStateList<SelectedKatalis>
 ) {
+
+    var imageURI by remember { mutableStateOf<Uri>(Uri.EMPTY) }
+
+    getFileFromFirebaseStorage(
+        fileReference = "WhatsApp Image 2023-12-09 at 20.32.55.jpeg",
+        onSuccess = { imageURI = it},
+        onError = {}
+    )
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()

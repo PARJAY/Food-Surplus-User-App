@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
@@ -20,11 +21,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.tryuserapp.R
 import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.logic.OrderAction
@@ -57,13 +60,14 @@ fun Katalis(
             },
         horizontalArrangement = Arrangement.Absolute.Right
     ){
-        Image(
-            painter = painterResource(id = R.drawable.ic_launcher_background),
-            contentDescription = "Gambar Makanan",
+        AsyncImage (
+            model = imageURI,
+            contentDescription = "Profile picture",
             modifier = Modifier
                 .height(70.dp)
                 .width(63.dp)
                 .padding(top = 10.dp, bottom = 5.dp, start = 10.dp),
+            contentScale = ContentScale.Crop
         )
         Column(modifier = Modifier.padding(end = 0.dp)) {
             Text(
@@ -129,3 +133,4 @@ fun KatalisPreview(){
 }
 
 
+ NITIP

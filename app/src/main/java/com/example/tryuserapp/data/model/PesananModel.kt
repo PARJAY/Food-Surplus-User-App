@@ -15,5 +15,6 @@ data class PesananModel(
     var alamatTujuan : String = "",
     var jarak_user_dan_hotel : Float = 0f,
     var id_pesanan : String? = null,
-    var ongkir : Float = 0f
+    var ongkir : Float = 0f,
+    var catatan : String? = ""
 )
