@@ -43,10 +43,21 @@ fun RingkasanPesanan(
     var totalHarga = 0F
 
     selectedKatalis.forEach { totalHarga += (it.hargaKatalis * it.quantity) }
+
     var ongkirPrice : Float?
     var bensinPrice : Float?
 
-    LazyColumn(
+//    selectedKatalis.forEach {
+//        Row(
+//            modifier = Modifier.fillMaxWidth(),
+//            horizontalArrangement = Arrangement.SpaceBetween
+//        ) {
+//            Text(text = it.namaKatalis + " x " +  it.quantity )
+//            Text(text = "Rp." + (it.hargaKatalis* it.quantity ))
+//        }
+//    }
+
+    Column (
         modifier = Modifier
             .fillMaxWidth()
             .border(
@@ -55,66 +66,119 @@ fun RingkasanPesanan(
             )
             .padding(16.dp)
     ) {
-        item {
-            Text(
-                text = "Ringkasan Pesanan",
-                style = TextStyle(
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
+        Text(
+            text = "Ringkasan Pesanan",
+            style = TextStyle(
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
             )
-            Spacer(modifier = Modifier.size(width = 0.dp, height = 8.dp))
+
+        )
+        Spacer(modifier = Modifier.size(width = 0.dp, height = 8.dp))
+
+        selectedKatalis.forEach {
+            LeftRightText(
+                leftTextInfo = it.namaKatalis + " x " +  it.quantity,
+                rightTextPrice = it.hargaKatalis* it.quantity
+            )
         }
 
+        if (hotelToUserDistance != 0f) {
+            ongkirPrice = hotelToUserDistance.div(10)
+            bensinPrice = hotelToUserDistance.times(1.5f)
 
-        items(selectedKatalis) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(text = it.namaKatalis + " x " +  it.quantity )
-                Text(text = "Rp." + (it.hargaKatalis* it.quantity ))
-            }
+            LeftRightText(
+                leftTextInfo = "Biaya transportasi",
+                rightTextPrice = ongkirPrice!! + bensinPrice!!
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            LeftRightText(
+                leftTextInfo = "Total Harga",
+                rightTextPrice = totalHarga + ongkirPrice!! + bensinPrice!!
+            )
+
         }
+        else {
+            Spacer(modifier = Modifier.height(16.dp))
 
-        item {
-            if (hotelToUserDistance != 0f) {
-                ongkirPrice = hotelToUserDistance.div(10)
-                bensinPrice = hotelToUserDistance.times(1.5f)
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(text = "Biaya transportasi")
-                    Text(text = "Rp. ${ongkirPrice!! + bensinPrice!!}")
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(text = "Total Harga")
-                    Text(text = "Rp. ${totalHarga + ongkirPrice!! + bensinPrice!!}")
-                }
-            }
-            else {
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(text = "Total Harga")
-                    Text(text = "Rp. $totalHarga")
-                }
-            }
-
+            LeftRightText(
+                leftTextInfo = "Total Harga",
+                rightTextPrice = totalHarga
+            )
         }
     }
+
+//    LazyColumn (
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .border(
+//                BorderStroke(1.dp, Color.Black),
+//                shape = RoundedCornerShape(16.dp)
+//            )
+//            .padding(16.dp)
+//    ) {
+//        item {
+//            Text(
+//                text = "Ringkasan Pesanan",
+//                style = TextStyle(
+//                    fontSize = 20.sp,
+//                    fontWeight = FontWeight.Bold
+//                )
+//
+//            )
+//            Spacer(modifier = Modifier.size(width = 0.dp, height = 8.dp))
+//        }
+//
+//
+//        items(selectedKatalis) {
+//            Row(
+//                modifier = Modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceBetween
+//            ) {
+//                Text(text = it.namaKatalis + " x " +  it.quantity )
+//                Text(text = "Rp." + (it.hargaKatalis* it.quantity ))
+//            }
+//        }
+//
+//        item {
+//            if (hotelToUserDistance != 0f) {
+//                ongkirPrice = hotelToUserDistance.div(10)
+//                bensinPrice = hotelToUserDistance.times(1.5f)
+//
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    horizontalArrangement = Arrangement.SpaceBetween
+//                ) {
+//                    Text(text = "Biaya transportasi")
+//                    Text(text = "Rp. ${ongkirPrice!! + bensinPrice!!}")
+//                }
+//
+//                Spacer(modifier = Modifier.height(16.dp))
+//
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    horizontalArrangement = Arrangement.SpaceBetween
+//                ) {
+//                    Text(text = "Total Harga")
+//                    Text(text = "Rp. ${totalHarga + ongkirPrice!! + bensinPrice!!}")
+//                }
+//            }
+//            else {
+//                Spacer(modifier = Modifier.height(16.dp))
+//
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    horizontalArrangement = Arrangement.SpaceBetween
+//                ) {
+//                    Text(text = "Total Harga")
+//                    Text(text = "Rp. $totalHarga")
+//                }
+//            }
+//
+//        }
+//    }
 }
 
 

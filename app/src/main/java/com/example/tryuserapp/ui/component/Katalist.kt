@@ -1,6 +1,7 @@
 package com.example.tryuserapp.ui.component
 
 import android.content.res.Configuration
+import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -18,6 +19,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,6 +38,7 @@ import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.logic.OrderAction
 import com.example.tryuserapp.presentation.katalis_screen.KatalisScreenEvent
 import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
+import com.example.tryuserapp.tools.FirebaseHelper.Companion.getFileFromFirebaseStorage
 import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
@@ -46,6 +52,14 @@ fun Katalis(
     onModifySelectedKatalisList : (Int) -> Unit,
     onRemoveSelectedKatalisListById : () -> Unit,
 ) {
+    var imageURI by remember { mutableStateOf<Uri>(Uri.EMPTY) }
+
+    Log.d("Katalis Component", "Hotel_${katalisModel.idHotel}/${katalisModel.imageLink}")
+    getFileFromFirebaseStorage(
+        fileReference = "Hotel_${katalisModel.idHotel}/${katalisModel.imageLink}",
+        onSuccess = { imageURI = it},
+        onError = {}
+    )
 
     Row (
         modifier = Modifier
@@ -131,6 +145,3 @@ fun KatalisPreview(){
         }
     }
 }
-
-
- NITIP

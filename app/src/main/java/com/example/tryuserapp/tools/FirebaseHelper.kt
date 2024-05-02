@@ -54,7 +54,7 @@ class FirebaseHelper {
                 id = queryDocumentSnapshot.id,
                 idHotel = queryDocumentSnapshot.getString("idHotel") ?: "",
                 namaKatalis = queryDocumentSnapshot.getString("namaKatalis") ?: "",
-                imageLink = queryDocumentSnapshot.getString("imageLink")?: "",
+                imageLink = queryDocumentSnapshot.getString("img")?: "",
                 stok = queryDocumentSnapshot.getLong("stok")?.toInt() ?: 0 ,
                 komposisi = queryDocumentSnapshot.getString("komposisi")?.split(",") ?: emptyList(),
                 hargaAwal = queryDocumentSnapshot.getLong("hargaAwal")?.toFloat() ?: 0.0f,

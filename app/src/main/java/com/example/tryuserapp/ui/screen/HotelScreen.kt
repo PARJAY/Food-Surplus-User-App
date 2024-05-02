@@ -117,17 +117,17 @@ fun HomeScreen(
 
         items(homeScreenUiState.hotelList) {hotel ->
             Column (modifier = Modifier.padding(start = 8.dp)) {
-                HotelList(
-                    hotelModel = hotel,
-                    onNavigateToScreen = {
-                        onNavigateToScreen(it)
-                        onSelectHotel(
-                            hotel.idHotel,
-                            hotel.alamat
-                        )
-                    }
-                )
-                Text(text = hotel.statusHotel)
+                if (hotel.statusHotel == StatusHotel.TERVERIFIKASI.toString())
+                    HotelList(
+                        hotelModel = hotel,
+                        onNavigateToScreen = {
+                            onNavigateToScreen(it)
+                            onSelectHotel(
+                                hotel.idHotel,
+                                hotel.alamat
+                            )
+                        }
+                    )
                 Spacer(modifier = Modifier.height(5.dp))
             }
         }
