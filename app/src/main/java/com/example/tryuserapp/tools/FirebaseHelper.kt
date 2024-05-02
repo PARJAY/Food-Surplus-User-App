@@ -68,6 +68,7 @@ class FirebaseHelper {
                 name =  queryDocumentSnapshot.getString("name") ?: "",
                 phoneNumber = queryDocumentSnapshot.getString("phoneNumber") ?: "",
                 email = queryDocumentSnapshot.getString("email")?: "",
+                photoURL = queryDocumentSnapshot.getString("photoURL")?: "",
                 alamat = queryDocumentSnapshot.getString("alamat")?: "" ,
                 listIdKatalis = queryDocumentSnapshot.getString("katalis")?.split(",") ?: emptyList(),
                 statusHotel = queryDocumentSnapshot.getString("statusHotel")?: "",

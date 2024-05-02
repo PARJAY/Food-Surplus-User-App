@@ -7,6 +7,7 @@ data class HotelModel(
     var email : String = "",
     var alamat : String = "",
     var geolocation : String = "",
+    var photoURL : String = "",
     var listIdKatalis : List<String> = listOf(),
     var statusHotel : String = ""
 )

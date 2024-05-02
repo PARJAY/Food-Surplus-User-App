@@ -112,9 +112,7 @@ fun ScreenCheckOut(
         }
 
     LazyColumn (
-        modifier = Modifier
-            .padding(8.dp)
-            .padding(bottom = 32.dp)
+        modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp)
     ) {
         item {
             Text(
@@ -133,9 +131,7 @@ fun ScreenCheckOut(
                 style = TextStyle(fontWeight = FontWeight.W700)
             )
 
-            Spacer(modifier = Modifier.height(5.dp))
-
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             DiantarAtauAmbil(
                 onNavigateToScreen,
@@ -160,9 +156,9 @@ fun ScreenCheckOut(
 
     Box (
         Modifier.fillMaxSize(),
-        contentAlignment = Alignment.BottomCenter
+        contentAlignment = Alignment.BottomStart
     ) {
-        Button(
+        Button (
             modifier = Modifier.fillMaxWidth(),
             shape = RectangleShape,
             colors = ButtonDefaults.buttonColors(
@@ -243,62 +239,6 @@ fun ScreenCheckOut(
 //                alamatByName = (),
 //                alamatByGeolocation = (0.0,0.0)
 //            )
-//        }
-//    }
-//}
-
-
-//Box(
-//Modifier.fillMaxSize(),
-//contentAlignment = Alignment.TopCenter
-//) {
-//    Column(
-//        modifier = Modifier
-//            .padding(8.dp)
-//            .padding(bottom = 32.dp)
-//    ) {
-//        Text(
-//            modifier = Modifier.fillMaxWidth(),
-//            text = "Check Out Pesanan",
-//            textAlign = TextAlign.Center,
-//            style = TextStyle(
-//                fontSize = 25.sp,
-//                fontWeight = FontWeight.Bold
-//            )
-//        )
-//        Spacer(modifier = Modifier.height(8.dp))
-//
-//        Text(
-//            text = "Info Pesanan Anda :",
-//            style = TextStyle(fontWeight = FontWeight.W700)
-//        )
-//
-////                    Row(
-////                        modifier = Modifier.fillMaxWidth(),
-////                        horizontalArrangement = Arrangement.Absolute.Left
-////                    ) {
-////                        Text(
-////                            text = "Info Pesanan Anda :",
-////                            style = TextStyle(fontWeight = FontWeight.W700)
-////                        )
-////                    }
-//        Spacer(modifier = Modifier.height(5.dp))
-//
-//        Column {
-//            Spacer(modifier = Modifier.height(10.dp))
-//            DiantarAtauAmbil(
-//                onNavigateToScreen,
-//                alamatByName = alamatByName,
-//                radioButtons
-//            )
-//            Spacer(modifier = Modifier.height(10.dp))
-//            RingkasanPesanan(selectedKatalis, hotelToUserDistanceInMeter)
-//            Spacer(modifier = Modifier.height(10.dp))
-//            Pembayaran(
-//                selectedImageUri,
-//                onSelectImageUri = { selectedImageUri = it }
-//            )
-//            Spacer(modifier = Modifier.height(32.dp))
 //        }
 //    }
 //}
