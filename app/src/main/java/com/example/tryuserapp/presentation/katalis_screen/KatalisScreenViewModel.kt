@@ -4,9 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tryuserapp.common.FirebaseResult
-import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.data.repository.KatalisRepositoryImpl
-import com.example.tryuserapp.logic.OrderAction
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

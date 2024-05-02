@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -39,7 +40,7 @@ fun HotelList(
 ) {
     Row (
         modifier = Modifier
-            .height(80.dp)
+            .wrapContentHeight()
             .width(380.dp)
             .border(
                 BorderStroke(1.dp, Color.Black),

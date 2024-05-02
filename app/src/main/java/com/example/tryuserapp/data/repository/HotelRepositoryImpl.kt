@@ -5,6 +5,7 @@ import com.example.tryuserapp.common.FirebaseResult
 import com.example.tryuserapp.common.HOTEL_COLLECTION
 import com.example.tryuserapp.common.INTERNET_ISSUE
 import com.example.tryuserapp.data.model.HotelModel
+import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.tools.FirebaseHelper
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
@@ -38,6 +39,31 @@ class HotelRepositoryImpl (private val db : FirebaseFirestore) : HotelRepository
             }
 
             callback(FirebaseResult.Success(hotelModelSnapshots))
+        }
+    }
+
+    fun getHotelLiveData(
+        errorCallback: (Exception) -> Unit,
+        addDataCallback: (HotelModel) -> Unit,
+        updateDataCallback: (HotelModel) -> Unit,
+        deleteDataCallback: (documentId: String) -> Unit
+    ) {
+        listenerRegistration = db.collection(HOTEL_COLLECTION).addSnapshotListener { snapshot, exception ->
+            if (exception != null) {
+                errorCallback(IllegalStateException(INTERNET_ISSUE))
+                return@addSnapshotListener
+            }
+
+            snapshot!!.documentChanges.forEach { change ->
+                val hotelModel = FirebaseHelper.fetchSnapshotToHotelModel(change.document)
+                when (change.type) {
+                    DocumentChange.Type.ADDED -> addDataCallback(hotelModel)
+                    DocumentChange.Type.MODIFIED -> updateDataCallback(hotelModel)
+
+                    DocumentChange.Type.REMOVED -> deleteDataCallback(hotelModel.idHotel)
+                }
+                Log.d("REPOSITORY: ", "Data In -> ${change.type} - ${change.document}")
+            }
         }
     }
 

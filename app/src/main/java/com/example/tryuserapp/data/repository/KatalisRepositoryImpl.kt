@@ -4,15 +4,11 @@ import android.util.Log
 import com.example.tryuserapp.common.FirebaseResult
 import com.example.tryuserapp.common.INTERNET_ISSUE
 import com.example.tryuserapp.common.KATALIS_COLLECTION
-import com.example.tryuserapp.data.model.CustomerModel
 import com.example.tryuserapp.data.model.KatalisModel
-import com.example.tryuserapp.data.model.PesananModel
-import com.example.tryuserapp.tools.FirebaseHelper
 import com.example.tryuserapp.tools.FirebaseHelper.Companion.fetchSnapshotToKatalisModel
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.QueryDocumentSnapshot
 import kotlinx.coroutines.tasks.await
 
 class KatalisRepositoryImpl(private val db : FirebaseFirestore) : KatalisRepository {

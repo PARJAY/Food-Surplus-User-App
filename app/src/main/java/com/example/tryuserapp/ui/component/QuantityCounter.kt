@@ -3,7 +3,6 @@ package com.example.tryuserapp.ui.component
 import android.content.res.Configuration
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -32,8 +31,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tryuserapp.R
 import com.example.tryuserapp.data.model.KatalisModel
-import com.example.tryuserapp.logic.OrderAction
-import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 @Composable

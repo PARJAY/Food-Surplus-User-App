@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -152,7 +153,7 @@ fun ScreenCheckOut(
                 onSelectImageUri = { selectedImageUri = it }
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(60.dp))
         }
     }
 
@@ -161,8 +162,9 @@ fun ScreenCheckOut(
         contentAlignment = Alignment.BottomStart
     ) {
         Button (
-            modifier = Modifier.fillMaxWidth(),
-            shape = RectangleShape,
+            modifier = Modifier.fillMaxWidth()
+                .padding(start = 8.dp, end = 8.dp),
+            shape = RoundedCornerShape(16.dp),
             colors = ButtonDefaults.buttonColors(
                 contentColor = androidx.compose.ui.graphics.Color.White,
                 containerColor = Brown

@@ -123,7 +123,6 @@ fun KatalisScreen(
             if (katalis.kadaluarsa >= Timestamp.now() && katalis.idHotel == selectedHotelId && katalis.stok != 0) {
                 Katalis(
                     katalisModel = katalis,
-
                     onNavigateToScreen = {
                         onSetSelectedDetailKatalis(katalis)
                         onNavigateToScreen(it)

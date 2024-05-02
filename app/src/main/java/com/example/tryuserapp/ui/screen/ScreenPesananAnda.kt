@@ -1,7 +1,6 @@
 package com.example.tryuserapp.ui.screen
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,12 +27,14 @@ import com.example.tryuserapp.R
 import com.example.tryuserapp.data.model.PesananModel
 import com.example.tryuserapp.presentation.pesanan.PesananListViewModel
 import com.example.tryuserapp.presentation.pesanan.PesananState
+import com.example.tryuserapp.presentation.sign_in.UserData
 import com.example.tryuserapp.tools.Utility
 import com.example.tryuserapp.ui.component.CheckStatusPesanan
 import com.example.tryuserapp.ui.navigation.Screen
 
 @Composable
 fun PesananAnda(
+    userData: UserData,
     pesananState: PesananState,
     pesananListViewModel: PesananListViewModel,
     onNavigateToDetailPesananScreen : (pesananModel : PesananModel, desiredScreen : String) -> Unit
@@ -41,6 +42,8 @@ fun PesananAnda(
     val contex = LocalContext.current
 
     val listPesananAnda = remember { mutableStateListOf<PesananModel>() }
+
+    var idCustomer : String = ""
 
     LaunchedEffect (Unit) {
         MyApp.appModule.pesananListRepositoryImpl.getPesananList (
@@ -67,6 +70,8 @@ fun PesananAnda(
         )
     }
 
+    Log.d("Cek Id Customer", "Id Customer : ${userData.userId}")
+    Log.d("Cek Id Customer Di Pesanan", "Id Customer Di Pesanan : ${idCustomer}")
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         item {
@@ -84,26 +89,28 @@ fun PesananAnda(
         }
 
         items(listPesananAnda) { pesanan ->
-            Column(
-                Modifier
-                    .padding(horizontal = 8.dp)
-                    .clickable {
-                        onNavigateToDetailPesananScreen(
-                            pesanan,
-                            Screen.ScreenDetailPesananAnda.route
-                        )
-                    }
-            ) {
-                CheckStatusPesanan(
-                    statusPhoto = R.drawable.otw,
-                    pesananModel = pesanan,
-                    pesananListViewModel = pesananListViewModel,
-                )
+            if (pesanan.id_customer == userData.userId) {
+                Column(
+                    Modifier
+                        .padding(horizontal = 8.dp)
+                        .clickable {
+                            onNavigateToDetailPesananScreen(
+                                pesanan,
+                                Screen.ScreenDetailPesananAnda.route
+                            )
+                        }
+                ) {
+                    CheckStatusPesanan(
+                        statusPhoto = R.drawable.otw,
+                        pesananModel = pesanan,
+                        pesananListViewModel = pesananListViewModel,
+                    )
 
                 }
                 Spacer(modifier = Modifier.height(8.dp))
             }
         }
+    }
     }
 
 
