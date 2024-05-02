@@ -63,15 +63,6 @@ fun KatalisScreen(
     onSetSelectedDetailKatalis: (KatalisModel) -> Unit,
     selectedKatalisList: SnapshotStateList<SelectedKatalis>
 ) {
-
-    var imageURI by remember { mutableStateOf<Uri>(Uri.EMPTY) }
-
-    getFileFromFirebaseStorage(
-        fileReference = "WhatsApp Image 2023-12-09 at 20.32.55.jpeg",
-        onSuccess = { imageURI = it},
-        onError = {}
-    )
-
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
