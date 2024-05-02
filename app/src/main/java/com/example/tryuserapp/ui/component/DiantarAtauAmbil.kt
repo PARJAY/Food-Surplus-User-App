@@ -8,17 +8,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -45,8 +42,12 @@ data class Toggleableinfo(
 fun DiantarAtauAmbil(
     onNavigateToScreen : (String) -> Unit,
     alamatByName : String,
-    radioButtons : SnapshotStateList<Toggleableinfo>
+    radioButtons : SnapshotStateList<Toggleableinfo>,
 ) {
+    var alamatYayasan by remember {
+        mutableStateOf("")
+    }
+
     Box (
         modifier = Modifier
             .wrapContentSize()
@@ -81,7 +82,16 @@ fun DiantarAtauAmbil(
                     )
                 }
             }
-            if (radioButtons[2].isChecked) DropDownYayasan()
+            if (radioButtons[2].isChecked) {
+                DropDownYayasan(
+                    setLokasiYayasan = {
+                        alamatYayasan = it
+                    }
+                )
+
+                Text(text = if (alamatYayasan != "") alamatYayasan else "")
+            }
+
             if (!radioButtons[0].isChecked) {
 
                 Button(onClick = { onNavigateToScreen(Screen.MapsScreen.route) }) {
