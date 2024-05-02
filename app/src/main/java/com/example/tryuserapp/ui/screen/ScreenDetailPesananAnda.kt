@@ -2,6 +2,8 @@ package com.example.tryuserapp.ui.screen
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -9,6 +11,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import com.example.tryuserapp.MyApp
 import com.example.tryuserapp.data.model.DaftarKatalis
 import com.example.tryuserapp.data.model.PesananModel
@@ -44,6 +48,8 @@ fun ScreenDetailPesananAnda(
 
         Log.d("SDPA Screen", "selectedKatalisList final: $selectedKatalisList")
     }
-
+Box(modifier = Modifier.fillMaxSize(),
+    contentAlignment = Alignment.Center){
     RingkasanPesanan(selectedKatalis = selectedKatalisList, hotelToUserDistance = selectedDetailPesananModel.jarak_user_dan_hotel)
+}
 }

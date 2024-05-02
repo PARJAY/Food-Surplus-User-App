@@ -15,7 +15,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,9 +35,11 @@ import com.example.tryuserapp.R
 import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
 import com.example.tryuserapp.ui.component.QuantityCounter
+import com.example.tryuserapp.ui.theme.HijauMuda
+import com.example.tryuserapp.ui.theme.HijauTua
 import com.example.tryuserapp.ui.theme.Orange
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
-import com.example.tryuserapp.ui.theme.backGroundScreen
+import com.example.tryuserapp.ui.theme.Krem
 
 @Composable
 
@@ -52,7 +57,7 @@ fun DetailKatalis(
 
     Column(modifier = Modifier
         .fillMaxSize()
-        .background(backGroundScreen)
+        .background(Krem)
         .padding(16.dp)
     ) {
         Text(
@@ -68,8 +73,8 @@ fun DetailKatalis(
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center)
-        {
+            horizontalArrangement = Arrangement.Center
+        ) {
            Image(
                painter = painterResource(id = R.drawable.ic_launcher_background),
                contentDescription = "Gambar Makanan",
@@ -80,38 +85,40 @@ fun DetailKatalis(
         }
         Spacer(modifier = Modifier.height(32.dp))
 
-        Column(
+        Button(
             modifier = Modifier
-                .border(
-                    BorderStroke(1.dp, Color.Black),
-                    shape = RoundedCornerShape(16.dp)
-                )
-                .background(Orange)
-                .padding(16.dp)
-                .fillMaxWidth(),
-
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            onClick = { /*TODO*/ },
+            colors = ButtonDefaults.buttonColors(
+                contentColor = Color.White,
+                containerColor = HijauMuda
+            ),
+            shape = RoundedCornerShape(16.dp),
         ) {
-            Text(
-                text = "Harga Jual : ${selectedDetailKatalis.hargaJual}",
-                style = TextStyle(fontSize = 20.sp,  fontWeight = FontWeight.Bold)
-            )
+            Column{
+                Text(
+                    text = "Harga Jual : ${selectedDetailKatalis.hargaJual}",
+                    style = TextStyle(fontSize = 20.sp,  fontWeight = FontWeight.Bold)
+                )
 
-            Text(
-                text = "Porsi Jual : ${selectedDetailKatalis.porsiJual}",
-                style = TextStyle(fontSize = 20.sp,  fontWeight = FontWeight.Bold)
-            )
+                Text(
+                    text = "Porsi Jual : ${selectedDetailKatalis.porsiJual}",
+                    style = TextStyle(fontSize = 20.sp,  fontWeight = FontWeight.Bold)
+                )
 
-            Text(
-                text = "Stok : ${selectedDetailKatalis.stok}",
-                style = TextStyle(fontSize = 20.sp,  fontWeight = FontWeight.Bold)
-            )
+                Text(
+                    text = "Stok : ${selectedDetailKatalis.stok}",
+                    style = TextStyle(fontSize = 20.sp,  fontWeight = FontWeight.Bold)
+                )
 
-            Text(
-                text = "Bahan Bahan : ",
-                style = TextStyle(fontSize = 20.sp,  fontWeight = FontWeight.Bold)
-            )
+                Text(
+                    text = "Bahan Bahan : ",
+                    style = TextStyle(fontSize = 20.sp,  fontWeight = FontWeight.Bold)
+                )
 
-            Text(text = selectedDetailKatalis.komposisi.joinToString { it })
+                Text(text = selectedDetailKatalis.komposisi.joinToString { it })
+            }
         }
         Spacer(modifier = Modifier.height(16.dp))
         Row (

@@ -33,7 +33,7 @@ import coil.compose.AsyncImage
 import com.example.tryuserapp.data.model.CustomerModel
 import com.example.tryuserapp.presentation.sign_in.UserData
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
-import com.example.tryuserapp.ui.theme.backGroundScreen
+import com.example.tryuserapp.ui.theme.Krem
 
 @Composable
 fun ProfileScreen(
@@ -48,7 +48,7 @@ fun ProfileScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(backGroundScreen)
+            .background(Krem)
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -69,8 +69,8 @@ fun ProfileScreen(
         TextField(
             modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = backGroundScreen,
-                unfocusedContainerColor = backGroundScreen
+                focusedContainerColor = Krem,
+                unfocusedContainerColor = Krem
             ),
             value = customerModel.name,
             onValueChange = { name = it },
@@ -81,8 +81,8 @@ fun ProfileScreen(
         TextField(
             modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = backGroundScreen,
-                unfocusedContainerColor = backGroundScreen
+                focusedContainerColor = Krem,
+                unfocusedContainerColor = Krem
             ),
             value = alamat,
             onValueChange = { alamat = it },
@@ -93,8 +93,8 @@ fun ProfileScreen(
         TextField(
             modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = backGroundScreen,
-                unfocusedContainerColor = backGroundScreen
+                focusedContainerColor = Krem,
+                unfocusedContainerColor = Krem
             ),
             value = phoneNumber,
             onValueChange = { phoneNumber = it },

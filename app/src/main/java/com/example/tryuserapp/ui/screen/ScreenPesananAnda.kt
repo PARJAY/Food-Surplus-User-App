@@ -53,18 +53,18 @@ fun PesananAnda(
             },
             addDataCallback = {
                 listPesananAnda.add(it)
-                listPesananAnda.sortedBy { it2 -> it2.waktu_pesanan_dibuat }
+                listPesananAnda.sortedBy { it2 -> it2.waktu_pesanan_dibuat.seconds }
                 Log.d("PesananMasukScreen", "added to screen : $it")
             },
             updateDataCallback = { updatedData ->
                 val index = listPesananAnda.indexOfFirst { it.id_pesanan == updatedData.id_pesanan }
                 if (index != -1) listPesananAnda[index] = updatedData
-                listPesananAnda.sortedBy { it.waktu_pesanan_dibuat }
+                listPesananAnda.sortedBy { it.waktu_pesanan_dibuat.seconds }
                 Log.d("PesananMasukScreen", "updated to screen : $updatedData")
             },
             deleteDataCallback = { documentId: String ->
                 listPesananAnda.removeAll { it.id_pesanan == documentId }
-                listPesananAnda.sortedBy { it.waktu_pesanan_dibuat }
+                listPesananAnda.sortedBy { it.waktu_pesanan_dibuat.seconds }
                 Log.d("PesananMasukScreen", "deleted from screen : id = $documentId")
             }
         )

@@ -13,7 +13,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,6 +36,7 @@ import coil.compose.AsyncImage
 import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.tools.FirebaseHelper.Companion.getFileFromFirebaseStorage
 import com.example.tryuserapp.ui.navigation.Screen
+import com.example.tryuserapp.ui.theme.HijauMuda
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 @Composable
@@ -54,64 +58,68 @@ fun Katalis(
         onError = {}
     )
 
-    Row (
+    Button(
         modifier = Modifier
-            .height(80.dp)
-            .width(380.dp)
-            .border(
-                BorderStroke(1.dp, Color.Black),
-                shape = RoundedCornerShape(16.dp)
-            )
-            .clickable {
-                onNavigateToScreen(Screen.ScreenDetailPesanan.route)
-            },
-        horizontalArrangement = Arrangement.Absolute.Right
-    ){
-        AsyncImage (
-            model = imageURI,
-            contentDescription = "Profile picture",
-            modifier = Modifier
-                .height(70.dp)
-                .width(63.dp)
-                .padding(top = 10.dp, bottom = 5.dp, start = 10.dp),
-            contentScale = ContentScale.Crop
-        )
-        Column(modifier = Modifier.padding(end = 0.dp)) {
-            Text(
-                text = katalisModel.namaKatalis,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp,
-                modifier = Modifier.padding(start = 16.dp, top = 5.dp)
-                    .clickable { Log.d("stok","$katalisModel.stok") }
-            )
-            Text(
-                text = "${katalisModel.hargaJual}/${katalisModel.porsiJual}",
-                fontSize = 16.sp,
-                modifier = Modifier.padding(start = 16.dp)
-            )
-
-            Text(
-                text = "Stok : ${katalisModel.stok}",
-                fontSize = 16.sp,
-                modifier = Modifier.padding(start = 16.dp)
-            )
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(end = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Absolute.Right
+            .wrapContentHeight()
+            .width(380.dp),
+        shape = RoundedCornerShape(16.dp),
+        colors = ButtonDefaults.buttonColors(
+            contentColor = Color.White,
+            containerColor = HijauMuda
+        ),
+        onClick = { onNavigateToScreen(Screen.ScreenDetailPesanan.route) },
+    ) {
+        Row (
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            // TODO : (add logic) quantity counter cant be surpass the stok katalis
-            QuantityCounter(
-                selectedQuantityKatalis,
-                onAddSelectedKatalisList,
-                onModifySelectedKatalisList,
-                onRemoveSelectedKatalisListById,
-                katalisModel = katalisModel
+            AsyncImage (
+                model = imageURI,
+                contentDescription = "Profile picture",
+                modifier = Modifier
+                    .height(65.dp)
+                    .width(65.dp),
+//                .padding(top = 10.dp, bottom = 5.dp, start = 10.dp),
+                contentScale = ContentScale.Crop
             )
+            Column(modifier = Modifier.padding(end = 0.dp)) {
+                Text(
+                    text = katalisModel.namaKatalis,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                    modifier = Modifier
+                        .padding(start = 16.dp)
+                        .clickable { Log.d("stok", "$katalisModel.stok") }
+                )
+                Text(
+                    text = "${katalisModel.hargaJual}/${katalisModel.porsiJual}",
+                    fontSize = 14.sp,
+                    modifier = Modifier.padding(start = 16.dp)
+                )
+
+                Text(
+                    text = "Stok : ${katalisModel.stok}",
+                    fontSize = 14.sp,
+                    modifier = Modifier.padding(start = 16.dp)
+                )
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(end = 6.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Absolute.Right
+            ) {
+                // TODO : (add logic) quantity counter cant be surpass the stok katalis
+                QuantityCounter(
+                    selectedQuantityKatalis,
+                    onAddSelectedKatalisList,
+                    onModifySelectedKatalisList,
+                    onRemoveSelectedKatalisListById,
+                    katalisModel = katalisModel
+                )
+            }
         }
     }
 }

@@ -31,8 +31,8 @@ import com.example.tryuserapp.data.model.CustomerModel
 import com.example.tryuserapp.presentation.customer.CustomerViewModel
 import com.example.tryuserapp.presentation.sign_in.UserData
 import com.example.tryuserapp.ui.navigation.Screen
-import com.example.tryuserapp.ui.theme.Brown
-import com.example.tryuserapp.ui.theme.backGroundScreen
+import com.example.tryuserapp.ui.theme.HijauMuda
+import com.example.tryuserapp.ui.theme.Krem
 
 @Composable
 fun ScreenLengkapiData(
@@ -47,79 +47,91 @@ fun ScreenLengkapiData(
 
     Box(modifier = Modifier
         .fillMaxSize()
-        .background(Brown),
+        .background(HijauMuda),
         contentAlignment = Alignment.Center
     ) {
-        Column (
+        Button(
             modifier = Modifier
-                .height(470.dp)
-                .width(280.dp)
-                .background(backGroundScreen)
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(modifier = Modifier.height(32.dp))
+                .height(525.dp)
+                .width(300.dp)
+                .padding(16.dp)
+                .background(HijauMuda),
+            colors = ButtonDefaults.buttonColors(
+                contentColor = Color.Black,
+                containerColor = Krem
+            ),
+            shape = RoundedCornerShape(16.dp),
+            onClick = { /*TODO*/ }) {
+            Column (horizontalAlignment = Alignment.CenterHorizontally) {
+                Spacer(modifier = Modifier.height(32.dp))
 
-            Text(text = "Lengkapi Data",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = Modifier.height(24.dp))
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color.White,
-                    unfocusedContainerColor = Color.White
-                ),
-                shape = RoundedCornerShape(16.dp),
-                label = { Text("Alamat") },
-                value =alamat ,
-                onValueChange = {
-                        newValue ->
-                    alamat = newValue
-                }
-            )
-            Spacer(modifier = Modifier.height(5.dp))
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color.White,
-                    unfocusedContainerColor = Color.White
-                ),
-                shape = RoundedCornerShape(16.dp),
-                label = { Text("No Telp") },
-                value =noTelp ,
-                onValueChange = {
-                        newValue ->
-                    noTelp = newValue
-                }
-            )
-
-            Box (
-                Modifier.fillMaxSize(),
-                contentAlignment = Alignment.BottomCenter
-            ){
-                Button(modifier = Modifier
-                    .fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Brown,
-                        contentColor = Color.White
+                Text(text = "Lengkapi Data",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(text = "Tolong Lengkapi Data Diri Anda",
+                    fontSize = 12.sp,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(35.dp))
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White
                     ),
-                    shape = RoundedCornerShape(4.dp),
-                    onClick = {
-                        customerViewModel.tambahDataCustomer(
-                            idCustomer = userData!!.userId,
-                            alamat = alamat,
-                            phoneNumber = noTelp,
-                            name = userData.username!!
-                        )
-                        onNavigateToScreen(Screen.HomeScreen.route)
+                    shape = RoundedCornerShape(16.dp),
+                    label = { Text("Alamat") },
+                    value =alamat ,
+                    onValueChange = {
+                            newValue ->
+                        alamat = newValue
                     }
-                ) {
-                    Text(text = "Submit")
+                )
+                Spacer(modifier = Modifier.height(5.dp))
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White
+                    ),
+                    shape = RoundedCornerShape(16.dp),
+                    label = { Text("No Telp") },
+                    value =noTelp ,
+                    onValueChange = {
+                            newValue ->
+                        noTelp = newValue
+                    }
+                )
+                Box (
+                    Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 16.dp),
+                    contentAlignment = Alignment.BottomCenter
+                ){
+                    Button(modifier = Modifier
+                        .fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = HijauMuda,
+                            contentColor = Color.White
+                        ),
+                        shape = RoundedCornerShape(4.dp),
+                        onClick = {
+                            customerViewModel.tambahDataCustomer(
+                                idCustomer = userData!!.userId,
+                                alamat = alamat,
+                                phoneNumber = noTelp,
+                                name = userData.username!!
+                            )
+                            onNavigateToScreen(Screen.HomeScreen.route)
+                        }
+                    ) {
+                        Text(text = "Submit")
+                    }
                 }
             }
         }

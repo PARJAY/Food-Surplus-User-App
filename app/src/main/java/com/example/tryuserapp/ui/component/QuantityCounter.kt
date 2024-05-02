@@ -3,6 +3,7 @@ package com.example.tryuserapp.ui.component
 import android.content.res.Configuration
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -71,7 +72,7 @@ fun QuantityCounter(
                     if (itemCounter - 1 == 0) onRemoveSelectedKatalisListById()
                     if (itemCounter <= 0) return@clickable
                     itemCounter --
-            }
+            },
         )
 
         Spacer(modifier = Modifier.size(width = 10.dp, height = 0.dp))

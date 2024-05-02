@@ -44,8 +44,9 @@ import com.example.tryuserapp.ui.component.HotelList
 import com.example.tryuserapp.ui.component.SearchBar
 import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.Brown
+import com.example.tryuserapp.ui.theme.HijauTua
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
-import com.example.tryuserapp.ui.theme.backGroundScreen
+import com.example.tryuserapp.ui.theme.Krem
 
 @Composable
 fun HomeScreen(
@@ -78,16 +79,15 @@ fun HomeScreen(
             }
         )
     }
-
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(backGroundScreen)
+            .background(Krem)
     ) {
         item {
             Row(modifier = Modifier
                 .fillMaxWidth()
-                .background(Brown)
+                .background(HijauTua)
                 .padding(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Absolute.SpaceBetween
@@ -142,7 +142,7 @@ fun HomeScreen(
         }
 
         items(hotelModel) {hotel ->
-            Column (modifier = Modifier.padding(start = 8.dp)) {
+            Column (modifier = Modifier.padding(start = 8.dp, end = 8.dp)) {
                 if (hotel.statusHotel == StatusHotel.TERVERIFIKASI.toString())
                     HotelList(
                         hotelModel = hotel,
