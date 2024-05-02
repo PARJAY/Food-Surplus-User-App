@@ -50,7 +50,7 @@ fun PesananAnda(
             },
             addDataCallback = {
                 listPesananAnda.add(it)
-                listPesananAnda.sortedBy { it -> it.waktu_pesanan_dibuat }
+                listPesananAnda.sortedBy { it2 -> it2.waktu_pesanan_dibuat }
                 Log.d("PesananMasukScreen", "added to screen : $it")
             },
             updateDataCallback = { updatedData ->

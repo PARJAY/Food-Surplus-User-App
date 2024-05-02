@@ -204,7 +204,6 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
         }
 
         composable(Screen.ScreenLengkapiData.route) {
-
             ScreenLengkapiData(
                 onNavigateToScreen = { navController.navigate(it) },
                 userData = googleAuthUiClient.getSignedInUser(),
@@ -217,17 +216,6 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
         }
 
         composable(Screen.ScreenCheckOut.route) {
-//            val pesananViewModel: PesananViewModel = viewModel(
-//                factory = viewModelFactory {
-//                    PesananViewModel(
-//                        MyApp.appModule.pesananRepositoryImpl,
-//                        MyApp.appModule.katalisRepositoryImpl,
-//                        MyApp.appModule.pesananListRepositoryImpl,
-//
-//                    )
-//                }
-//            )
-
             Log.d("Screen Checkout", "Passed here")
 
             selectedKatalis.toList().forEach {
@@ -314,7 +302,8 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                 katalisScreenVMUiState,
                 onNavigateToScreen = { navController.navigate(it) },
                 onSetSelectedDetailKatalis = { selectedDetailKatalis = it },
-                selectedKatalisList = selectedKatalis
+                selectedKatalisList = selectedKatalis,
+                selectedHotelId = selectedHotelId
             )
         }
 

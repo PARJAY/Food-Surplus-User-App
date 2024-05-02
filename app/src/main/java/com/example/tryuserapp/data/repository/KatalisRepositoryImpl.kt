@@ -6,6 +6,7 @@ import com.example.tryuserapp.common.INTERNET_ISSUE
 import com.example.tryuserapp.common.KATALIS_COLLECTION
 import com.example.tryuserapp.data.model.CustomerModel
 import com.example.tryuserapp.data.model.KatalisModel
+import com.example.tryuserapp.data.model.PesananModel
 import com.example.tryuserapp.tools.FirebaseHelper
 import com.example.tryuserapp.tools.FirebaseHelper.Companion.fetchSnapshotToKatalisModel
 import com.google.firebase.firestore.DocumentChange
@@ -42,6 +43,31 @@ class KatalisRepositoryImpl(private val db : FirebaseFirestore) : KatalisReposit
             }
 
             callback(FirebaseResult.Success(katalisModelSnapshots))
+        }
+    }
+
+    fun getKatalisListLiveData(
+        errorCallback: (Exception) -> Unit,
+        addDataCallback: (KatalisModel) -> Unit,
+        updateDataCallback: (KatalisModel) -> Unit,
+        deleteDataCallback: (documentId: String) -> Unit
+    ) {
+        listenerRegistration = db.collection(KATALIS_COLLECTION).addSnapshotListener { snapshot, exception ->
+            if (exception != null) {
+                errorCallback(IllegalStateException(INTERNET_ISSUE))
+                return@addSnapshotListener
+            }
+
+            snapshot!!.documentChanges.forEach { change ->
+                val katalisModel = fetchSnapshotToKatalisModel(change.document)
+                when (change.type) {
+                    DocumentChange.Type.ADDED -> addDataCallback(katalisModel)
+                    DocumentChange.Type.MODIFIED -> updateDataCallback(katalisModel)
+
+                    DocumentChange.Type.REMOVED -> deleteDataCallback(katalisModel.id)
+                }
+                Log.d("REPOSITORY: ", "Data In -> ${change.type} - ${change.document}")
+            }
         }
     }
 
