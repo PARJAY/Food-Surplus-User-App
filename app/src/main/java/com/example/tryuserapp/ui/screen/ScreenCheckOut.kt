@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tryuserapp.data.model.DaftarKatalis
@@ -110,60 +111,50 @@ fun ScreenCheckOut(
             }
         }
 
-    LazyColumn {
+    LazyColumn (
+        modifier = Modifier
+            .padding(8.dp)
+            .padding(bottom = 32.dp)
+    ) {
         item {
-            Box(
-                Modifier
-                    .fillMaxSize()
-                    .height(10000.dp),
-                contentAlignment = Alignment.TopCenter
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .padding(bottom = 32.dp)
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            text = "Check Out Pesanan",
-                            style = TextStyle(
-                                fontSize = 25.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Absolute.Left
-                    ) {
-                        Text(
-                            text = "Info Pesanan Anda :",
-                            style = TextStyle(fontWeight = FontWeight.W700)
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(5.dp))
-                    Column {
-                        Spacer(modifier = Modifier.height(10.dp))
-                        DiantarAtauAmbil(
-                            onNavigateToScreen,
-                            alamatByName = alamatByName,
-                            radioButtons
-                        )
-                        Spacer(modifier = Modifier.height(10.dp))
-                        RingkasanPesanan(selectedKatalis, hotelToUserDistanceInMeter)
-                        Spacer(modifier = Modifier.height(10.dp))
-                        Pembayaran(
-                            selectedImageUri,
-                            onSelectImageUri = { selectedImageUri = it }
-                        )
-                        Spacer(modifier = Modifier.height(32.dp))
-                    }
-                }
-            }
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Check Out Pesanan",
+                textAlign = TextAlign.Center,
+                style = TextStyle(
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = "Info Pesanan Anda :",
+                style = TextStyle(fontWeight = FontWeight.W700)
+            )
+
+            Spacer(modifier = Modifier.height(5.dp))
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            DiantarAtauAmbil(
+                onNavigateToScreen,
+                alamatByName = alamatByName,
+                radioButtons
+            )
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            RingkasanPesanan(selectedKatalis, hotelToUserDistanceInMeter)
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Pembayaran(
+                selectedImageUri,
+                onSelectImageUri = { selectedImageUri = it }
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
         }
     }
 
@@ -252,6 +243,62 @@ fun ScreenCheckOut(
 //                alamatByName = (),
 //                alamatByGeolocation = (0.0,0.0)
 //            )
+//        }
+//    }
+//}
+
+
+//Box(
+//Modifier.fillMaxSize(),
+//contentAlignment = Alignment.TopCenter
+//) {
+//    Column(
+//        modifier = Modifier
+//            .padding(8.dp)
+//            .padding(bottom = 32.dp)
+//    ) {
+//        Text(
+//            modifier = Modifier.fillMaxWidth(),
+//            text = "Check Out Pesanan",
+//            textAlign = TextAlign.Center,
+//            style = TextStyle(
+//                fontSize = 25.sp,
+//                fontWeight = FontWeight.Bold
+//            )
+//        )
+//        Spacer(modifier = Modifier.height(8.dp))
+//
+//        Text(
+//            text = "Info Pesanan Anda :",
+//            style = TextStyle(fontWeight = FontWeight.W700)
+//        )
+//
+////                    Row(
+////                        modifier = Modifier.fillMaxWidth(),
+////                        horizontalArrangement = Arrangement.Absolute.Left
+////                    ) {
+////                        Text(
+////                            text = "Info Pesanan Anda :",
+////                            style = TextStyle(fontWeight = FontWeight.W700)
+////                        )
+////                    }
+//        Spacer(modifier = Modifier.height(5.dp))
+//
+//        Column {
+//            Spacer(modifier = Modifier.height(10.dp))
+//            DiantarAtauAmbil(
+//                onNavigateToScreen,
+//                alamatByName = alamatByName,
+//                radioButtons
+//            )
+//            Spacer(modifier = Modifier.height(10.dp))
+//            RingkasanPesanan(selectedKatalis, hotelToUserDistanceInMeter)
+//            Spacer(modifier = Modifier.height(10.dp))
+//            Pembayaran(
+//                selectedImageUri,
+//                onSelectImageUri = { selectedImageUri = it }
+//            )
+//            Spacer(modifier = Modifier.height(32.dp))
 //        }
 //    }
 //}
