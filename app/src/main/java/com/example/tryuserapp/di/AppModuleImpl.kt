@@ -4,6 +4,7 @@ import com.example.tryuserapp.data.repository.KatalisRepositoryImpl
 import com.example.tryuserapp.data.repository.CustomerRepositoryImpl
 import com.example.tryuserapp.data.repository.HotelRepositoryImpl
 import com.example.tryuserapp.data.repository.PesananListRepositoryImpl
+import com.example.tryuserapp.data.repository.YayasanRepositoryImpl
 import com.example.tryuserapp.presentation.pesanan.PesananRepositoryImpl
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
@@ -24,10 +25,13 @@ class AppModuleImpl() : AppModule {
     override val katalisRepositoryImpl: KatalisRepositoryImpl by lazy {
         KatalisRepositoryImpl(db)
     }
-    override val hotelRepositoryImpl    : HotelRepositoryImpl by lazy {
+    override val hotelRepositoryImpl: HotelRepositoryImpl by lazy {
         HotelRepositoryImpl(db)
     }
-    override val pesananListRepositoryImpl   : PesananListRepositoryImpl by lazy {
+    override val pesananListRepositoryImpl: PesananListRepositoryImpl by lazy {
         PesananListRepositoryImpl(db)
+    }
+    override val yayasanRepositoryImpl: YayasanRepositoryImpl by lazy {
+        YayasanRepositoryImpl(db)
     }
 }

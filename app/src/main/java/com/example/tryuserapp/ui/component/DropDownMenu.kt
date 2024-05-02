@@ -1,5 +1,6 @@
 package com.example.tryuserapp.ui.component
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,16 +15,59 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.example.tryuserapp.MyApp
+import com.example.tryuserapp.data.model.YayasanModel
+import com.example.tryuserapp.tools.Utility
 
 @Composable
-fun DropDownYayasan(){
+fun DropDownYayasan(setLokasiYayasan : (String) -> Unit ) {
+
+    val context = LocalContext.current
+
+
+    val listYayasanAnda = remember { mutableStateListOf<YayasanModel>() }
+
+    LaunchedEffect (Unit) {
+        MyApp.appModule.yayasanRepositoryImpl.getYayasanList(
+            errorCallback = {
+                Utility.showToast(context, "error : $it")
+                Log.d("Yayasan", "error : $it")
+            },
+            addDataCallback = {
+                listYayasanAnda.add(it)
+                listYayasanAnda.sortedBy { it -> it.namaYayasan }
+                Log.d("Yayasan", "added to screen : $it")
+            },
+            updateDataCallback = { updatedData ->
+                val index = listYayasanAnda.indexOfFirst { it.idYayasan == updatedData.idYayasan }
+                if (index != -1) listYayasanAnda[index] = updatedData
+                listYayasanAnda.sortedBy { it.namaYayasan }
+                Log.d("Yayasan", "updated to screen : $updatedData")
+            },
+            deleteDataCallback = { documentId: String ->
+                listYayasanAnda.removeAll { it.idYayasan == documentId }
+                listYayasanAnda.sortedBy { it.namaYayasan}
+                Log.d("Yayasan", "deleted from screen : id = $documentId")
+            }
+        )
+    }
+
+    var TestYayasan : String = ""
+
+    listYayasanAnda.forEach { TestYayasan = it.idYayasan }
+
+    Log.d("List yayasan", "Yayasan Anda : $TestYayasan")
+
     val list = listOf("Yayasan 1", "Yayasan 2", "Yayasan 3", "Yayasan 4", "Yayasan 5")
 
     var isExpanded by remember {
@@ -31,8 +75,8 @@ fun DropDownYayasan(){
         )
     }
 
-    var selectedText by remember {
-        mutableStateOf(list[0])
+    var selectedYayasanName by remember {
+        mutableStateOf("Pilih Yayasan")
     }
 
     Column(
@@ -50,12 +94,13 @@ fun DropDownYayasan(){
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.Center
             ) {
-                list.forEachIndexed { index, text ->
+                listYayasanAnda.forEachIndexed { index, yayasan ->
                     DropdownMenuItem(
                         modifier = Modifier.fillMaxWidth(),
-                        text = { Text(text = text) },
+                        text = { Text(text = yayasan.namaYayasan) },
                         onClick = {
-                            selectedText = list[index]
+                            selectedYayasanName = yayasan.namaYayasan
+                            setLokasiYayasan(yayasan.alamatYayasan)
                             isExpanded = false
                         }
                     )
@@ -66,7 +111,7 @@ fun DropDownYayasan(){
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            value = selectedText,
+            value = selectedYayasanName,
             onValueChange = {},
             readOnly = true,
             trailingIcon = {

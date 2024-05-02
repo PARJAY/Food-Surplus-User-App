@@ -8,6 +8,7 @@ import com.example.tryuserapp.data.model.CustomerModel
 import com.example.tryuserapp.data.model.DaftarKatalis
 import com.example.tryuserapp.data.model.HotelModel
 import com.example.tryuserapp.data.model.PesananModel
+import com.example.tryuserapp.data.model.YayasanModel
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QueryDocumentSnapshot
@@ -19,6 +20,13 @@ class FirebaseHelper {
                 name = queryDocumentSnapshot.getString("name") ?: "",
                 address = queryDocumentSnapshot.getString("address") ?: "",
                 phone_number = queryDocumentSnapshot.getString("phone_number") ?: ""
+            )
+        }
+        fun fetchSnapshotToYayasanModel(queryDocumentSnapshot : DocumentSnapshot) : YayasanModel {
+            return YayasanModel(
+                idYayasan = queryDocumentSnapshot.id,
+                namaYayasan = queryDocumentSnapshot.getString("name") ?: "",
+                alamatYayasan = queryDocumentSnapshot.getString("alamatYayasan") ?: "",
             )
         }
         fun fetchSnapshotToPesananModel(queryDocumentSnapshot : DocumentSnapshot) : PesananModel {
