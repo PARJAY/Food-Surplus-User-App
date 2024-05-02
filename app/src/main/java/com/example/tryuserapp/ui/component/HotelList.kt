@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.tryuserapp.R
 import com.example.tryuserapp.data.model.HotelModel
 import com.example.tryuserapp.logic.StatusHotel
@@ -51,8 +52,8 @@ fun HotelList(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Absolute.Left
     ){
-        Image(
-            painter = painterResource(id = R.drawable.ic_launcher_background),
+        AsyncImage(
+            model = hotelModel.photoURL,
             contentDescription = "Gambar Makanan",
             modifier = Modifier
                 .height(70.dp)
