@@ -222,7 +222,7 @@ fun ScreenCheckOut(
                 else if (fileName != null) {
                     uploadImageToFirebaseStorage(
                         userIdForFileReference = "User_${userData.userId}",
-                        fileName = fileName,
+                        file = selectedImageUri,
                         onSuccess = { showToast(context, it) },
                         onError = { showToast(context, "$it") }
                     )
@@ -240,7 +240,11 @@ fun ScreenCheckOut(
                             StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString(),
                             Timestamp.now(),
                             geolokasiTujuan = "${alamatByGeolocation.value.latitude},${alamatByGeolocation.value.longitude}",
-                            alamatTujuan = alamatByName,
+                            alamatTujuan = when {
+                                radioButtons[1].isChecked -> alamatByName
+                                radioButtons[2].isChecked -> alamatYayasan.value
+                                else -> "Ambil Sendiri"
+                            },
                             jarak_user_dan_hotel = when {
                                 radioButtons[1].isChecked -> hotelToUserDistanceInMeter
                                 radioButtons[2].isChecked -> hotelToYayasanDistanceInMeter.floatValue
