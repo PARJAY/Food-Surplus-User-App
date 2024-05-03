@@ -149,7 +149,6 @@ fun ScreenCheckOut(
                 radioButtons,
                 alamatYayasan.value,
                 setLokasiYayasan = {
-                    alamatByGeolocation.value = LatLng(0.0,0.0)
                     alamatYayasan.value = it
 
                     findHotelToYayasanDistance(
@@ -158,8 +157,13 @@ fun ScreenCheckOut(
                         alamatHotelByName
                     )
                 },
-                onDiantarRadioButtonCheck = {},
-                onDonasiRadioButtonCheck = {}
+                onDiantarRadioButtonCheck = {
+                    hotelToYayasanDistanceInMeter.floatValue = 0f
+                },
+                onDonasiRadioButtonCheck = {
+                    alamatByGeolocation.value = LatLng(0.0,0.0)
+                    hotelToUserDistanceInMeter = 0f
+                }
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -167,7 +171,7 @@ fun ScreenCheckOut(
             RingkasanPesanan(
                 selectedKatalis,
                 hotelToUserDistanceInMeter,
-                hotelToYayasanDistanceInMeter.floatValue
+                hotelToYayasanDistanceInMeter
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -195,6 +199,8 @@ fun ScreenCheckOut(
                 containerColor = HijauTua
             ),
             onClick = {
+                val fileName = selectedImageUri.path?.substringAfterLast("/")
+
                 Log.d("ScreenCheckOut", "selected katalis : $selectedKatalis")
                 selectedKatalis.forEach {
                     daftarKatalis.daftarKatalis += Pair(it.idKatalis, it.quantity)
@@ -204,8 +210,9 @@ fun ScreenCheckOut(
 
                 if (alamatHotelByName == "") showToast(context, "Data Hotel mungkin dihapus")
                 else if (
-                    alamatByGeolocation.value == LatLng(0.0,0.0) &&
-                    hotelToYayasanDistanceInMeter.floatValue == 0f
+                    !radioButtons[0].isChecked
+                    || (radioButtons[1].isChecked && alamatByGeolocation.value == LatLng(0.0,0.0))
+                    || (radioButtons[2].isChecked && hotelToYayasanDistanceInMeter.floatValue == 0f)
                 ) {
                     Log.d("ScreenCheckOut", "You should stop here")
                     Log.d("ScreenCheckOut", "alamatByGeolocation.value = ${alamatByGeolocation.value}")
@@ -213,7 +220,7 @@ fun ScreenCheckOut(
                     showToast(context, "Mohon isi Alamat Anda atau alamat yayasan")
                 }
                 else if (selectedImageUri == Uri.EMPTY) showToast(context, "Masukkan Bukti Pembayaran")
-                else {
+                else if (fileName != null) {
                     uploadImageToFirebaseStorage(
                         userIdForFileReference = "User_${userData.userId}",
                         file = selectedImageUri,
@@ -230,17 +237,25 @@ fun ScreenCheckOut(
                             id_kurir = "",
                             daftarKatalis = daftarKatalis.daftarKatalis,
                             total_harga = totalHarga + ongkirPrice,
-                            transfer_proof_image_link = selectedImageUri.lastPathSegment.toString(),
+                            transfer_proof_image_link = fileName,
                             StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString(),
                             Timestamp.now(),
                             geolokasiTujuan = "${alamatByGeolocation.value.latitude},${alamatByGeolocation.value.longitude}",
-                            alamatTujuan = alamatByName,
+                            alamatTujuan = when {
+                                radioButtons[1].isChecked -> alamatByName
+                                radioButtons[2].isChecked -> alamatYayasan.value
+                                else -> "Ambil Sendiri"
+                            },
                             jarak_user_dan_hotel = when {
                                 radioButtons[1].isChecked -> hotelToUserDistanceInMeter
                                 radioButtons[2].isChecked -> hotelToYayasanDistanceInMeter.floatValue
                                 else -> 0f
                             },
-                            ongkir = ongkirPrice,
+                            ongkir = when {
+                                radioButtons[1].isChecked -> ongkirPrice
+                                radioButtons[2].isChecked -> hotelToYayasanDistanceInMeter.floatValue * 1.5F
+                                else -> 0f
+                            },
                             catatan = ""
                         )
                     )
