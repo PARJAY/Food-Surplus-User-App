@@ -111,7 +111,6 @@ fun Katalis(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Absolute.Right
         ) {
-            // TODO : (add logic) quantity counter cant be surpass the stok katalis
             QuantityCounter(
                 selectedQuantityKatalis,
                 onAddSelectedKatalisList,

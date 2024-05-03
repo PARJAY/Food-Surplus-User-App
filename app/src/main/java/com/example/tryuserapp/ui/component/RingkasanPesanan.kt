@@ -19,18 +19,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
+import com.example.tryuserapp.ui.screen.findHotelToYayasanDistance
 
 @Composable
 fun RingkasanPesanan(
     selectedKatalis: SnapshotStateList<SelectedKatalis>,
     hotelToUserDistance : Float,
+    hotelToYayasanDistanceInMeter : Float
 ) {
     var totalHarga = 0F
 
     selectedKatalis.forEach { totalHarga += (it.hargaKatalis * it.quantity) }
 
     var ongkirPrice : Float?
-    var bensinPrice : Float?
 
     Column (
         modifier = Modifier
@@ -59,21 +60,34 @@ fun RingkasanPesanan(
         }
 
         if (hotelToUserDistance != 0f) {
-            ongkirPrice = hotelToUserDistance.div(10)
-            bensinPrice = hotelToUserDistance.times(1.5f)
+            ongkirPrice = hotelToUserDistance.times(1.5f)
 
             LeftRightText(
                 leftTextInfo = "Biaya transportasi",
-                rightTextPrice = ongkirPrice!! + bensinPrice!!
+                rightTextPrice = ongkirPrice!!
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
             LeftRightText(
                 leftTextInfo = "Total Harga",
-                rightTextPrice = totalHarga + ongkirPrice!! + bensinPrice!!
+                rightTextPrice = totalHarga + ongkirPrice!!
+            )
+        }
+        else if (hotelToYayasanDistanceInMeter != 0f) {
+            ongkirPrice = hotelToYayasanDistanceInMeter.times(1.5f)
+
+            LeftRightText(
+                leftTextInfo = "Biaya transportasi",
+                rightTextPrice = ongkirPrice!!
             )
 
+            Spacer(modifier = Modifier.height(16.dp))
+
+            LeftRightText(
+                leftTextInfo = "Total Harga",
+                rightTextPrice = totalHarga + ongkirPrice!!
+            )
         }
         else {
             Spacer(modifier = Modifier.height(16.dp))

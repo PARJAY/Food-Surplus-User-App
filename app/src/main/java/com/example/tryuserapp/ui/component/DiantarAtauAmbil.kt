@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -43,10 +44,12 @@ fun DiantarAtauAmbil(
     onNavigateToScreen : (String) -> Unit,
     alamatByName : String,
     radioButtons : SnapshotStateList<Toggleableinfo>,
+    alamatYayasan : String,
+    onDiantarRadioButtonCheck : () -> Unit,
+    onDonasiRadioButtonCheck : () -> Unit,
+    setLokasiYayasan : (String) -> Unit
 ) {
-    var alamatYayasan by remember {
-        mutableStateOf("")
-    }
+    val isPreferGetLocationWithMaps = remember { mutableStateOf(false) }
 
     Box (
         modifier = Modifier
@@ -82,38 +85,43 @@ fun DiantarAtauAmbil(
                     )
                 }
             }
-            if (radioButtons[2].isChecked) {
-                DropDownYayasan(
-                    setLokasiYayasan = {
-                        alamatYayasan = it
-                    }
-                )
 
-                Text(text = if (alamatYayasan != "") alamatYayasan else "")
-            }
-
-            if (!radioButtons[0].isChecked) {
+            if (radioButtons[1].isChecked) {
+                onDiantarRadioButtonCheck()
 
                 Button(onClick = { onNavigateToScreen(Screen.MapsScreen.route) }) {
                     Text(text = "Pilih Lokasi")
                 }
                 Text(text = alamatByName)
-//        display input text Alamat
-// //               TextField(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .clickable {
-//                            onNavigateToScreen(Screen.MapsScreen.route)
+            }
+
+            if (radioButtons[2].isChecked) {
+                onDonasiRadioButtonCheck()
+
+                DropDownYayasan(
+                    setLokasiYayasan,
+                    isPreferGetLocationWithMaps.value
+                )
+
+                Text(text = if (alamatYayasan != "") alamatYayasan else "")
+
+//                Row(modifier = Modifier.padding(8.dp)) {
+//                    Checkbox(
+//                        checked = isPreferGetLocationWithMaps.value,
+//                        onCheckedChange = { isChecked ->
+//                            isPreferGetLocationWithMaps.value = isChecked
 //                        }
-//                        .padding(16.dp),
-//                    value = Alamat,
-//                    onValueChange = {
-//                            newValue ->
-//                        Alamat = newValue
-//                    },
-//                    readOnly = false,
-//                    label = { Text("alamat") }
-//                )
+//                    )
+//                    Text("Gunakan Maps untuk mencari alamat yayasan")
+//                }
+//
+//                Button(
+//                    onClick = { onNavigateToScreen(Screen.MapsScreen.route) },
+//                    enabled = isPreferGetLocationWithMaps.value
+//                ) {
+//                    Text(text = "Pilih Lokasi")
+//                }
+//                Text(text = alamatByName)
             }
         }
     }
@@ -151,7 +159,15 @@ fun RadioButtonsPreview(){
             DiantarAtauAmbil(
                 onNavigateToScreen = {},
                 alamatByName = String(),
-                radioButtons = radioButtons
+                radioButtons = radioButtons,
+                alamatYayasan = "alamat yayasan dummy",
+                setLokasiYayasan = {
+
+                },
+                onDiantarRadioButtonCheck = {
+
+                },
+                onDonasiRadioButtonCheck = {}
             )
         }
     }
