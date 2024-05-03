@@ -55,8 +55,7 @@ fun ScreenDetailPesananAnda(
     {
         RingkasanPesanan(
             selectedKatalis = selectedKatalisList,
-            hotelToUserDistance = selectedDetailPesananModel.jarak_user_dan_hotel,
-            hotelToYayasanDistanceInMeter = selectedDetailPesananModel.jarak_user_dan_hotel
+            hotelToUserDistance = selectedDetailPesananModel.jarak_user_dan_hotel
         )
     }
 }

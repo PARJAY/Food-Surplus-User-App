@@ -149,7 +149,6 @@ fun ScreenCheckOut(
                 radioButtons,
                 alamatYayasan.value,
                 setLokasiYayasan = {
-                    alamatByGeolocation.value = LatLng(0.0,0.0)
                     alamatYayasan.value = it
 
                     findHotelToYayasanDistance(
@@ -158,8 +157,13 @@ fun ScreenCheckOut(
                         alamatHotelByName
                     )
                 },
-                onDiantarRadioButtonCheck = {},
-                onDonasiRadioButtonCheck = {}
+                onDiantarRadioButtonCheck = {
+                    hotelToYayasanDistanceInMeter.floatValue = 0f
+                },
+                onDonasiRadioButtonCheck = {
+                    alamatByGeolocation.value = LatLng(0.0,0.0)
+                    hotelToUserDistanceInMeter = 0f
+                }
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -167,7 +171,7 @@ fun ScreenCheckOut(
             RingkasanPesanan(
                 selectedKatalis,
                 hotelToUserDistanceInMeter,
-                hotelToYayasanDistanceInMeter.floatValue
+                hotelToYayasanDistanceInMeter
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -240,7 +244,11 @@ fun ScreenCheckOut(
                                 radioButtons[2].isChecked -> hotelToYayasanDistanceInMeter.floatValue
                                 else -> 0f
                             },
-                            ongkir = ongkirPrice,
+                            ongkir = when {
+                                radioButtons[1].isChecked -> ongkirPrice
+                                radioButtons[2].isChecked -> hotelToYayasanDistanceInMeter.floatValue * 1.5F
+                                else -> 0f
+                            },
                             catatan = ""
                         )
                     )

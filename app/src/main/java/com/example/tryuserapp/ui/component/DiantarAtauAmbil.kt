@@ -101,21 +101,21 @@ fun DiantarAtauAmbil(
             }
 
             if (radioButtons[1].isChecked) {
-
-                    Button(
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = HijauTua,
-                            contentColor = White
-                        ),
-                        shape = RoundedCornerShape(8.dp),
-                        onClick = { onNavigateToScreen(Screen.MapsScreen.route) }) {
-                        Text(text = "Pilih Lokasi")
-                    }
-                    Spacer(modifier = Modifier.height(7.dp))
-                    Text(text = "Alamat Customer : ")
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(text = alamatByName)
+                onDiantarRadioButtonCheck()
+                Button(
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = HijauTua,
+                        contentColor = White
+                    ),
+                    shape = RoundedCornerShape(8.dp),
+                    onClick = { onNavigateToScreen(Screen.MapsScreen.route) }) {
+                    Text(text = "Pilih Lokasi")
                 }
+                Spacer(modifier = Modifier.height(7.dp))
+                Text(text = "Alamat Customer : ")
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(text = alamatByName)
+            }
 
             if (radioButtons[2].isChecked) {
                 onDonasiRadioButtonCheck()
@@ -146,7 +146,6 @@ fun DiantarAtauAmbil(
             Text(text = "Alamat Customer : ")
             Spacer(modifier = Modifier.height(4.dp))
             Text(text = alamatByName)
-
         }
     }
 }

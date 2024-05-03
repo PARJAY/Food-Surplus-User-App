@@ -16,6 +16,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableFloatState
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,13 +34,11 @@ import com.example.tryuserapp.ui.theme.White
 fun RingkasanPesanan(
     selectedKatalis: SnapshotStateList<SelectedKatalis>,
     hotelToUserDistance : Float,
-    hotelToYayasanDistanceInMeter : Float
+    hotelToYayasanDistanceInMeter : MutableFloatState = mutableFloatStateOf(0f)
 ) {
     var totalHarga = 0F
 
     selectedKatalis.forEach { totalHarga += (it.hargaKatalis * it.quantity) }
-
-    var ongkirPrice : Float? = 0f
 
     Button(
         modifier = Modifier
@@ -69,33 +69,33 @@ fun RingkasanPesanan(
             }
 
             if (hotelToUserDistance != 0f) {
-                ongkirPrice = hotelToUserDistance.times(1.5f)
+                val ongkirPrice = hotelToUserDistance.times(1.5f)
 
                 LeftRightText(
                     leftTextInfo = "Biaya transportasi",
-                    rightTextPrice = ongkirPrice!!
+                    rightTextPrice = ongkirPrice
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 LeftRightText(
                     leftTextInfo = "Total Harga",
-                    rightTextPrice = totalHarga + ongkirPrice!!
+                    rightTextPrice = totalHarga + ongkirPrice
                 )
             }
-            else if (hotelToYayasanDistanceInMeter != 0f) {
-                ongkirPrice = hotelToYayasanDistanceInMeter.times(1.5f)
+            else if (hotelToYayasanDistanceInMeter.floatValue != 0f) {
+                val ongkirPrice = hotelToYayasanDistanceInMeter.floatValue.times(1.5f)
 
                 LeftRightText(
                     leftTextInfo = "Biaya transportasi",
-                    rightTextPrice = ongkirPrice!!
+                    rightTextPrice = ongkirPrice
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 LeftRightText(
                     leftTextInfo = "Total Harga",
-                    rightTextPrice = totalHarga + ongkirPrice!!
+                    rightTextPrice = totalHarga + ongkirPrice
                 )
             }
             else {
@@ -103,7 +103,7 @@ fun RingkasanPesanan(
 
                 LeftRightText(
                     leftTextInfo = "Biaya transportasi",
-                    rightTextPrice = ongkirPrice!!
+                    rightTextPrice = 0f
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -114,7 +114,7 @@ fun RingkasanPesanan(
                 )
                 LeftRightText(
                     leftTextInfo = "Total Harga",
-                    rightTextPrice = totalHarga + ongkirPrice!!
+                    rightTextPrice = totalHarga + 0f
                 )
             }
         }
