@@ -43,8 +43,6 @@ fun PesananAnda(
 
     val listPesananAnda = remember { mutableStateListOf<PesananModel>() }
 
-    var idCustomer : String = ""
-
     LaunchedEffect (Unit) {
         MyApp.appModule.pesananListRepositoryImpl.getPesananList (
             errorCallback = {
@@ -71,7 +69,6 @@ fun PesananAnda(
     }
 
     Log.d("Cek Id Customer", "Id Customer : ${userData.userId}")
-    Log.d("Cek Id Customer Di Pesanan", "Id Customer Di Pesanan : ${idCustomer}")
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         item {
@@ -111,7 +108,7 @@ fun PesananAnda(
             }
         }
     }
-    }
+}
 
 
 
