@@ -12,7 +12,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
@@ -30,6 +32,7 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tryuserapp.ui.navigation.Screen
@@ -57,9 +60,13 @@ fun DiantarAtauAmbil(
 ) {
     val isPreferGetLocationWithMaps = remember { mutableStateOf(false) }
 
+    val isDiantar = radioButtons[0].isChecked
+    val isDonasi = radioButtons[2].isChecked
+
     Button(
         modifier = Modifier
-            .wrapContentSize(),
+            .wrapContentWidth()
+            .height(if (isDiantar)180.dp else 300.dp),
         onClick = { /*TODO*/ },
         colors = ButtonDefaults.buttonColors(
             containerColor = HijauMuda,
@@ -94,13 +101,21 @@ fun DiantarAtauAmbil(
             }
 
             if (radioButtons[1].isChecked) {
-                onDiantarRadioButtonCheck()
 
-                Button(onClick = { onNavigateToScreen(Screen.MapsScreen.route) }) {
-                    Text(text = "Pilih Lokasi")
+                    Button(
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = HijauTua,
+                            contentColor = White
+                        ),
+                        shape = RoundedCornerShape(8.dp),
+                        onClick = { onNavigateToScreen(Screen.MapsScreen.route) }) {
+                        Text(text = "Pilih Lokasi")
+                    }
+                    Spacer(modifier = Modifier.height(7.dp))
+                    Text(text = "Alamat Customer : ")
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(text = alamatByName)
                 }
-                Text(text = alamatByName)
-            }
 
             if (radioButtons[2].isChecked) {
                 onDonasiRadioButtonCheck()
@@ -109,7 +124,9 @@ fun DiantarAtauAmbil(
                     setLokasiYayasan,
                     isPreferGetLocationWithMaps.value
                 )
-
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(text = "Alamat Yayasan : ")
+                Spacer(modifier = Modifier.height(4.dp))
                 Text(text = if (alamatYayasan != "") alamatYayasan else "")
             }
         }
