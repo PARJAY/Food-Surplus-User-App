@@ -32,6 +32,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.tryuserapp.R
 import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.Brown
+import com.example.tryuserapp.ui.theme.HijauMuda
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 import org.w3c.dom.Text
 
@@ -73,7 +74,7 @@ fun ButtonKeranjangSmall(
                 modifier = Modifier
                     .height(72.dp)
                     .width(72.dp),
-                containerColor = Brown,
+                containerColor = HijauMuda,
                 contentColor = Color.White,
                 shape = RoundedCornerShape(8.dp),
                 onClick = { onNavigateToScreen(Screen.ScreenCheckOut.route)  }

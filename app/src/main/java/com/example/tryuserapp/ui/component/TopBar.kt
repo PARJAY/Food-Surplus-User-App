@@ -26,6 +26,7 @@ import coil.compose.AsyncImage
 import com.example.tryuserapp.presentation.sign_in.UserData
 import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.Brown
+import com.example.tryuserapp.ui.theme.HijauTua
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 @Composable
@@ -33,7 +34,7 @@ fun TopBar(userData: UserData?, onNavigateToScreen: (String) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Brown)
+            .background(HijauTua)
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Absolute.SpaceBetween

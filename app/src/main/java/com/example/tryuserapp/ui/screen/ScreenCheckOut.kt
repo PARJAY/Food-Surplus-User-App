@@ -2,6 +2,7 @@ package com.example.tryuserapp.ui.screen
 
 import android.net.Uri
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -49,6 +51,8 @@ import com.example.tryuserapp.ui.component.RingkasanPesanan
 import com.example.tryuserapp.ui.component.Toggleableinfo
 import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.Brown
+import com.example.tryuserapp.ui.theme.HijauTua
+import com.example.tryuserapp.ui.theme.Krem
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.Timestamp
 import kotlinx.coroutines.CoroutineScope
@@ -115,9 +119,12 @@ fun ScreenCheckOut(
         }
 
     LazyColumn (
-        modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp)
+        modifier = Modifier
+            .background(Krem)
+            .padding(top = 8.dp, start = 8.dp, end = 8.dp)
     ) {
         item {
+            Spacer(modifier = Modifier.height(10.dp))
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = "Check Out Pesanan",
@@ -127,14 +134,14 @@ fun ScreenCheckOut(
                     fontWeight = FontWeight.Bold
                 )
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             Text(
                 text = "Info Pesanan Anda :",
                 style = TextStyle(fontWeight = FontWeight.W700)
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             DiantarAtauAmbil(
                 onNavigateToScreen,
@@ -170,7 +177,7 @@ fun ScreenCheckOut(
                 onSelectImageUri = { selectedImageUri = it }
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(60.dp))
         }
     }
 
@@ -179,11 +186,13 @@ fun ScreenCheckOut(
         contentAlignment = Alignment.BottomStart
     ) {
         Button (
-            modifier = Modifier.fillMaxWidth(),
-            shape = RectangleShape,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 8.dp, end = 8.dp),
+            shape = RoundedCornerShape(16.dp),
             colors = ButtonDefaults.buttonColors(
                 contentColor = androidx.compose.ui.graphics.Color.White,
-                containerColor = Brown
+                containerColor = HijauTua
             ),
             onClick = {
                 Log.d("ScreenCheckOut", "selected katalis : $selectedKatalis")

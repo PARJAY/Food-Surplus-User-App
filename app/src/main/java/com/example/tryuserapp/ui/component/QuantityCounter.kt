@@ -32,8 +32,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tryuserapp.R
 import com.example.tryuserapp.data.model.KatalisModel
-import com.example.tryuserapp.logic.OrderAction
-import com.example.tryuserapp.presentation.katalis_screen.SelectedKatalis
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 @Composable
@@ -74,7 +72,7 @@ fun QuantityCounter(
                     if (itemCounter - 1 == 0) onRemoveSelectedKatalisListById()
                     if (itemCounter <= 0) return@clickable
                     itemCounter --
-            }
+            },
         )
 
         Spacer(modifier = Modifier.size(width = 10.dp, height = 0.dp))

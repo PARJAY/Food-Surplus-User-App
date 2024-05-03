@@ -8,12 +8,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -30,7 +33,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tryuserapp.ui.navigation.Screen
+import com.example.tryuserapp.ui.theme.HijauMuda
+import com.example.tryuserapp.ui.theme.HijauTua
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
+import com.example.tryuserapp.ui.theme.White
 
 
 data class Toggleableinfo(
@@ -51,14 +57,15 @@ fun DiantarAtauAmbil(
 ) {
     val isPreferGetLocationWithMaps = remember { mutableStateOf(false) }
 
-    Box (
+    Button(
         modifier = Modifier
-            .wrapContentSize()
-            .border(
-                BorderStroke(1.dp, Color.Black),
-                shape = RoundedCornerShape(16.dp)
-            )
-            .padding(8.dp)
+            .wrapContentSize(),
+        onClick = { /*TODO*/ },
+        colors = ButtonDefaults.buttonColors(
+            containerColor = HijauMuda,
+            contentColor = White
+        ),
+        shape = RoundedCornerShape(16.dp)
     ) {
         Column {
             radioButtons.forEachIndexed{index, info ->
@@ -70,7 +77,7 @@ fun DiantarAtauAmbil(
                                 it.copy(isChecked = it.text == info.text)
                             }
                         }
-                        .padding(end = 16.dp),
+                        .padding(end = 8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Absolute.SpaceBetween
                 ){
@@ -81,7 +88,7 @@ fun DiantarAtauAmbil(
                             radioButtons.replaceAll {
                                 it.copy(isChecked = it.text == info.text)
                             }
-                        }
+                        },
                     )
                 }
             }
@@ -104,28 +111,29 @@ fun DiantarAtauAmbil(
                 )
 
                 Text(text = if (alamatYayasan != "") alamatYayasan else "")
-
-//                Row(modifier = Modifier.padding(8.dp)) {
-//                    Checkbox(
-//                        checked = isPreferGetLocationWithMaps.value,
-//                        onCheckedChange = { isChecked ->
-//                            isPreferGetLocationWithMaps.value = isChecked
-//                        }
-//                    )
-//                    Text("Gunakan Maps untuk mencari alamat yayasan")
-//                }
-//
-//                Button(
-//                    onClick = { onNavigateToScreen(Screen.MapsScreen.route) },
-//                    enabled = isPreferGetLocationWithMaps.value
-//                ) {
-//                    Text(text = "Pilih Lokasi")
-//                }
-//                Text(text = alamatByName)
             }
+        }
+
+        if (!radioButtons[0].isChecked) {
+
+            Button(
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = HijauTua,
+                    contentColor = White
+                ),
+                shape = RoundedCornerShape(8.dp),
+                onClick = { onNavigateToScreen(Screen.MapsScreen.route) }) {
+                Text(text = "Pilih Lokasi")
+            }
+            Spacer(modifier = Modifier.height(7.dp))
+            Text(text = "Alamat Customer : ")
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(text = alamatByName)
+
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)

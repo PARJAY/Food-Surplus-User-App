@@ -344,7 +344,8 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                 pesananListViewModel = PesananListViewModel(
                     MyApp.appModule.pesananListRepositoryImpl,
                     idCustomer = googleAuthUiClient.getSignedInUser()!!.userId
-                )
+                ),
+                userData = googleAuthUiClient.getSignedInUser()!!
             )
         }
 

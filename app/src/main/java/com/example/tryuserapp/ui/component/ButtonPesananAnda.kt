@@ -27,6 +27,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.Brown
 import com.example.tryuserapp.ui.theme.Gray
+import com.example.tryuserapp.ui.theme.HijauMuda
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 
 @Composable
@@ -38,16 +39,16 @@ fun ButtonPesananAnda(
             onClick = {  onNavigateToScreen(Screen.ScreenPesananAnda.route)},
             modifier = Modifier
                 .padding(horizontal = 16.dp, vertical = 8.dp)
-                .border(
-                    BorderStroke(1.dp, Color.Black),
-                    shape = RoundedCornerShape(16.dp)
-                )
+//                .border(
+//                    BorderStroke(1.dp, Color.Black),
+//                    shape = RoundedCornerShape(16.dp)
+//                )
                 .width(170.dp)
                 .height(35.dp),
             shape = RoundedCornerShape(16.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Brown,
-                contentColor = Color.Black
+                containerColor = HijauMuda,
+                contentColor = Color.White
             )
         ) {
             Text(

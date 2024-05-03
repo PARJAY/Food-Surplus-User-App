@@ -1,6 +1,7 @@
 package com.example.tryuserapp.ui.screen
 
 import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,34 +18,35 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.tryuserapp.MyApp
 import com.example.tryuserapp.data.model.HotelModel
-import com.example.tryuserapp.data.model.KatalisModel
 import com.example.tryuserapp.logic.StatusHotel
-import com.example.tryuserapp.presentation.home_screen.HomeScreenEvent
 import com.example.tryuserapp.presentation.home_screen.HomeScreenUiState
-import com.example.tryuserapp.presentation.katalis_screen.KatalisScreenEvent
-import com.example.tryuserapp.presentation.katalis_screen.KatalisScreenUiState
 import com.example.tryuserapp.presentation.sign_in.UserData
-import com.example.tryuserapp.ui.component.ButtonKeranjangSmall
+import com.example.tryuserapp.tools.Utility
 import com.example.tryuserapp.ui.component.ButtonPesananAnda
 import com.example.tryuserapp.ui.component.HotelList
 import com.example.tryuserapp.ui.component.SearchBar
 import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.Brown
+import com.example.tryuserapp.ui.theme.HijauTua
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
-import com.example.tryuserapp.ui.theme.backGroundScreen
-import com.google.android.gms.maps.model.LatLng
+import com.example.tryuserapp.ui.theme.Krem
 
 @Composable
 fun HomeScreen(
@@ -53,15 +55,39 @@ fun HomeScreen(
     onNavigateToScreen : (String) -> Unit,
     onSelectHotel : (idHotel : String, geolocationHotel : String) -> Unit,
 ) {
+    val contex = LocalContext.current
+
+    val hotelModel = remember { mutableStateListOf<HotelModel>() }
+
+    LaunchedEffect (Unit) {
+        MyApp.appModule.hotelRepositoryImpl.getHotelLiveData(
+            errorCallback = {
+                Utility.showToast(contex, "error : $it")
+                Log.d("HotelScreen", "error : $it")
+            },
+            addDataCallback = {
+                hotelModel.add(it)
+                Log.d("HotelScreen", "added to screen : $it")
+            },
+            updateDataCallback = { updatedData ->
+                val index = hotelModel.indexOfFirst { it.idHotel == updatedData.idHotel }
+                if (index != -1) hotelModel[index] = updatedData
+            },
+            deleteDataCallback = { documentId: String ->
+                hotelModel.removeAll { it.idHotel == documentId }
+                Log.d("PesananMasukScreen", "deleted from screen : id = $documentId")
+            }
+        )
+    }
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(backGroundScreen)
+            .background(Krem)
     ) {
         item {
             Row(modifier = Modifier
                 .fillMaxWidth()
-                .background(Brown)
+                .background(HijauTua)
                 .padding(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Absolute.SpaceBetween
@@ -115,8 +141,8 @@ fun HomeScreen(
 
         }
 
-        items(homeScreenUiState.hotelList) {hotel ->
-            Column (modifier = Modifier.padding(start = 8.dp)) {
+        items(hotelModel) {hotel ->
+            Column (modifier = Modifier.padding(start = 8.dp, end = 8.dp)) {
                 if (hotel.statusHotel == StatusHotel.TERVERIFIKASI.toString())
                     HotelList(
                         hotelModel = hotel,

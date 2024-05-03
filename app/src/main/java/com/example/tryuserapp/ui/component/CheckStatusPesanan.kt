@@ -38,6 +38,7 @@ import com.example.tryuserapp.data.model.PesananModel
 import com.example.tryuserapp.logic.StatusPesanan
 import com.example.tryuserapp.presentation.pesanan.PesananListViewModel
 import com.example.tryuserapp.ui.theme.Brown
+import com.example.tryuserapp.ui.theme.HijauMuda
 import com.example.tryuserapp.ui.theme.Orange
 import com.example.tryuserapp.ui.theme.PurpleGrey80
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
@@ -61,103 +62,110 @@ fun CheckStatusPesanan(
         contentColor = Color.White
     )
 
-    Row(
+    Button(
         modifier = Modifier
-            .border(
-                BorderStroke(1.dp, Color.Black),
-                shape = RoundedCornerShape(16.dp)
-            )
-            .background(Orange)
             .wrapContentHeight()
-            .padding(start = 16.dp, top = 4.dp)
+            .padding(start = 16.dp, top = 4.dp),
+        onClick = { /*TODO*/ },
+        colors = ButtonDefaults.buttonColors(
+            containerColor = HijauMuda,
+            contentColor = Color.White
+        )
     ) {
-        Column (
-            modifier = Modifier.fillMaxHeight(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            Image(
-                painter = painterResource(id = statusPhoto),
-                contentDescription = "Dalam Perjalanan",
-                modifier = Modifier
-                    .padding(5.dp)
-                    .size(40.dp),
-                alignment = Alignment.Center,
-                contentScale = ContentScale.Fit
-            )
-        }
-
-        Column(
+        Row(
             modifier = Modifier
-                .fillMaxHeight()
-                .width(150.dp),
-            verticalArrangement = Arrangement.SpaceEvenly,
+
         ) {
-            Text(
-                text =
-                when (pesananModel.status_pesanan) {
-                    StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString() -> "Menunggu Konfirmasi"
-                    StatusPesanan.TERKONFIRMASI_ADMIN.toString(), StatusPesanan.DIANTAR.toString() -> "Diantar"
-                    StatusPesanan.SAMPAI.toString() -> "Pesanan Terkirim"
-                    else -> "Status Pesanan Error"
-                },
-                style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    color = Color.Black
-                ),
-                modifier = Modifier.padding( start = 16.dp)
-            )
-
-            Text(
-                text = "${waktuPesananDibuat.toDate()}",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    color = Color.Black
-                ),
-                modifier = Modifier.padding( start = 16.dp)
-            )
-        }
-
-        Column (
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(end = 16.dp),
-            horizontalAlignment = Alignment.End,
-            verticalArrangement = Arrangement.Center
-        ){
-            Button(
-                modifier = Modifier
-                    .height(50.dp)
-                    .padding(top = 5.dp, bottom = 5.dp),
-                shape = RoundedCornerShape(4.dp),
-                colors = when (pesananModel.status_pesanan) {
-                    StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString(),
-                    StatusPesanan.TERKONFIRMASI_ADMIN.toString(),
-                    StatusPesanan.DIANTAR.toString(),
-                    StatusPesanan.SELESAI.toString() -> buttonDisabledColor
-                    StatusPesanan.SAMPAI.toString() -> buttonClickableColor
-                    else -> buttonDisabledColor
-                },
-                onClick = {
-                    Log.d("Id Pesanan", "${pesananModel.id_pesanan}")
-
-                    pesananListViewModel.updateStatusPesanan(pesananModel.id_pesanan!!)
-                },
-                enabled = when (pesananModel.status_pesanan) {
-                    StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString(),
-                    StatusPesanan.TERKONFIRMASI_ADMIN.toString(),
-                    StatusPesanan.DIANTAR.toString(),
-                    StatusPesanan.SELESAI.toString() -> false
-                    StatusPesanan.SAMPAI.toString() -> true
-                    else -> false
-                }
+            Column (
+                modifier = Modifier.fillMaxHeight(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "CONFIRM")
+
+                Image(
+                    painter = painterResource(id = statusPhoto),
+                    contentDescription = "Dalam Perjalanan",
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .size(40.dp),
+                    alignment = Alignment.Center,
+                    contentScale = ContentScale.Fit
+                )
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(150.dp),
+                verticalArrangement = Arrangement.SpaceEvenly,
+            ) {
+                Text(
+                    text =
+                    when (pesananModel.status_pesanan) {
+                        StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString() -> "Menunggu Konfirmasi"
+                        StatusPesanan.TERKONFIRMASI_ADMIN.toString(), StatusPesanan.DIANTAR.toString() -> "Diantar"
+                        StatusPesanan.SAMPAI.toString() -> "Pesanan Terkirim"
+                        else -> "Status Pesanan Error"
+                    },
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                        color = Color.Black
+                    ),
+                    modifier = Modifier.padding( start = 16.dp)
+                )
+
+                Text(
+                    text = "${waktuPesananDibuat.toDate()}",
+                    style = TextStyle(
+                        fontSize = 14.sp,
+                        color = Color.Black
+                    ),
+                    modifier = Modifier.padding( start = 16.dp)
+                )
+            }
+
+            Column (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 16.dp),
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.Center
+            ){
+                Button(
+                    modifier = Modifier
+                        .height(50.dp)
+                        .padding(top = 5.dp, bottom = 5.dp),
+                    shape = RoundedCornerShape(4.dp),
+                    colors = when (pesananModel.status_pesanan) {
+                        StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString(),
+                        StatusPesanan.TERKONFIRMASI_ADMIN.toString(),
+                        StatusPesanan.DIANTAR.toString(),
+                        StatusPesanan.SELESAI.toString() -> buttonDisabledColor
+                        StatusPesanan.SAMPAI.toString() -> buttonClickableColor
+                        else -> buttonDisabledColor
+                    },
+                    onClick = {
+                        Log.d("Id Pesanan", "${pesananModel.id_pesanan}")
+
+                        pesananListViewModel.updateStatusPesanan(pesananModel.id_pesanan!!)
+                    },
+                    enabled = when (pesananModel.status_pesanan) {
+                        StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString(),
+                        StatusPesanan.TERKONFIRMASI_ADMIN.toString(),
+                        StatusPesanan.DIANTAR.toString(),
+                        StatusPesanan.SELESAI.toString() -> false
+                        StatusPesanan.SAMPAI.toString() -> true
+                        else -> false
+                    }
+                ) {
+                    Text(text = "CONFIRM")
+                }
             }
         }
     }
+
+
 }
 
 

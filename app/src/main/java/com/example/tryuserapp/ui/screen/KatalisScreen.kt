@@ -7,11 +7,13 @@ import android.content.res.Configuration
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
@@ -40,7 +42,8 @@ import com.example.tryuserapp.ui.component.Katalis
 import com.example.tryuserapp.ui.component.SearchBar
 import com.example.tryuserapp.ui.component.TopBar
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
-import com.example.tryuserapp.ui.theme.backGroundScreen
+import com.example.tryuserapp.ui.theme.Krem
+import com.google.firebase.Timestamp
 
 @SuppressLint("MutableCollectionMutableState")
 @Composable
@@ -80,7 +83,7 @@ fun KatalisScreen(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(backGroundScreen)
+            .background(Krem)
     ) {
         item {
             TopBar(
@@ -118,43 +121,47 @@ fun KatalisScreen(
         }
 
         items(katalisScreenUiState.katalisList) { katalis ->
-            // TODO : katalis yang sudah kadaluarsa nggak tampil
-            if (katalis.idHotel == selectedHotelId && katalis.stok != 0) {
-                Katalis(
-                    katalisModel = katalis,
+            // TODO : katalis yang sudah kadaluarsa nggak tampil (DONE)
+            if (katalis.kadaluarsa >= Timestamp.now() && katalis.idHotel == selectedHotelId && katalis.stok != 0) {
+                Column (modifier = Modifier.padding(start = 8.dp, end = 8.dp)) {
+                    Katalis(
+                        katalisModel = katalis,
+                        onNavigateToScreen = {
+                            onSetSelectedDetailKatalis(katalis)
+                            onNavigateToScreen(it)
+                        },
 
-                    onNavigateToScreen = {
-                        onSetSelectedDetailKatalis(katalis)
-                        onNavigateToScreen(it)
-                    },
+                        selectedQuantityKatalis = selectedKatalisList.find {
+                            it.idKatalis == katalis.id
+                        }?.quantity ?: 0,
 
-                    selectedQuantityKatalis = selectedKatalisList.find {
-                        it.idKatalis == katalis.id
-                    }?.quantity ?: 0,
-
-                    onAddSelectedKatalisList = {
-                        selectedKatalisList.add(
-                            SelectedKatalis(
-                                katalis.id, BEGIN_QUANTITY_KATALIS,
-                                namaKatalis = katalis.namaKatalis,
-                                hargaKatalis = katalis.hargaJual,
-                                stokKatalis = katalis.stok
+                        onAddSelectedKatalisList = {
+                            selectedKatalisList.add(
+                                SelectedKatalis(
+                                    katalis.id, BEGIN_QUANTITY_KATALIS,
+                                    namaKatalis = katalis.namaKatalis,
+                                    hargaKatalis = katalis.hargaJual,
+                                    stokKatalis = katalis.stok
+                                )
                             )
-                        )
-                        Log.d("Katalis Screen", "Added Katalis with id ${katalis.id}")
-                    },
-                    onModifySelectedKatalisList = { modifiedQuantityKatalis ->
-                        selectedKatalisList.find { loopedKatalis ->
-                            loopedKatalis.idKatalis == katalis.id
-                        }?.quantity = modifiedQuantityKatalis
+                            Log.d("Katalis Screen", "Added Katalis with id ${katalis.id}")
+                        },
+                        onModifySelectedKatalisList = { modifiedQuantityKatalis ->
+                            selectedKatalisList.find { loopedKatalis ->
+                                loopedKatalis.idKatalis == katalis.id
+                            }?.quantity = modifiedQuantityKatalis
 
-                        Log.d("Katalis Screen", "Modified Katalis with id ${katalis.id}. quantity to $modifiedQuantityKatalis")
-                    },
-                    onRemoveSelectedKatalisListById = {
-                        selectedKatalisList.removeAll { it.idKatalis == katalis.id }
-                        Log.d("Katalis Screen", "Removed Katalis with id ${katalis.id}")
-                    },
-                )
+                            Log.d(
+                                "Katalis Screen",
+                                "Modified Katalis with id ${katalis.id}. quantity to $modifiedQuantityKatalis"
+                            )
+                        },
+                        onRemoveSelectedKatalisListById = {
+                            selectedKatalisList.removeAll { it.idKatalis == katalis.id }
+                            Log.d("Katalis Screen", "Removed Katalis with id ${katalis.id}")
+                        },
+                    )
+                }
             }
             Spacer(modifier = Modifier.height(5.dp))
         }
