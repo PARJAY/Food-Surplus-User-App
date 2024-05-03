@@ -5,9 +5,11 @@ import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -67,10 +69,7 @@ fun Katalis(
         ),
         onClick = { onNavigateToScreen(Screen.ScreenDetailKatalis.route) },
     ) {
-        Row (
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        Row {
             AsyncImage (
                 model = imageURI,
                 contentDescription = "Katalis picture",
@@ -99,23 +98,20 @@ fun Katalis(
                     fontSize = 14.sp,
                     modifier = Modifier.padding(start = 16.dp)
                 )
-            }
 
-            Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(end = 6.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Absolute.Right
-            ) {
-                // TODO : (add logic) quantity counter cant be surpass the stok katalis
-                QuantityCounter(
-                    selectedQuantityKatalis,
-                    onAddSelectedKatalisList,
-                    onModifySelectedKatalisList,
-                    onRemoveSelectedKatalisListById,
-                    katalisModel = katalisModel
-                )
+                Row(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalAlignment = Alignment.Bottom,
+                    horizontalArrangement = Arrangement.Absolute.Right
+                ) {
+                    QuantityCounter(
+                        selectedQuantityKatalis,
+                        onAddSelectedKatalisList,
+                        onModifySelectedKatalisList,
+                        onRemoveSelectedKatalisListById,
+                        katalisModel = katalisModel
+                    )
+                }
             }
         }
     }

@@ -53,7 +53,7 @@ fun QuantityCounter(
         .width(20.dp)
 //        .padding(start = 5.dp, end = 5.dp)
 
-    Row(
+    Row (
         modifier = Modifier
             .border(
                 BorderStroke(1.dp, Color.Black),

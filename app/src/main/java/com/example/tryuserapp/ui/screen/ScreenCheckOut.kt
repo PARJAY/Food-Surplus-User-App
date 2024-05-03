@@ -210,9 +210,9 @@ fun ScreenCheckOut(
 
                 if (alamatHotelByName == "") showToast(context, "Data Hotel mungkin dihapus")
                 else if (
-                    (alamatByGeolocation.value == LatLng(0.0,0.0) &&
-                    hotelToYayasanDistanceInMeter.floatValue == 0f) ||
                     !radioButtons[0].isChecked
+                    || (radioButtons[1].isChecked && alamatByGeolocation.value == LatLng(0.0,0.0))
+                    || (radioButtons[2].isChecked && hotelToYayasanDistanceInMeter.floatValue == 0f)
                 ) {
                     Log.d("ScreenCheckOut", "You should stop here")
                     Log.d("ScreenCheckOut", "alamatByGeolocation.value = ${alamatByGeolocation.value}")
