@@ -115,12 +115,10 @@ class FirebaseHelper {
 
         fun uploadImageToFirebaseStorage(
             userIdForFileReference : String,
-            file: Uri,
+            fileName: String,
             onSuccess: (String) -> Unit,
             onError: (Exception) -> Unit
         ) {
-            val fileName = file.path?.substringAfterLast("/")
-
             MyApp.appModule.storage.getReference("$userIdForFileReference/$fileName").putFile(file).addOnSuccessListener { snapshot ->
                 snapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener { uri ->
                     Log.d("Firebase Helper: ", "upload Success : $uri")

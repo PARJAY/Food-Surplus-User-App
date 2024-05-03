@@ -199,6 +199,8 @@ fun ScreenCheckOut(
                 containerColor = HijauTua
             ),
             onClick = {
+                val fileName = selectedImageUri.path?.substringAfterLast("/")
+
                 Log.d("ScreenCheckOut", "selected katalis : $selectedKatalis")
                 selectedKatalis.forEach {
                     daftarKatalis.daftarKatalis += Pair(it.idKatalis, it.quantity)
@@ -217,10 +219,10 @@ fun ScreenCheckOut(
                     showToast(context, "Mohon isi Alamat Anda atau alamat yayasan")
                 }
                 else if (selectedImageUri == Uri.EMPTY) showToast(context, "Masukkan Bukti Pembayaran")
-                else {
+                else if (fileName != null) {
                     uploadImageToFirebaseStorage(
                         userIdForFileReference = "User_${userData.userId}",
-                        file = selectedImageUri,
+                        fileName = fileName,
                         onSuccess = { showToast(context, it) },
                         onError = { showToast(context, "$it") }
                     )
@@ -234,7 +236,7 @@ fun ScreenCheckOut(
                             id_kurir = "",
                             daftarKatalis = daftarKatalis.daftarKatalis,
                             total_harga = totalHarga + ongkirPrice,
-                            transfer_proof_image_link = selectedImageUri.lastPathSegment.toString(),
+                            transfer_proof_image_link = fileName,
                             StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString(),
                             Timestamp.now(),
                             geolokasiTujuan = "${alamatByGeolocation.value.latitude},${alamatByGeolocation.value.longitude}",
