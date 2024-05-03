@@ -96,8 +96,6 @@ fun QuantityCounter(
                     itemCounter++
                     onModifySelectedKatalisList(itemCounter)
                 }
-
-
             }
         )
     }

@@ -90,20 +90,12 @@ fun PesananAnda(
 
         items(listPesananAnda) { pesanan ->
             if (pesanan.id_customer == userData.userId) {
-                Column(
-                    Modifier
-                        .padding(horizontal = 8.dp)
-                        .clickable {
-                            onNavigateToDetailPesananScreen(
-                                pesanan,
-                                Screen.ScreenDetailPesananAnda.route
-                            )
-                        }
-                ) {
+                Column(Modifier.padding(horizontal = 8.dp)) {
                     CheckStatusPesanan(
                         statusPhoto = R.drawable.otw,
                         pesananModel = pesanan,
                         pesananListViewModel = pesananListViewModel,
+                        onNavigateToDetailPesananScreen = onNavigateToDetailPesananScreen
                     )
 
                 }

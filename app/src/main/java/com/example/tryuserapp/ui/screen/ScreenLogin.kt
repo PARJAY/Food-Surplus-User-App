@@ -77,7 +77,7 @@ fun ScreenLogin(
                 )
                 Spacer(modifier = Modifier.height(50.dp))
                 Text(
-                    text = "Selamat datang, silahkan Login dengan akun Google anda",
+                    text = "Selamat datang, silahkan Login dengan akun Google anda untuk melanjutkan ke halaman berikutnya",
                     textAlign = TextAlign.Center
                 )
                 Box(modifier = Modifier

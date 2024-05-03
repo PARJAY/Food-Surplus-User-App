@@ -45,15 +45,15 @@ import com.example.tryuserapp.ui.theme.Krem
 
 fun DetailKatalis(
     selectedDetailKatalis: KatalisModel,
-    selectedQuantityKatalisList: SelectedKatalis?,
 
+    selectedQuantityKatalis: Int? = 0,
     onAddSelectedKatalisList : () -> Unit,
     onModifySelectedKatalisList : (Int) -> Unit,
-    onRemoveSelectedKatalisListById : (String) -> Unit,
-){
-    Log.d("Detail Pesanan", "selectedQuantityKatalisList = $selectedQuantityKatalisList")
-    Log.d("Detail Pesanan", "selectedQuantityKatalisList.idKatalis = ${selectedQuantityKatalisList?.idKatalis}")
-    Log.d("Detail Pesanan", "selectedQuantityKatalisList.quantity = ${selectedQuantityKatalisList?.quantity}")
+    onRemoveSelectedKatalisListById : () -> Unit,
+) {
+//    Log.d("Detail Pesanan", "selectedQuantityKatalisList = $selectedQuantityKatalisList")
+//    Log.d("Detail Pesanan", "selectedQuantityKatalisList.idKatalis = ${selectedQuantityKatalisList?.idKatalis}")
+//    Log.d("Detail Pesanan", "selectedQuantityKatalisList.quantity = ${selectedQuantityKatalisList?.quantity}")
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -128,13 +128,11 @@ fun DetailKatalis(
 
             // TODO : change later
             QuantityCounter(
-                selectedQuantityKatalis = selectedQuantityKatalisList?.quantity,
+                selectedQuantityKatalis = selectedQuantityKatalis,
                 onAddSelectedKatalisList = onAddSelectedKatalisList,
                 onModifySelectedKatalisList = onModifySelectedKatalisList,
-                onRemoveSelectedKatalisListById = {
-                    onRemoveSelectedKatalisListById(selectedDetailKatalis.id)
-                },
-                katalisModel = KatalisModel()
+                onRemoveSelectedKatalisListById = onRemoveSelectedKatalisListById,
+                katalisModel = selectedDetailKatalis
             )
         }
     }
@@ -150,19 +148,14 @@ fun DetailPesananPreview() {
     TryUserAppTheme {
         Surface {
             DetailKatalis(
-                KatalisModel(
+                selectedDetailKatalis = KatalisModel(
 
                 ),
                 onAddSelectedKatalisList = {},
                 onModifySelectedKatalisList = {},
                 onRemoveSelectedKatalisListById = {},
-
-                selectedQuantityKatalisList = SelectedKatalis(
-                    "",
-                    1,
-                    stokKatalis = 0
+                selectedQuantityKatalis = null,
                 )
-            )
         }
     }
 }

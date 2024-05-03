@@ -88,7 +88,7 @@ class PesananListViewModel(
         viewModelScope.launch {
             setState(_state.value.copy(isLoading = true))
             try {
-                pesananListRepositoryImpl.updateStatusPesanan(pesananId = selectedPesananId, fieldToUpdate = "status_pesanan", newValue = StatusPesanan.SAMPAI.toString()    )
+                pesananListRepositoryImpl.updateStatusPesanan(pesananId = selectedPesananId, fieldToUpdate = "status_pesanan", newValue = StatusPesanan.SELESAI.toString()    )
                 setState(_state.value.copy(isLoading = false))
                 setEffect { PesananSideEffects.ShowSnackBarMessage(message = "Update Stok successfully") }
             } catch (e: Exception) {

@@ -122,7 +122,7 @@ fun KatalisScreen(
 
         items(katalisScreenUiState.katalisList) { katalis ->
             // TODO : katalis yang sudah kadaluarsa nggak tampil (DONE)
-            if (katalis.kadaluarsa >= Timestamp.now() && katalis.idHotel == selectedHotelId && katalis.stok != 0) {
+            if (katalis.kadaluarsa >= Timestamp.now() && katalis.idHotel == selectedHotelId && katalis.stok != 0 && katalis.statusKatalis == "DISETUJUI") {
                 Column (modifier = Modifier.padding(start = 8.dp, end = 8.dp)) {
                     Katalis(
                         katalisModel = katalis,

@@ -3,8 +3,6 @@ package com.example.tryuserapp.ui.component
 import android.content.res.Configuration
 import android.net.Uri
 import android.util.Log
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -67,7 +65,7 @@ fun Katalis(
             contentColor = Color.White,
             containerColor = HijauMuda
         ),
-        onClick = { onNavigateToScreen(Screen.ScreenDetailPesanan.route) },
+        onClick = { onNavigateToScreen(Screen.ScreenDetailKatalis.route) },
     ) {
         Row (
             horizontalArrangement = Arrangement.Center,

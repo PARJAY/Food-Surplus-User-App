@@ -2,7 +2,7 @@ package com.example.tryuserapp.ui.navigation
 
 sealed class Screen(val route: String) {
     object KatalisScreen : Screen("KatalisScreen")
-    object ScreenDetailPesanan : Screen("ScreenDetailPesanan")
+    object ScreenDetailKatalis : Screen("ScreenDetailKatalis")
     object ScreenCheckOut : Screen("ScreenCheckOut")
     object ScreenPesananAnda : Screen("ScreenPesananAnda")
     object ScreenDetailPesananAnda : Screen("ScreenDetailPesananAnda")

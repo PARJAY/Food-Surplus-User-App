@@ -37,10 +37,14 @@ import com.example.tryuserapp.R
 import com.example.tryuserapp.data.model.PesananModel
 import com.example.tryuserapp.logic.StatusPesanan
 import com.example.tryuserapp.presentation.pesanan.PesananListViewModel
+import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.Brown
+import com.example.tryuserapp.ui.theme.ButtonDisable
 import com.example.tryuserapp.ui.theme.HijauMuda
+import com.example.tryuserapp.ui.theme.HijauTua
 import com.example.tryuserapp.ui.theme.Orange
 import com.example.tryuserapp.ui.theme.PurpleGrey80
+import com.example.tryuserapp.ui.theme.TextDisable
 import com.example.tryuserapp.ui.theme.TryUserAppTheme
 import com.google.firebase.Timestamp
 
@@ -48,55 +52,50 @@ import com.google.firebase.Timestamp
 fun CheckStatusPesanan(
     pesananModel: PesananModel,
     pesananListViewModel: PesananListViewModel,
-    statusPhoto : Int
+    statusPhoto : Int,
+    onNavigateToDetailPesananScreen : (pesananModel : PesananModel, desiredScreen : String) -> Unit
 ) {
     val waktuPesananDibuat = pesananModel.waktu_pesanan_dibuat
 
     val buttonDisabledColor = ButtonDefaults.buttonColors(
-        containerColor = PurpleGrey80,
-        contentColor = Color.White
+        containerColor = ButtonDisable,
+        contentColor = TextDisable
     )
 
     val buttonClickableColor = ButtonDefaults.buttonColors(
-        containerColor = Brown,
+        containerColor = HijauTua,
         contentColor = Color.White
     )
 
     Button(
         modifier = Modifier
             .wrapContentHeight()
-            .padding(start = 16.dp, top = 4.dp),
-        onClick = { /*TODO*/ },
+            .fillMaxWidth(),
+        onClick = {
+            onNavigateToDetailPesananScreen(
+                pesananModel,
+                Screen.ScreenDetailPesananAnda.route
+            )
+        },
         colors = ButtonDefaults.buttonColors(
             containerColor = HijauMuda,
             contentColor = Color.White
-        )
+        ),
+        shape = RoundedCornerShape(16.dp)
     ) {
-        Row(
-            modifier = Modifier
-
-        ) {
-            Column (
-                modifier = Modifier.fillMaxHeight(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-
+        Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(
                     painter = painterResource(id = statusPhoto),
                     contentDescription = "Dalam Perjalanan",
                     modifier = Modifier
-                        .padding(5.dp)
                         .size(40.dp),
                     alignment = Alignment.Center,
                     contentScale = ContentScale.Fit
                 )
-            }
 
             Column(
                 modifier = Modifier
-                    .fillMaxHeight()
-                    .width(150.dp),
+                    .fillMaxHeight(),
                 verticalArrangement = Arrangement.SpaceEvenly,
             ) {
                 Text(
@@ -105,14 +104,15 @@ fun CheckStatusPesanan(
                         StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString() -> "Menunggu Konfirmasi"
                         StatusPesanan.TERKONFIRMASI_ADMIN.toString(), StatusPesanan.DIANTAR.toString() -> "Diantar"
                         StatusPesanan.SAMPAI.toString() -> "Pesanan Terkirim"
+                        StatusPesanan.SELESAI.toString() -> "Pesanan Selasai"
                         else -> "Status Pesanan Error"
                     },
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp,
+                        fontSize = 18.sp,
                         color = Color.Black
                     ),
-                    modifier = Modifier.padding( start = 16.dp)
+                    modifier = Modifier.padding( start = 16.dp, bottom = 5.dp, top = 5.dp)
                 )
 
                 Text(
@@ -121,51 +121,45 @@ fun CheckStatusPesanan(
                         fontSize = 14.sp,
                         color = Color.Black
                     ),
-                    modifier = Modifier.padding( start = 16.dp)
+                    modifier = Modifier.padding( start = 16.dp, bottom = 5.dp)
                 )
-            }
-
-            Column (
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = 16.dp),
-                horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.Center
-            ){
-                Button(
-                    modifier = Modifier
-                        .height(50.dp)
-                        .padding(top = 5.dp, bottom = 5.dp),
-                    shape = RoundedCornerShape(4.dp),
-                    colors = when (pesananModel.status_pesanan) {
-                        StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString(),
-                        StatusPesanan.TERKONFIRMASI_ADMIN.toString(),
-                        StatusPesanan.DIANTAR.toString(),
-                        StatusPesanan.SELESAI.toString() -> buttonDisabledColor
-                        StatusPesanan.SAMPAI.toString() -> buttonClickableColor
-                        else -> buttonDisabledColor
-                    },
-                    onClick = {
-                        Log.d("Id Pesanan", "${pesananModel.id_pesanan}")
-
-                        pesananListViewModel.updateStatusPesanan(pesananModel.id_pesanan!!)
-                    },
-                    enabled = when (pesananModel.status_pesanan) {
-                        StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString(),
-                        StatusPesanan.TERKONFIRMASI_ADMIN.toString(),
-                        StatusPesanan.DIANTAR.toString(),
-                        StatusPesanan.SELESAI.toString() -> false
-                        StatusPesanan.SAMPAI.toString() -> true
-                        else -> false
-                    }
+                Row (
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start
                 ) {
-                    Text(text = "CONFIRM")
+                    Button(
+                        modifier = Modifier
+                            .height(50.dp)
+                            .padding(top = 5.dp, bottom = 5.dp, start = 16.dp),
+                        shape = RoundedCornerShape(4.dp),
+                        colors = when (pesananModel.status_pesanan) {
+                            StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString()-> buttonDisabledColor
+                            StatusPesanan.TERKONFIRMASI_ADMIN.toString()-> buttonDisabledColor
+                            StatusPesanan.DIANTAR.toString()-> buttonDisabledColor
+                            StatusPesanan.SELESAI.toString() -> buttonDisabledColor
+                            StatusPesanan.SAMPAI.toString() -> buttonClickableColor
+                            else -> buttonDisabledColor
+                        },
+                        onClick = {
+                            Log.d("Id Pesanan", "${pesananModel.id_pesanan}")
+
+                            pesananListViewModel.updateStatusPesanan(pesananModel.id_pesanan!!)
+                        },
+                        enabled = when (pesananModel.status_pesanan) {
+                            StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString(),
+                            StatusPesanan.TERKONFIRMASI_ADMIN.toString(),
+                            StatusPesanan.DIANTAR.toString(),
+                            StatusPesanan.SELESAI.toString() -> false
+                            StatusPesanan.SAMPAI.toString() -> true
+                            else -> false
+                        }
+                    ) {
+                        Text(text = "CONFIRM")
+                    }
                 }
             }
         }
     }
-
-
 }
 
 
@@ -191,7 +185,10 @@ fun StatusPesananPreview(){
                     MyApp.appModule.pesananListRepositoryImpl,
                     idCustomer = ""
                 ),
-                statusPhoto = R.drawable.sedang_dipesan
+                statusPhoto = R.drawable.sedang_dipesan,
+                onNavigateToDetailPesananScreen = { pesananModel, desiredScreen ->
+                    
+                }
             )
         }
     }

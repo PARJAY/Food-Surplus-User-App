@@ -13,4 +13,5 @@ data class KatalisModel(
     val hargaJual: Float = 0f,
     val porsiJual: String = "",
     val kadaluarsa: Timestamp = Timestamp.now(),
+    val statusKatalis: String = "",
 )

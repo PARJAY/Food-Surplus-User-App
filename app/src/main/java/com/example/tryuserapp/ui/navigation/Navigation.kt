@@ -129,7 +129,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
     val changeScreen = remember { mutableStateOf(false) }
     val normalizeScreen = remember { mutableStateOf(false) }
 
-    NavHost(navController, startDestination = Screen.ScreenLogin.route) {
+    NavHost(navController, startDestination = Screen.HomeScreen.route) {
         composable(Screen.ScreenLogin.route) {
             val viewModel = viewModel<SignInViewModel>()
             val state by viewModel.state.collectAsStateWithLifecycle()
@@ -261,7 +261,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                         googleAuthUiClient.signOut()
                         Toast.makeText(context, "Signed Out", Toast.LENGTH_LONG).show()
 
-                        navController.navigate(Screen.ScreenLogin.route)
+                        navController.popBackStack()
                     }
                 },
             )
@@ -312,6 +312,11 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
             )
             val homeScreenVMUiState = homeScreenVM.state.collectAsState().value
 
+            LaunchedEffect(key1 = Unit) {
+                if (googleAuthUiClient.getSignedInUser() == null)
+                    navController.navigate(Screen.ScreenLogin.route)
+            }
+
             HomeScreen(
                 userData = googleAuthUiClient.getSignedInUser(),
                 homeScreenUiState = homeScreenVMUiState,
@@ -355,7 +360,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
             )
         }
 
-        composable(Screen.ScreenDetailPesanan.route) {
+        composable(Screen.ScreenDetailKatalis.route) {
             DetailKatalis(
                 selectedDetailKatalis = selectedDetailKatalis,
                 onAddSelectedKatalisList = {
@@ -374,14 +379,12 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                         loopedKatalis.idKatalis == selectedDetailKatalis.id
                     }?.quantity = modifiedQuantityKatalis
                 },
-                onRemoveSelectedKatalisListById = { removedKatalisId ->
-                    selectedKatalis.removeAll {
-                        it.idKatalis == removedKatalisId
-                    }
+                onRemoveSelectedKatalisListById = {
+                    selectedKatalis.removeAll { it.idKatalis == selectedDetailKatalis.id }
                 },
-                selectedQuantityKatalisList = selectedKatalis.find { loopedKatalis ->
-                    loopedKatalis.idKatalis == selectedDetailKatalis.id
-                }
+                selectedQuantityKatalis = selectedKatalis.find{
+                    it.idKatalis == selectedDetailKatalis.id
+                }?.quantity ?: 0,
             )
         }
 
