@@ -73,7 +73,7 @@ fun Katalis(
         ) {
             AsyncImage (
                 model = imageURI,
-                contentDescription = "Profile picture",
+                contentDescription = "Katalis picture",
                 modifier = Modifier
                     .height(65.dp)
                     .width(65.dp),

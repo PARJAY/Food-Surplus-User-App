@@ -33,7 +33,10 @@ import com.example.tryuserapp.data.model.YayasanModel
 import com.example.tryuserapp.tools.Utility
 
 @Composable
-fun DropDownYayasan(setLokasiYayasan : (String) -> Unit ) {
+fun DropDownYayasan(
+    setLokasiYayasan : (String) -> Unit,
+    isPreferGetLocationWithMaps : Boolean
+) {
 
     val context = LocalContext.current
 
@@ -65,22 +68,9 @@ fun DropDownYayasan(setLokasiYayasan : (String) -> Unit ) {
         )
     }
 
-    var TestYayasan : String = ""
+    var isExpanded by remember { mutableStateOf(false) }
 
-    listYayasanAnda.forEach { TestYayasan = it.idYayasan }
-
-    Log.d("List yayasan", "Yayasan Anda : $TestYayasan")
-
-    val list = listOf("Yayasan 1", "Yayasan 2", "Yayasan 3", "Yayasan 4", "Yayasan 5")
-
-    var isExpanded by remember {
-        mutableStateOf(false
-        )
-    }
-
-    var selectedYayasanName by remember {
-        mutableStateOf("Pilih Yayasan")
-    }
+    var selectedYayasanName by remember { mutableStateOf("Pilih Yayasan") }
 
     Column(
         modifier = Modifier
@@ -90,6 +80,7 @@ fun DropDownYayasan(setLokasiYayasan : (String) -> Unit ) {
         DropdownMenu(
             expanded = isExpanded,
             onDismissRequest = { isExpanded = false },
+
             modifier = Modifier.align(Alignment.End)
         ) {
             Column (
@@ -100,6 +91,7 @@ fun DropDownYayasan(setLokasiYayasan : (String) -> Unit ) {
                     DropdownMenuItem(
                         modifier = Modifier.fillMaxWidth(),
                         text = { Text(text = yayasan.namaYayasan) },
+                        enabled = !isPreferGetLocationWithMaps,
                         onClick = {
                             selectedYayasanName = yayasan.namaYayasan
                             setLokasiYayasan(yayasan.alamatYayasan)

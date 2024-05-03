@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
@@ -49,10 +50,12 @@ fun DiantarAtauAmbil(
     onNavigateToScreen : (String) -> Unit,
     alamatByName : String,
     radioButtons : SnapshotStateList<Toggleableinfo>,
+    alamatYayasan : String,
+    onDiantarRadioButtonCheck : () -> Unit,
+    onDonasiRadioButtonCheck : () -> Unit,
+    setLokasiYayasan : (String) -> Unit
 ) {
-    var alamatYayasan by remember {
-        mutableStateOf("")
-    }
+    val isPreferGetLocationWithMaps = remember { mutableStateOf(false) }
 
     Button(
         modifier = Modifier
@@ -65,43 +68,49 @@ fun DiantarAtauAmbil(
         shape = RoundedCornerShape(16.dp)
     ) {
         Column {
-        radioButtons.forEachIndexed{index, info ->
-            Row (
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        radioButtons.replaceAll {
-                            it.copy(isChecked = it.text == info.text)
+            radioButtons.forEachIndexed{index, info ->
+                Row (
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            radioButtons.replaceAll {
+                                it.copy(isChecked = it.text == info.text)
+                            }
                         }
-                    }
-                    .padding(end = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Absolute.SpaceBetween
-            ){
-                Text(text = info.text)
-                RadioButton(
-                    selected = info.isChecked,
-                    onClick = {
-                        radioButtons.replaceAll {
-                            it.copy(isChecked = it.text == info.text)
-                        }
-                    }
-                )
-            }
-        }
-        if (radioButtons[2].isChecked) {
-            DropDownYayasan(
-                setLokasiYayasan = {
-                    alamatYayasan = it
+                        .padding(end = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Absolute.SpaceBetween
+                ){
+                    Text(text = info.text)
+                    RadioButton(
+                        selected = info.isChecked,
+                        onClick = {
+                            radioButtons.replaceAll {
+                                it.copy(isChecked = it.text == info.text)
+                            }
+                        },
+                    )
                 }
-            )
-            Spacer(modifier = Modifier.height(5.dp))
-            Column {
-                Spacer(modifier = Modifier.height(7.dp))
-                Text(text = "Alamat Yayasan : ")
-                Spacer(modifier = Modifier.height(4.dp))
+            }
+
+            if (radioButtons[1].isChecked) {
+                onDiantarRadioButtonCheck()
+
+                Button(onClick = { onNavigateToScreen(Screen.MapsScreen.route) }) {
+                    Text(text = "Pilih Lokasi")
+                }
+                Text(text = alamatByName)
+            }
+
+            if (radioButtons[2].isChecked) {
+                onDonasiRadioButtonCheck()
+
+                DropDownYayasan(
+                    setLokasiYayasan,
+                    isPreferGetLocationWithMaps.value
+                )
+
                 Text(text = if (alamatYayasan != "") alamatYayasan else "")
-                Spacer(modifier = Modifier.height(4.dp))
             }
         }
 
@@ -120,23 +129,7 @@ fun DiantarAtauAmbil(
             Text(text = "Alamat Customer : ")
             Spacer(modifier = Modifier.height(4.dp))
             Text(text = alamatByName)
-//        display input text Alamat
-// //               TextField(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .clickable {
-//                            onNavigateToScreen(Screen.MapsScreen.route)
-//                        }
-//                        .padding(16.dp),
-//                    value = Alamat,
-//                    onValueChange = {
-//                            newValue ->
-//                        Alamat = newValue
-//                    },
-//                    readOnly = false,
-//                    label = { Text("alamat") }
-//                )
-            }
+
         }
     }
 }
@@ -174,7 +167,15 @@ fun RadioButtonsPreview(){
             DiantarAtauAmbil(
                 onNavigateToScreen = {},
                 alamatByName = String(),
-                radioButtons = radioButtons
+                radioButtons = radioButtons,
+                alamatYayasan = "alamat yayasan dummy",
+                setLokasiYayasan = {
+
+                },
+                onDiantarRadioButtonCheck = {
+
+                },
+                onDonasiRadioButtonCheck = {}
             )
         }
     }

@@ -48,8 +48,15 @@ fun ScreenDetailPesananAnda(
 
         Log.d("SDPA Screen", "selectedKatalisList final: $selectedKatalisList")
     }
-Box(modifier = Modifier.fillMaxSize(),
-    contentAlignment = Alignment.Center){
-    RingkasanPesanan(selectedKatalis = selectedKatalisList, hotelToUserDistance = selectedDetailPesananModel.jarak_user_dan_hotel)
-}
+    
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center)
+    {
+        RingkasanPesanan(
+            selectedKatalis = selectedKatalisList,
+            hotelToUserDistance = selectedDetailPesananModel.jarak_user_dan_hotel,
+            hotelToYayasanDistanceInMeter = selectedDetailPesananModel.jarak_user_dan_hotel
+        )
+    }
 }

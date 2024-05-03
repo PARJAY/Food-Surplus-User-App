@@ -16,6 +16,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateListOf
@@ -48,6 +49,7 @@ import com.example.tryuserapp.ui.component.DiantarAtauAmbil
 import com.example.tryuserapp.ui.component.Pembayaran
 import com.example.tryuserapp.ui.component.RingkasanPesanan
 import com.example.tryuserapp.ui.component.Toggleableinfo
+import com.example.tryuserapp.ui.navigation.Screen
 import com.example.tryuserapp.ui.theme.Brown
 import com.example.tryuserapp.ui.theme.HijauTua
 import com.example.tryuserapp.ui.theme.Krem
@@ -59,16 +61,16 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ScreenCheckOut(
-    onNavigateToHome : () -> Unit,
-    onNavigateToScreen : (String) -> Unit,
+    onNavigateToHome: () -> Unit,
+    onNavigateToScreen: (String) -> Unit,
     pesananViewModel: PesananViewModel,
-    userData :UserData,
-    selectedIdHotel : String,
-    alamatByName : String,
-    alamatByGeolocation : LatLng,
-    alamatHotelByName : String,
+    userData: UserData,
+    selectedIdHotel: String,
+    alamatByName: String,
+    alamatByGeolocation: MutableState<LatLng>,
+    alamatHotelByName: String,
     selectedKatalis: SnapshotStateList<SelectedKatalis>,
-    radioButtons : SnapshotStateList<Toggleableinfo>
+    radioButtons: SnapshotStateList<Toggleableinfo>
 ) {
     val context = LocalContext.current
 
@@ -81,41 +83,40 @@ fun ScreenCheckOut(
     var ongkirPrice: Float
     var totalHarga = 0F
 
-    if (alamatByGeolocation != LatLng(0.0,0.0) && alamatHotelByName != "")
+    val alamatYayasan = remember { mutableStateOf("") }
+    val hotelToYayasanDistanceInMeter = remember { mutableFloatStateOf(0f) }
+
+    if (alamatByGeolocation.value != LatLng(0.0,0.0) && alamatHotelByName != "")
         LaunchedEffect(key1 = hotelToUserDistanceInMeter != 0f) {
             Log.d("ScreenCheckOut", "Launched Effect Status -> Running")
             val apiService = RetrofitInstance.api
-            CoroutineScope(Dispatchers.IO).launch {
-                val response = apiService.getDirections(
-                    "${alamatByGeolocation.latitude},${alamatByGeolocation.longitude}",
-                    alamatHotelByName
-                )
 
-                Log.d("ScreenCheckOut", "response : $response")
-                Log.d("ScreenCheckOut", "direction : ${response.routes[0].legs[0].distance?.text}")
+            val response = apiService.getDirections(
+                "${alamatByGeolocation.value.latitude},${alamatByGeolocation.value.longitude}",
+                alamatHotelByName
+            )
 
-                val parts = response.routes[0].legs[0].distance?.text?.split(" ")
-                if (parts?.size != 2) return@launch
+            Log.d("ScreenCheckOut", "response : $response")
+            Log.d("ScreenCheckOut", "direction : ${response.routes[0].legs[0].distance?.text}")
 
-                val value = parts[0].toFloatOrNull() ?: return@launch
-                val unit = parts[1]
+            val parts = response.routes[0].legs[0].distance?.text?.split(" ")
+            if (parts?.size != 2) return@LaunchedEffect
 
-                hotelToUserDistanceInMeter = when (unit) {
-                    "m" -> value
-                    "km" -> value * 1000f
-                    else -> {
-                        Log.d("ScreenCheckOut", "distance type not found : $unit")
-                        0f
-                    }
+            val value = parts[0].toFloatOrNull() ?: return@LaunchedEffect
+            val unit = parts[1]
+
+            hotelToUserDistanceInMeter = when (unit) {
+                "m" -> value
+                "km" -> value * 1000f
+                else -> {
+                    Log.d("ScreenCheckOut", "distance type not found : $unit")
+                    0f
                 }
-
-                Log.d("ScreenCheckOut", "distance : $hotelToUserDistanceInMeter")
-                Log.d("ScreenCheckOut", "ongkir price (Rp 1500 / 1 km ) : Rp. ${hotelToUserDistanceInMeter * 1.5}")
-
             }
+
+            Log.d("ScreenCheckOut", "distance : $hotelToUserDistanceInMeter")
+            Log.d("ScreenCheckOut", "ongkir price (Rp 1500 / 1 km ) : Rp. ${hotelToUserDistanceInMeter * 1.5}")
         }
-
-
 
     LazyColumn (
         modifier = Modifier
@@ -145,12 +146,29 @@ fun ScreenCheckOut(
             DiantarAtauAmbil(
                 onNavigateToScreen,
                 alamatByName = alamatByName,
-                radioButtons
+                radioButtons,
+                alamatYayasan.value,
+                setLokasiYayasan = {
+                    alamatByGeolocation.value = LatLng(0.0,0.0)
+                    alamatYayasan.value = it
+
+                    findHotelToYayasanDistance(
+                        hotelToYayasanDistanceInMeter,
+                        alamatYayasan.value,
+                        alamatHotelByName
+                    )
+                },
+                onDiantarRadioButtonCheck = {},
+                onDonasiRadioButtonCheck = {}
             )
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            RingkasanPesanan(selectedKatalis, hotelToUserDistanceInMeter)
+            RingkasanPesanan(
+                selectedKatalis,
+                hotelToUserDistanceInMeter,
+                hotelToYayasanDistanceInMeter.floatValue
+            )
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -184,9 +202,15 @@ fun ScreenCheckOut(
                     Log.d("ScreenCheckOut", "daftarKatalis : ${daftarKatalis.daftarKatalis}")
                 }
 
-                if (alamatByGeolocation == LatLng(0.0,0.0) || alamatHotelByName == "") {
+                if (alamatHotelByName == "") showToast(context, "Data Hotel mungkin dihapus")
+                else if (
+                    alamatByGeolocation.value == LatLng(0.0,0.0) &&
+                    hotelToYayasanDistanceInMeter.floatValue == 0f
+                ) {
                     Log.d("ScreenCheckOut", "You should stop here")
-                    showToast(context, "Masukkan Alamat Anda")
+                    Log.d("ScreenCheckOut", "alamatByGeolocation.value = ${alamatByGeolocation.value}")
+                    Log.d("ScreenCheckOut", "hotelToYayasanDistanceInMeter.floatValue = ${hotelToYayasanDistanceInMeter.floatValue}")
+                    showToast(context, "Mohon isi Alamat Anda atau alamat yayasan")
                 }
                 else if (selectedImageUri == Uri.EMPTY) showToast(context, "Masukkan Bukti Pembayaran")
                 else {
@@ -209,9 +233,13 @@ fun ScreenCheckOut(
                             transfer_proof_image_link = selectedImageUri.lastPathSegment.toString(),
                             StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString(),
                             Timestamp.now(),
-                            geolokasiTujuan = "${alamatByGeolocation.latitude},${alamatByGeolocation.longitude}",
+                            geolokasiTujuan = "${alamatByGeolocation.value.latitude},${alamatByGeolocation.value.longitude}",
                             alamatTujuan = alamatByName,
-                            hotelToUserDistanceInMeter,
+                            jarak_user_dan_hotel = when {
+                                radioButtons[1].isChecked -> hotelToUserDistanceInMeter
+                                radioButtons[2].isChecked -> hotelToYayasanDistanceInMeter.floatValue
+                                else -> 0f
+                            },
                             ongkir = ongkirPrice,
                             catatan = ""
                         )
@@ -230,6 +258,43 @@ fun ScreenCheckOut(
         ) {
             Text(text = "Buat Pesanan")
         }
+    }
+}
+
+// TODO : data biaya ongkir sudah dapat, gunakan fungsi callback untuk mendapatkannya
+fun findHotelToYayasanDistance(
+    hotelToYayasanDistanceInMeter : MutableState<Float>,
+    alamatYayasan : String,
+    alamatHotelByName : String,
+) {
+    CoroutineScope(Dispatchers.IO).launch {
+        val apiService = RetrofitInstance.api
+
+        val response = apiService.getDirections(
+            alamatYayasan,
+            alamatHotelByName
+        )
+
+        Log.d("ScreenCheckOut", "response : $response")
+        Log.d("ScreenCheckOut", "direction : ${response.routes[0].legs[0].distance?.text}")
+
+        val parts = response.routes[0].legs[0].distance?.text?.split(" ")
+        if (parts?.size != 2) return@launch
+
+        val value = parts[0].toFloatOrNull() ?: return@launch
+        val unit = parts[1]
+
+        hotelToYayasanDistanceInMeter.value = when (unit) {
+            "m" -> value
+            "km" -> value * 1000f
+            else -> {
+                Log.d("ScreenCheckOut", "distance type not found : $unit")
+                0f
+            }
+        }
+
+        Log.d("ScreenCheckOut", "distance : ${hotelToYayasanDistanceInMeter.value}")
+        Log.d("ScreenCheckOut", "ongkir price (Rp 1500 / 1 km ) : Rp. ${hotelToYayasanDistanceInMeter.value * 1.5}")
     }
 }
 

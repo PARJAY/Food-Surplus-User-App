@@ -100,7 +100,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
 
     var navAlamatByName by remember { mutableStateOf("") }
 
-    var navAlamatByGeolocation by remember { mutableStateOf(LatLng(0.0, 0.0)) }
+    val navAlamatCustomerByGeolocation = remember { mutableStateOf(LatLng(0.0, 0.0)) }
     var navAlamatHotelByGeolocation by remember { mutableStateOf("") }
 
     var radioButtons = remember{
@@ -234,7 +234,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
                 userData = googleAuthUiClient.getSignedInUser()!!,
                 onNavigateToScreen = {navController.navigate(it) },
                 alamatByName = navAlamatByName,
-                alamatByGeolocation = navAlamatByGeolocation,
+                alamatByGeolocation = navAlamatCustomerByGeolocation,
                 selectedKatalis = selectedKatalis,
                 selectedIdHotel = selectedHotelId,
                 alamatHotelByName = navAlamatHotelByGeolocation,
@@ -392,7 +392,7 @@ fun Navigation(lifecycleOwner: LifecycleOwner) {
             MapsScreen(
                 onButtonSelectLocationClick = { alamatByName, alamatByGeolocation ->
                     navAlamatByName = alamatByName
-                    navAlamatByGeolocation = alamatByGeolocation
+                    navAlamatCustomerByGeolocation.value = alamatByGeolocation
                     changeScreen.value = true
                     Log.d("MapsScreen", "changeScreen.value = ${changeScreen.value}")
                 }
