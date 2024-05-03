@@ -77,7 +77,6 @@ fun Katalis(
                 modifier = Modifier
                     .height(65.dp)
                     .width(65.dp),
-//                .padding(top = 10.dp, bottom = 5.dp, start = 10.dp),
                 contentScale = ContentScale.Crop
             )
             Column(modifier = Modifier.padding(end = 0.dp)) {
@@ -87,10 +86,10 @@ fun Katalis(
                     fontSize = 20.sp,
                     modifier = Modifier
                         .padding(start = 16.dp)
-                        .clickable { Log.d("stok", "$katalisModel.stok") }
+                        .clickable { Log.d("stok", "${katalisModel.stok}") }
                 )
                 Text(
-                    text = "${katalisModel.hargaJual}/${katalisModel.porsiJual}",
+                    text = "${katalisModel.hargaJual}",
                     fontSize = 14.sp,
                     modifier = Modifier.padding(start = 16.dp)
                 )

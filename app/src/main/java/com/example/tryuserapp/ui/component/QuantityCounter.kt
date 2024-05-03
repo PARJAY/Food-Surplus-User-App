@@ -70,8 +70,11 @@ fun QuantityCounter(
                 .padding(start = 5.dp, end = 5.dp)
                 .clickable {
                     if (itemCounter - 1 == 0) onRemoveSelectedKatalisListById()
-                    if (itemCounter <= 0) return@clickable
-                    itemCounter --
+                    else if (itemCounter <= 0) return@clickable
+                    else {
+                        itemCounter --
+                        onModifySelectedKatalisList(itemCounter)
+                    }
             },
         )
 
@@ -86,7 +89,6 @@ fun QuantityCounter(
             Icons.Default.Add,
             contentDescription = "",
             modifier = operatorIconModifier.clickable {
-                Log.d("Stok", "${katalisModel.stok}")
                 if (itemCounter == katalisModel.stok) return@clickable
 
                 if (itemCounter == 0) {
