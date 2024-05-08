@@ -210,10 +210,12 @@ fun ScreenCheckOut(
 
                 if (alamatHotelByName == "") showToast(context, "Data Hotel mungkin dihapus")
                 else if (
-                    !radioButtons[0].isChecked
-                    || (radioButtons[1].isChecked && alamatByGeolocation.value == LatLng(0.0,0.0))
+                    (radioButtons[1].isChecked && alamatByGeolocation.value == LatLng(0.0,0.0))
                     || (radioButtons[2].isChecked && hotelToYayasanDistanceInMeter.floatValue == 0f)
                 ) {
+                    Log.d("ScreenCheckOut", "!radioButtons[0].isChecked : ${!radioButtons[0].isChecked}")
+                    Log.d("ScreenCheckOut", "(radioButtons[1].isChecked && alamatByGeolocation.value == LatLng(0.0,0.0) : ${(radioButtons[1].isChecked && alamatByGeolocation.value == LatLng(0.0,0.0))}")
+                    Log.d("ScreenCheckOut", "(radioButtons[2].isChecked && hotelToYayasanDistanceInMeter.floatValue == 0f) : ${(radioButtons[2].isChecked && hotelToYayasanDistanceInMeter.floatValue == 0f)}")
                     Log.d("ScreenCheckOut", "You should stop here")
                     Log.d("ScreenCheckOut", "alamatByGeolocation.value = ${alamatByGeolocation.value}")
                     Log.d("ScreenCheckOut", "hotelToYayasanDistanceInMeter.floatValue = ${hotelToYayasanDistanceInMeter.floatValue}")
@@ -238,7 +240,7 @@ fun ScreenCheckOut(
                             daftarKatalis = daftarKatalis.daftarKatalis,
                             total_harga = totalHarga + ongkirPrice,
                             transfer_proof_image_link = fileName,
-                            StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString(),
+                            status_pesanan = StatusPesanan.MENUNGGU_KONFIRMASI_ADMIN.toString(),
                             Timestamp.now(),
                             geolokasiTujuan = "${alamatByGeolocation.value.latitude},${alamatByGeolocation.value.longitude}",
                             alamatTujuan = when {
