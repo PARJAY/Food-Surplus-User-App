@@ -67,8 +67,6 @@ secrets {
     ignoreList.add("sdk.*")       // Ignore all keys matching the regexp "sdk.*"
 }
 
-
-
 dependencies {
 
     implementation(libs.androidx.core.ktx)
